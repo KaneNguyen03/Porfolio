@@ -17,7 +17,7 @@ const Hero = () => {
 
         <div className="">
           <h1 className={`${styles.heroHeadText}`}>
-            Hi I'm <span className="text-[#916eff]">Kha</span>
+            Hi I'm <span className="text-[#916eff]">Kane</span>
           </h1>
           <p className={`${styles.heroSubText} mt-2 text-white-100`}>
             I develop user interfaces{" "}
@@ -36,12 +36,12 @@ const Hero = () => {
           <div className="rounded-3xl w-[35px] h-[64px] border-4 border-secondary flex justify-center items-center p-2">
             <motion.dev
               animate={{
-                y: [-14 , 20, -12],
+                y: [-14, 20, -12],
               }}
               transition={{
                 duration: 1.5,
                 repeat: Infinity,
-                repeatType: 'loop'
+                repeatType: "loop",
               }}
               className="w-3 h-3 rounded-full bg-secondary mb-1"
             />
