@@ -23,7 +23,13 @@ import {
   jobit,
   tripguide,
   threejs,
+
 } from "../assets"
+
+import axpara from "../assets/company/axpara.png"
+import azuno from "../assets/azuno.png"
+import proofn from "../assets/proofn.png"
+import Claritas from "../assets/Claritas.png"
 
 export const navLinks = [
   {
@@ -93,10 +99,6 @@ const technologies = [
     icon: nodejs,
   },
   {
-    name: "MongoDB",
-    icon: mongodb,
-  },
-  {
     name: "Three JS",
     icon: threejs,
   },
@@ -108,18 +110,14 @@ const technologies = [
     name: "figma",
     icon: figma,
   },
-  {
-    name: "docker",
-    icon: docker,
-  },
 ]
 
 const experiences = [
   {
     title: "React.js Developer",
     company_name: "Axpara",
-    icon: starbucks,
-    iconBg: "#383E56",
+    icon: axpara,
+    iconBg: "white",
     date: "September 2022 - Now",
     points: [
       "Developing and maintaining web applications using React.js and other related technologies.",
@@ -199,33 +197,12 @@ const testimonials = [
 
 const projects = [
   {
-    name: "Car Rent",
+    name: "Azuno",
     description:
-      "Web-based platform that allows users to search, book, and manage car rentals from various providers, providing a convenient and efficient solution for transportation needs.",
+      "The project is a login-based web platform for watching livestream events from an organization. It offers a user-friendly experience and other features.",
     tags: [
       {
-        name: "react",
-        color: "blue-text-gradient",
-      },
-      {
-        name: "mongodb",
-        color: "green-text-gradient",
-      },
-      {
-        name: "tailwind",
-        color: "pink-text-gradient",
-      },
-    ],
-    image: carrent,
-    source_code_link: "https://github.com/",
-  },
-  {
-    name: "Job IT",
-    description:
-      "Web application that enables users to search for job openings, view estimated salary ranges for positions, and locate available jobs based on their current location.",
-    tags: [
-      {
-        name: "react",
+        name: "reactjs",
         color: "blue-text-gradient",
       },
       {
@@ -233,33 +210,54 @@ const projects = [
         color: "green-text-gradient",
       },
       {
-        name: "scss",
+        name: "styled-component #scss",
         color: "pink-text-gradient",
       },
     ],
-    image: jobit,
-    source_code_link: "https://github.com/",
+    image: azuno,
+    // source_code_link: "https://github.com/",
   },
   {
-    name: "Trip Guide",
+    name: "Proofn",
     description:
-      "A comprehensive travel booking platform that allows users to book flights, hotels, and rental cars, and offers curated recommendations for popular destinations.",
+      "The website compares email service prices and plans. Content can be easily updated without requiring technical knowledge.",
     tags: [
       {
         name: "nextjs",
         color: "blue-text-gradient",
       },
       {
-        name: "supabase",
+        name: "sanity",
         color: "green-text-gradient",
       },
       {
-        name: "css",
+        name: "tailwind",
         color: "pink-text-gradient",
       },
     ],
-    image: tripguide,
-    source_code_link: "https://github.com/",
+    image: proofn,
+    // source_code_link: "https://github.com/",
+  },
+  {
+    name: "Claritas",
+    description:
+      "The website is a building management application that enables users to track and manage construction projects.",
+    tags: [
+      {
+        name: "reactjs",
+        color: "blue-text-gradient",
+      },
+      {
+        name: "restapi",
+        color: "green-text-gradient",
+      },
+      {
+        name: "tailwind #scss",
+        color: "pink-text-gradient",
+      },
+    ],
+    image: Claritas,
+    // source_code_link: "https://github.com/",
   },
 ]
 

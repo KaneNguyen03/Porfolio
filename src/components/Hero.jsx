@@ -36,12 +36,12 @@ const Hero = () => {
           <div className="rounded-3xl w-[35px] h-[64px] border-4 border-secondary flex justify-center items-center p-2">
             <motion.div
               animate={{
-                y: [-14 , 20, -12],
+                y: [-14, 20, -12],
               }}
               transition={{
                 duration: 1.5,
                 repeat: Infinity,
-                repeatType: 'loop'
+                repeatType: "loop",
               }}
               className="w-3 h-3 rounded-full bg-secondary mb-1"
             />

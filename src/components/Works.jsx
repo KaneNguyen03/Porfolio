@@ -30,7 +30,7 @@ const ProjectCard = ({
             className="w-full h-full object-cover rounded-2xl"
           />
 
-          <div className="absolute inset-0 flex justify-end m-3 card-img_hover">
+          {/* <div className="absolute inset-0 flex justify-end m-3 card-img_hover">
             <div
               onClick={() => window.open(source_code_link, "_blank")}
               className="black-gradient flex justify-center items-center cursor-pointer w-10 h-10 rounded-full"
@@ -41,7 +41,7 @@ const ProjectCard = ({
                 className="w-1/2 h-1/2 object-contain"
               />
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="mt-5">
@@ -50,11 +50,11 @@ const ProjectCard = ({
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">
-            {tags.map((tag) => (
-              <p key={tag.name} className={`text-[14px] ${tag.color}`}> 
-                  #{tag.name}
-              </p>
-            ))}
+          {tags.map((tag) => (
+            <p key={tag.name} className={`text-[14px] ${tag.color}`}>
+              #{tag.name}
+            </p>
+          ))}
         </div>
       </Tilt>
     </motion.div>
