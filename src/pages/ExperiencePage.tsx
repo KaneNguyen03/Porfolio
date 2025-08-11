@@ -125,10 +125,6 @@ const ExperiencePage: React.FC = () => {
                 <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">4+</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Projects</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">5+</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Technologies</div>
-              </div>
             </motion.div>
           </motion.div>
 

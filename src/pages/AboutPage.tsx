@@ -155,7 +155,7 @@ const AboutPage: React.FC = () => {
               
               <div className="relative z-10">
                 <motion.h2 
-                  className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-8 text-center"
+                  className="p-4 text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-8 text-center"
                   whileInView={{ y: 0, opacity: 1 }}
                   initial={{ y: 20, opacity: 0 }}
                   transition={{ duration: 0.6 }}
@@ -163,7 +163,7 @@ const AboutPage: React.FC = () => {
                   My Journey
                 </motion.h2>
                 
-                <div className="grid grid-cols-1 lg:grid-cols-2 items-center px-6 py-4 lg:px-14 lg:py-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 items-center px-6 py-4 lg:px-20 lg:py-6">
                   <motion.div
                     whileInView={{ x: 0, opacity: 1 }}
                     initial={{ x: -30, opacity: 0 }}

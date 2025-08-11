@@ -167,13 +167,21 @@ export const portfolioData: PortfolioData = {
     image: fptAcademyImage
   },
   {
-    name: "Claritas",
-    period: "Feb 2023 - Aug 2023",
-    role: "Member",
-    technologies: ["JavaScript", "React", "Tailwind"],
+    name: "Claritas - Document Verification Platform",
+    period: "Feb 2023 - Nov 2023",
+    role: "Frontend Developer",
+    technologies: ["JavaScript", "React.js", "Tailwind CSS", "Redux", "Axios", "React Router", "Material-UI", "JWT"],
     responsibilities: [
-      "Developed secure APIs for authentication, account management, and login.",
-      "Implemented image upload functionality with annotation and verification features."
+      "Developed secure user authentication system with JWT tokens for login, registration, and account management.",
+      "Implemented comprehensive image upload functionality with drag-and-drop interface and file validation.",
+      "Built advanced document annotation tools allowing users to mark, highlight, and add comments to uploaded images.",
+      "Created real-time document verification workflow with status tracking and approval processes.",
+      "Designed responsive user interface using Tailwind CSS ensuring cross-device compatibility.",
+      "Integrated REST APIs for seamless communication between frontend and backend services.",
+      "Implemented state management using Redux for efficient data flow and user session handling.",
+      "Developed user dashboard displaying document history, verification status, and analytics.",
+      "Added form validation and error handling to enhance user experience and data integrity.",
+      "Collaborated with backend team to define API specifications and data structures."
     ],
     liveDemo: "https://www.youtube.com/watch?v=FPTkbZdhi-o&list=TLGGywTU4zSGroUxMTA4MjAyNQ&t=77s",
     github: "",

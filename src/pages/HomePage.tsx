@@ -37,7 +37,7 @@ const HomePage: React.FC = () => {
   ];
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 pt-16">
+    <div className="bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 py-28">
       <div className="min-h-screen flex items-center justify-center relative">
         <div className="container-width">
           <motion.div
@@ -243,12 +243,8 @@ const HomePage: React.FC = () => {
             <span className="text-sm text-gray-500 dark:text-gray-400 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               Explore More
             </span>
-            <div className="animate-bounce">
-              <div className="w-6 h-10 border-2 border-gray-400 dark:border-gray-600 rounded-full flex justify-center group-hover:border-blue-500 dark:group-hover:border-blue-400 transition-colors duration-300">
-                <div className="w-1 h-3 bg-gray-400 dark:bg-gray-600 rounded-full mt-2 animate-pulse group-hover:bg-blue-500 dark:group-hover:bg-blue-400 transition-colors duration-300"></div>
-              </div>
-            </div>
           </div>
+          
         </motion.div>
       </div>
     </div>
