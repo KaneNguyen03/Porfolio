@@ -1,13 +1,13 @@
+import { motion } from 'framer-motion';
+import { ArrowRight, Briefcase, Download, Github, Linkedin, Mail, MapPin, Star } from 'lucide-react';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ArrowRight, Download, Github, Linkedin, Mail, MapPin, Code, Star, Briefcase } from 'lucide-react';
-import { portfolioData } from '../data/portfolio';
 import avatarImage from '../assets/ava.jpg';
 import cvFile from '../assets/Nguyen_Xuan_Kha_Fullstack_CV.pdf';
+import { portfolioData } from '../data/portfolio';
 
 const HomePage: React.FC = () => {
-  const { personalInfo, projects, skills } = portfolioData;
+  const { personalInfo } = portfolioData;
   const navigate = useNavigate();
 
   const containerVariants = {
@@ -37,7 +37,7 @@ const HomePage: React.FC = () => {
   ];
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 py-26">
+    <div className="bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 pt-16">
       <div className="min-h-screen flex items-center justify-center relative">
         <div className="container-width">
           <motion.div
@@ -114,7 +114,6 @@ const HomePage: React.FC = () => {
                 {personalInfo.objective}
               </motion.p>
             </motion.div>
-
 
 
             {/* Action Buttons - Enhanced */}
@@ -240,7 +239,16 @@ const HomePage: React.FC = () => {
           className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer group"
           onClick={() => navigate('/about')}
         >
-
+          <div className="flex flex-col items-center space-y-2">
+            <span className="text-sm text-gray-500 dark:text-gray-400 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              Explore More
+            </span>
+            <div className="animate-bounce">
+              <div className="w-6 h-10 border-2 border-gray-400 dark:border-gray-600 rounded-full flex justify-center group-hover:border-blue-500 dark:group-hover:border-blue-400 transition-colors duration-300">
+                <div className="w-1 h-3 bg-gray-400 dark:bg-gray-600 rounded-full mt-2 animate-pulse group-hover:bg-blue-500 dark:group-hover:bg-blue-400 transition-colors duration-300"></div>
+              </div>
+            </div>
+          </div>
         </motion.div>
       </div>
     </div>

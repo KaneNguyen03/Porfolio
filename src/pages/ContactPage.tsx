@@ -7,7 +7,7 @@ import { useThemeClasses } from '../hooks/useThemeClasses';
 
 const ContactPage: React.FC = () => {
   const { personalInfo, references } = portfolioData;
-  const { page } = useThemeClasses(); // Ensure component re-renders on theme change
+  useThemeClasses(); // Ensure component re-renders on theme change
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -131,7 +131,7 @@ const ContactPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 pt-20 pb-16 transition-colors duration-300">
-      <div className="container-width">{/* Force re-render: {page} */}
+      <div className="container-width">
         <motion.div
           variants={containerVariants}
           initial="hidden"
