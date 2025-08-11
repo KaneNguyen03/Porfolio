@@ -2,7 +2,7 @@
 
 A modern, responsive portfolio website built with React, TypeScript, and Tailwind CSS, showcasing my work as a Full-Stack Software Engineer.
 
-![Portfolio Preview](https://via.placeholder.com/800x400/2563eb/white?text=Portfolio+Preview)
+![Portfolio Preview]!(image.png)
 
 ## 🚀 Features
 
