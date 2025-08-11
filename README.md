@@ -2,7 +2,8 @@
 
 A modern, responsive portfolio website built with React, TypeScript, and Tailwind CSS, showcasing my work as a Full-Stack Software Engineer.
 
-![Portfolio Preview]!(image.png)
+<img width="1608" height="912" alt="image" src="https://github.com/user-attachments/assets/c9fee1be-1aac-4281-b94a-03f92c69ac62" />
+
 
 ## 🚀 Features
 
@@ -206,3 +207,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 ⭐ Star this repository if you found it helpful!
+
