@@ -68,7 +68,7 @@ const AboutPage: React.FC = () => {
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.8 }
+      transition: { duration: 0.5 }
     }
   };
 
@@ -94,7 +94,7 @@ const AboutPage: React.FC = () => {
             <motion.div
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
               className="mb-8"
             >
               <div className="relative inline-block">
@@ -111,7 +111,7 @@ const AboutPage: React.FC = () => {
               className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent mb-6"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
             >
               About Me
             </motion.h1>
@@ -120,7 +120,7 @@ const AboutPage: React.FC = () => {
               className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
             >
               Passionate <span className="font-semibold text-blue-600 dark:text-blue-400">Full-Stack Developer</span> crafting exceptional digital experiences
             </motion.p>
@@ -130,7 +130,7 @@ const AboutPage: React.FC = () => {
               className="flex flex-wrap justify-center gap-6 mt-8"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
             >
               <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                 <MapPin size={16} />
@@ -167,7 +167,8 @@ const AboutPage: React.FC = () => {
                   <motion.div
                     whileInView={{ x: 0, opacity: 1 }}
                     initial={{ x: -30, opacity: 0 }}
-                    transition={{ duration: 0.8 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
                   >
                     <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
                       As a dedicated Software Engineering student at FPT University, I'm pursuing my passion for creating 
@@ -182,8 +183,8 @@ const AboutPage: React.FC = () => {
                     </p>
                     
                     {/* Key Stats */}
-                    <div className="grid grid-cols-3 gap-4 mt-8">
-                      <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-8">
+                      <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-xl text-wrap">
                         <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">6+</div>
                         <div className="text-sm text-gray-600 dark:text-gray-400">Projects</div>
                       </div>
@@ -202,7 +203,8 @@ const AboutPage: React.FC = () => {
                     className="flex justify-center lg:justify-end mt-8 lg:mt-0"
                     whileInView={{ x: 0, opacity: 1 }}
                     initial={{ x: 30, opacity: 0 }}
-                    transition={{ duration: 0.8 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
                   >
                     <div className="relative group">
                       {/* Main Avatar Container */}
@@ -297,7 +299,7 @@ const AboutPage: React.FC = () => {
                         {category.skills.map((skill, skillIndex) => (
                           <motion.div
                             key={skill}
-                            initial={{ opacity: 0, scale: 0.8 }}
+                            initial={{ opacity: 0, scale: 0.5 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             transition={{ 
                               duration: 0.4, 
@@ -342,7 +344,7 @@ const AboutPage: React.FC = () => {
                   initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: index * 0.2 }}
+                  transition={{ duration: 0.5, delay: index * 0.2 }}
                   whileHover={{ 
                     y: -8,
                     transition: { duration: 0.3 }
@@ -382,7 +384,7 @@ const AboutPage: React.FC = () => {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
             >
               <div className="inline-flex items-center space-x-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 px-8 py-4 rounded-2xl border border-blue-200 dark:border-blue-700">
                 <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>

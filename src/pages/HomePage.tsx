@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, Briefcase, Download, Github, Linkedin, Mail, MapPin, Star } from 'lucide-react';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import avatarImage from '../assets/ava.jpg';
 import cvFile from '../assets/Nguyen_Xuan_Kha_Fullstack_CV.pdf';
 import { portfolioData } from '../data/portfolio';
+import { ArrowRight, Briefcase, Download, Github, Linkedin, Mail, MapPin, Star } from 'lucide-react';
 
 const HomePage: React.FC = () => {
   const { personalInfo } = portfolioData;
@@ -109,7 +109,7 @@ const HomePage: React.FC = () => {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.8 }}
-                className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-4xl mx-auto"
+                className="text-left px-4 md:text-center text-xl md:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-4xl mx-auto"
               >
                 {personalInfo.objective}
               </motion.p>
