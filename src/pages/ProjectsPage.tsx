@@ -185,11 +185,6 @@ const ProjectsPage: React.FC = () => {
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                           allowFullScreen
                         />
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent rounded-b-2xl p-4">
-                          <h3 className="text-white text-lg md:text-xl font-bold leading-tight">
-                            {project.name}
-                          </h3>
-                        </div>
                       </div>
                     ) : (
                       // Regular project image
@@ -207,6 +202,15 @@ const ProjectsPage: React.FC = () => {
                       </>
                     )}
                   </div>
+
+                  {/* Project Title - Now outside video area for YouTube projects */}
+                  {project.liveDemo && project.liveDemo.includes('youtube.com') && (
+                    <div className="mb-4">
+                      <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white leading-tight">
+                        {project.name}
+                      </h3>
+                    </div>
+                  )}
 
                   {/* Project Details - Using flex-grow to expand */}
                   <div className="flex flex-col flex-grow space-y-4">

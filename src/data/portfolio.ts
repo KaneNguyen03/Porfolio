@@ -127,9 +127,13 @@ export const portfolioData: PortfolioData = {
     role: "Leader",
     technologies: ["TypeScript", "NestJS", "ViteJS", "React.js", "PostgreSQL", "Docker", "AWS EC2", "RabbitMQ", "gRPC", "Redis"],
     responsibilities: [
+      "Led full-stack development including backend API development with NestJS and frontend interface with React.js.",
+      "Managed team task distribution and coordinated development workflow between teammates.",
+      "Integrated Ultralytics AI system on AWS Lambda functions for automated crack detection and analysis.",
+      "Implemented gRPC-based authentication service for secure login and user management.",
+      "Developed email notification system with OTP verification using Redis for session management.",
       "Set up microservices-based architecture for scalable system design.",
-      "Deployed system using Docker on AWS EC2 for reliable cloud hosting.",
-      "Configured RabbitMQ, gRPC, Redis, and email services to enable efficient communication and notifications."
+      "Deployed system using Docker on AWS EC2 for reliable cloud hosting."
     ],
     liveDemo: "",
     github: "https://github.com/SP25-BMCMS/BMCMS-FE",
