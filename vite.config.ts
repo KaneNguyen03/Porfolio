@@ -12,7 +12,7 @@ export default defineConfig({
     tailwindcss()
   ],
   build: {
-    // Tối ưu bundle size
+    // Tối ưu bundle size và performance
     rollupOptions: {
       output: {
         manualChunks: {
@@ -20,15 +20,22 @@ export default defineConfig({
           router: ['react-router-dom'],
           animation: ['framer-motion'],
           icons: ['lucide-react']
-        }
+        },
+        // Tối ưu asset names
+        assetFileNames: 'assets/[name]-[hash][extname]',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js'
       }
     },
     // Tối ưu chunk size
-    chunkSizeWarningLimit: 1000,
-    // Minify CSS
+    chunkSizeWarningLimit: 500,
+    // Minify CSS và JS
     cssMinify: true,
+    minify: 'esbuild',
     // Source maps cho production debugging
-    sourcemap: false
+    sourcemap: false,
+    // Optimize dependencies
+    target: 'es2020'
   },
   resolve: {
     alias: {

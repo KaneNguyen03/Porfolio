@@ -1,49 +1,39 @@
-<!doctype html>
-<html lang="en" class="scroll-smooth">
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👨‍💻</text></svg>" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO Meta Tags -->
+    <!-- Primary Meta Tags -->
     <title>Kha (Kane) Nguyen - Software Engineer Portfolio</title>
-    <meta name="description" content="Kha (Kane) Nguyen - Fullstack Software Engineer specializing in React.js, Node.js, and modern web technologies. Based in Ho Chi Minh City, Vietnam." />
-    <meta name="keywords" content="software engineer, fullstack developer, react.js, node.js, typescript, vietnam, portfolio, web development, frontend, backend" />
-    <meta name="author" content="Kha (Kane) Nguyen" />
-    <meta name="robots" content="index, follow" />
-    <meta name="language" content="English" />
-    <meta name="revisit-after" content="7 days" />
+    <meta name="title" content="Kha (Kane) Nguyen - Software Engineer Portfolio">
+    <meta name="description" content="Fullstack Software Engineer specializing in React.js, Node.js, and modern web technologies. Based in Ho Chi Minh City, Vietnam.">
+    <meta name="keywords" content="software engineer, fullstack developer, react.js, node.js, typescript, vietnam, portfolio">
+    <meta name="author" content="Kha (Kane) Nguyen">
+    <meta name="robots" content="index, follow">
     
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Kha (Kane) Nguyen - Software Engineer Portfolio" />
-    <meta property="og:description" content="Fullstack Software Engineer specializing in React.js, Node.js, and modern web technologies. View my projects and experience." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://your-portfolio-url.com" />
-    <meta property="og:image" content="https://your-portfolio-url.com/og-image.jpg" />
-    <meta property="og:site_name" content="Kane Nguyen Portfolio" />
-    <meta property="og:locale" content="en_US" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-portfolio-url.com/">
+    <meta property="og:title" content="Kha (Kane) Nguyen - Software Engineer Portfolio">
+    <meta property="og:description" content="Fullstack Software Engineer specializing in React.js, Node.js, and modern web technologies.">
+    <meta property="og:image" content="https://your-portfolio-url.com/og-image.jpg">
     
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Kha (Kane) Nguyen - Software Engineer Portfolio" />
-    <meta name="twitter:description" content="Fullstack Software Engineer specializing in React.js, Node.js, and modern web technologies." />
-    <meta name="twitter:image" content="https://your-portfolio-url.com/twitter-image.jpg" />
-    <meta name="twitter:creator" content="@your_twitter_handle" />
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://your-portfolio-url.com/">
+    <meta property="twitter:title" content="Kha (Kane) Nguyen - Software Engineer Portfolio">
+    <meta property="twitter:description" content="Fullstack Software Engineer specializing in React.js, Node.js, and modern web technologies.">
+    <meta property="twitter:image" content="https://your-portfolio-url.com/og-image.jpg">
     
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#2563eb" />
-    <meta name="msapplication-TileColor" content="#2563eb" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E👨‍💻%3C/text%3E%3C/svg%3E">
     
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://your-portfolio-url.com" />
+    <!-- Theme -->
+    <meta name="theme-color" content="#2563eb">
     
-    <!-- Preload critical resources -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    
-    <!-- DNS Prefetch -->
-    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-    <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+    <!-- Canonical -->
+    <link rel="canonical" href="https://your-portfolio-url.com/">
     
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -77,33 +67,23 @@
       ]
     }
     </script>
-    
-    <!-- Web App Manifest -->
-    <link rel="manifest" href="/manifest.json" />
-    
-    <!-- Apple Touch Icons -->
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png" />
-    <link rel="apple-touch-icon" sizes="167x167" href="/apple-touch-icon-167x167.png" />
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Loading fallback -->
+      <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: system-ui, -apple-system, sans-serif;">
+        <div style="text-align: center;">
+          <div style="width: 40px; height: 40px; border: 4px solid #f3f4f6; border-top: 4px solid #2563eb; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px;"></div>
+          <p style="color: #6b7280; font-size: 14px;">Loading...</p>
+        </div>
+      </div>
+      <style>
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      </style>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
-    
-    <!-- Service Worker Registration -->
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js')
-            .then(registration => console.log('SW registered'))
-            .catch(error => console.log('SW registration failed'));
-        });
-      }
-    </script>
   </body>
 </html>
