@@ -8,8 +8,11 @@
     <!-- SEO Meta Tags -->
     <title>Kha (Kane) Nguyen - Software Engineer Portfolio</title>
     <meta name="description" content="Kha (Kane) Nguyen - Fullstack Software Engineer specializing in React.js, Node.js, and modern web technologies. Based in Ho Chi Minh City, Vietnam." />
-    <meta name="keywords" content="software engineer, fullstack developer, react.js, node.js, typescript, vietnam, portfolio" />
+    <meta name="keywords" content="software engineer, fullstack developer, react.js, node.js, typescript, vietnam, portfolio, web development, frontend, backend" />
     <meta name="author" content="Kha (Kane) Nguyen" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
     
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Kha (Kane) Nguyen - Software Engineer Portfolio" />
@@ -18,21 +21,89 @@
     <meta property="og:url" content="https://your-portfolio-url.com" />
     <meta property="og:image" content="https://your-portfolio-url.com/og-image.jpg" />
     <meta property="og:site_name" content="Kane Nguyen Portfolio" />
+    <meta property="og:locale" content="en_US" />
     
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Kha (Kane) Nguyen - Software Engineer Portfolio" />
     <meta name="twitter:description" content="Fullstack Software Engineer specializing in React.js, Node.js, and modern web technologies." />
     <meta name="twitter:image" content="https://your-portfolio-url.com/twitter-image.jpg" />
+    <meta name="twitter:creator" content="@your_twitter_handle" />
     
     <!-- Theme Color -->
     <meta name="theme-color" content="#2563eb" />
+    <meta name="msapplication-TileColor" content="#2563eb" />
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://your-portfolio-url.com" />
+    
+    <!-- Preload critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- DNS Prefetch -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Kha (Kane) Nguyen",
+      "jobTitle": "Software Engineer",
+      "description": "Fullstack Software Engineer specializing in React.js, Node.js, and modern web technologies",
+      "url": "https://your-portfolio-url.com",
+      "sameAs": [
+        "https://github.com/your-github",
+        "https://linkedin.com/in/your-linkedin"
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Freelance"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Ho Chi Minh City",
+        "addressCountry": "Vietnam"
+      },
+      "knowsAbout": [
+        "React.js",
+        "Node.js", 
+        "TypeScript",
+        "JavaScript",
+        "Web Development",
+        "Fullstack Development"
+      ]
+    }
+    </script>
+    
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png" />
+    <link rel="apple-touch-icon" sizes="167x167" href="/apple-touch-icon-167x167.png" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(registration => console.log('SW registered'))
+            .catch(error => console.log('SW registration failed'));
+        });
+      }
+    </script>
   </body>
 </html>
