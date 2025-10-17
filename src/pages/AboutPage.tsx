@@ -138,7 +138,7 @@ const AboutPage: React.FC = () => {
               </div>
               <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                 <Calendar size={16} />
-                <span className="text-sm font-medium">1+ Years Experience</span>
+                <span className="text-sm font-medium">~2 Years Experience</span>
               </div>
               <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                 <Mail size={16} />
@@ -189,7 +189,7 @@ const AboutPage: React.FC = () => {
                         <div className="text-sm text-gray-600 dark:text-gray-400">Projects</div>
                       </div>
                       <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
-                        <div className="text-2xl font-bold text-green-600 dark:text-green-400">1+</div>
+                        <div className="text-2xl font-bold text-green-600 dark:text-green-400">~2</div>
                         <div className="text-sm text-gray-600 dark:text-gray-400">Years</div>
                       </div>
                       <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">

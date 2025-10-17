@@ -94,7 +94,7 @@ const ProjectsPage: React.FC = () => {
                 <div className="text-sm text-gray-600 dark:text-gray-400">Technologies</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">3+</div>
+                <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">~2</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Years</div>
               </div>
               <div className="text-center">
@@ -173,7 +173,7 @@ const ProjectsPage: React.FC = () => {
                 
                 <div className="relative z-10 flex flex-col h-full">
                   {/* Project Header */}
-                  <div className="relative h-48 md:h-56 rounded-2xl overflow-hidden mb-6 flex-shrink-0 shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                  <div className="relative h-52 md:h-66 rounded-2xl overflow-hidden mb-6 flex-shrink-0 shadow-lg group-hover:shadow-xl transition-shadow duration-300">
                     {project.liveDemo && project.liveDemo.includes('youtube.com') ? (
                       // YouTube embedded video
                       <div className="relative w-full h-full">
@@ -192,7 +192,7 @@ const ProjectsPage: React.FC = () => {
                         <img
                           src={project.image || 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop'}
                           alt={project.name}
-                          className="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition-transform duration-500"
+                          className="w-full h-full object-contain rounded-2xl group-hover:scale-110 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end rounded-2xl p-4">
                           <h3 className="text-white text-lg md:text-xl font-bold leading-tight">

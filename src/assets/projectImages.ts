@@ -5,14 +5,18 @@ import auzunoImg from './azuno.png';
 import pokeImg from './poke.png';
 import bmcmsImg from './bmcms.png';
 import fptAcademyImg from './fams.jpg';
+import everytalkImg from './everytalk.png'; 
+import uobongImg from './uobong.png';   
+
 
 // Export the imported images
 export const claritasImage = claritasImg;
 export const proofnImage = proofnImg;
 export const auzunoImage = auzunoImg;
-
+export const uobongImage = uobongImg;
 // For projects that don't have images yet, using fallback images
-export const buildingMaintenanceImage =bmcmsImg
+export const everytalkImage = everytalkImg; // Using fallback until everytalk.png is added
+export const buildingMaintenanceImage = bmcmsImg;
 export const pokeLifeImage = pokeImg;
 export const fptAcademyImage = fptAcademyImg;
 

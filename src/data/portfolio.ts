@@ -5,7 +5,9 @@ import {
   fptAcademyImage, 
   claritasImage, 
   proofnImage, 
-  auzunoImage 
+  auzunoImage,
+  everytalkImage,
+  uobongImage
 } from '../assets/projectImages';
 
 export interface PersonalInfo {
@@ -88,7 +90,7 @@ export const portfolioData: PortfolioData = {
     location: "Ho Chi Minh City, Viet Nam",
     github: "https://github.com/KaneNguyen03",
     linkedin: "https://www.linkedin.com/in/kha-nguyen-29732a209",
-    objective: "I am seeking a Fresher/Junior Fullstack Developer position using Node.js and React.js, where I can apply my skills, contribute to team success, and grow in a professional environment. I have over 1 year of experience in Frontend development and hands-on knowledge of DevOps tools such as AWS EC2 and RDS."
+    objective: "Motivated Full-stack Developer with nearly 2 years of experience in Node.js and React.js, seeking a Junior Developer role to contribute to scalable web applications and enhance my skills in a professional, growth-driven environment. Proficient in AWS EC2, RDS, and DevOps workflows."
   },
   education: [
     {
@@ -99,6 +101,18 @@ export const portfolioData: PortfolioData = {
     }
   ],
   workExperience: [
+    {
+      company: "Cigro",
+      period: "Aug 2025 - Oct 2025",
+      position: "Fresher Software Engineer",
+      responsibilities: [
+        "Integrated Sendbird API for real-time messaging and designed custom database schema for personalized chat data storage.",
+        "Developed backend APIs and webhook handlers for message synchronization and user interactions on EveryTalk Project.",
+        "Integrated Google/Apple In-App Purchase (IAP) and handled subscription webhooks for Uobong gamified engagement platform.",
+        "Migrated internal events architecture from EventEmitter2 to AWS SQS + Lambda for improved scalability and reliability.",
+        "Conducted comprehensive load testing using Autocannon and K6 with Grafana monitoring to ensure system performance under high traffic conditions."
+      ]
+    },
     {
       company: "FSoft",
       period: "Dec 2023 - Apr 2024",
@@ -111,16 +125,56 @@ export const portfolioData: PortfolioData = {
     },
     {
       company: "Axpara",
-      period: "Sep 2022 - Nov 2023",
-      position: "Internship Frontend Developer",
+      period: "Dec 2022 - Nov 2023",
+      position: "Fresher Software Engineer",
       responsibilities: [
-        "Developed and maintained web apps with React.js.",
-        "Participated in code reviews and gave feedback.",
-        "Collaborated with cross-functional teams."
+        "Developed and maintained web applications using React.js and other related technologies.",
+        "Collaborated with cross-functional teams, including designers, product managers, and other developers, to create high-quality products."
+      ]
+    },
+    {
+      company: "Axpara",
+      period: "Sep 2022 - Nov 2022",
+      position: "Internship Software Engineer",
+      responsibilities: [
+        "Participated in code reviews and provided constructive feedback to other developers.",
+        "Gained hands-on experience in software development lifecycle and agile methodologies."
       ]
     }
   ],
   projects: [
+  {
+    name: "EveryTalk - Real-time Communication Platform",
+    period: "Aug 2025 - Oct 2025",
+    role: "Backend Developer",
+    technologies: ["Node.js", "TypeScript", "Sendbird API", "PostgreSQL", "Webhooks", "Autocannon", "K6", "Grafana"],
+    responsibilities: [
+      "Integrated Sendbird API for real-time messaging and designed custom database schema to store and personalize chat data.",
+      "Developed backend APIs and webhook handlers for message synchronization and user interactions.",
+      "Implemented comprehensive load testing using Autocannon and K6 with Grafana visualization to ensure system performance.",
+      "Built scalable messaging infrastructure supporting multiple chat rooms and user management features.",
+      "Designed database architecture for efficient message storage and retrieval with personalization capabilities."
+    ],
+    liveDemo: "",
+    github: "",
+    image: everytalkImage 
+  },
+  {
+    name: "Uobong - Gamified User Engagement Platform",
+    period: "Aug 2025 - Oct 2025",
+    role: "Backend Developer",
+    technologies: ["Node.js", "TypeScript", "Google IAP", "Apple IAP", "AWS SQS", "AWS Lambda", "EventEmitter", "Webhooks"],
+    responsibilities: [
+      "Integrated Google/Apple In-App Purchase (IAP) system for seamless subscription management and payment processing.",
+      "Handled subscription webhooks to ensure reliable payment verification and user access control.",
+      "Migrated internal event system from EventEmitter2 to AWS SQS + Lambda for improved scalability and reliability.",
+      "Developed gamification features to enhance user engagement and retention through interactive elements.",
+      "Implemented event-driven architecture to handle real-time user interactions and system notifications."
+    ],
+    liveDemo: "",
+    github: "",
+    image: uobongImage 
+  },
   {
     name: "Building Maintenance and Crack Monitoring System",
     period: "Dec 2024 - Apr 2025",
@@ -224,8 +278,8 @@ export const portfolioData: PortfolioData = {
     programmingLanguages: ["JavaScript", "TypeScript", "C#", "Java"],
     frontend: ["React.js", "Next.js", "Vite"],
     backend: ["Node.js", "ASP.NET Core", "NestJS"],
-    databases: ["PostgreSQL", "MySQL", "MongoDB", "MSSQL"],
-    devops: ["AWS", "EC2", "RDS", "S3", "Docker", "RabbitMQ", "gRPC"],
+    databases: ["PostgreSQL", "MySQL", "MongoDB"],
+    devops: ["AWS", "EC2", "RDS", "SQS", "S3", "Docker", "RabbitMQ", "gRPC"],
     vcs: ["Git", "GitHub", "GitLab"]
   },
   certifications: [

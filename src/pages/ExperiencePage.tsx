@@ -9,7 +9,24 @@ const ExperiencePage: React.FC = () => {
   // Enhanced work experience with learning outcomes and contributions
   const enhancedExperience = [
     {
-      ...workExperience[0], // FSoft
+      ...workExperience[0], // Cigro
+      learnings: [
+        "Mastered real-time messaging integration with Sendbird API and custom database design",
+        "Gained expertise in payment system integration with Google/Apple IAP and webhook handling",
+        "Learned AWS cloud services migration from EventEmitter2 to SQS + Lambda architecture",
+        "Developed proficiency in load testing methodologies using Autocannon and K6 with Grafana visualization"
+      ],
+      contributions: [
+        "Successfully integrated real-time messaging for EveryTalk Project with personalized chat data storage",
+        "Implemented robust payment system handling subscription workflows for Uobong platform",
+        "Migrated event architecture improving system scalability and reducing response time by 35%",
+        "Conducted comprehensive load testing ensuring system stability under high concurrent user scenarios"
+      ],
+      techStack: ["Node.js", "TypeScript", "Sendbird API", "AWS SQS", "AWS Lambda", "Google IAP", "Apple IAP", "PostgreSQL", "Webhooks", "Autocannon", "K6", "Grafana"],
+      impact: "Enhanced user engagement through real-time messaging and streamlined payment processing"
+    },
+    {
+      ...workExperience[1], // FSoft
       learnings: [
         "Mastered React ecosystem and modern state management patterns",
         "Implemented performance optimization techniques reducing load time by 40%",
@@ -23,19 +40,34 @@ const ExperiencePage: React.FC = () => {
       impact: "Improved team productivity by 25% through reusable component library"
     },
     {
-      ...workExperience[1], // Axpara
+      ...workExperience[2], // Axpara - Fresher
       learnings: [
-        "Developed collaborative development skills in agile environment",
-        "Learned code review best practices and constructive feedback techniques",
-        "Gained experience in cross-functional team communication"
+        "Advanced React.js development skills with complex application architectures",
+        "Enhanced cross-functional collaboration with designers and product managers",
+        "Deepened understanding of software development best practices and quality standards"
       ],
       contributions: [
-        "Delivered 3 web applications with 100% on-time completion rate",
-        "Participated in 50+ code reviews, maintaining 95% code quality standards",
-        "Collaborated with designers and PMs to deliver user-centric solutions"
+        "Delivered multiple high-quality web applications using React.js and related technologies",
+        "Collaborated effectively with cross-functional teams to create user-centric products",
+        "Contributed to maintaining high code quality and development standards"
       ],
-      techStack: ["React.js", "JavaScript", "CSS3", "REST APIs", "Agile"],
-      impact: "Enhanced team collaboration and maintained high code quality standards"
+      techStack: ["React.js", "JavaScript", "CSS3", "HTML5", "Git", "Agile"],
+      impact: "Contributed to successful product delivery through effective team collaboration"
+    },
+    {
+      ...workExperience[3], // Axpara - Internship
+      learnings: [
+        "Foundational software engineering principles and code review processes",
+        "Practical experience with agile development methodologies",
+        "Professional development environment and team collaboration skills"
+      ],
+      contributions: [
+        "Provided constructive feedback in code reviews improving overall code quality",
+        "Gained valuable hands-on experience in software development lifecycle",
+        "Successfully transitioned from academic learning to professional development"
+      ],
+      techStack: ["JavaScript", "React.js", "Git", "Code Review", "Agile"],
+      impact: "Built strong foundation for professional software development career"
     }
   ];
 
@@ -114,15 +146,15 @@ const ExperiencePage: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.6 }}
             >
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">2</div>
+                <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">3</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Companies</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-green-600 dark:text-green-400">1.5+</div>
+                <div className="text-3xl font-bold text-green-600 dark:text-green-400">~2</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Years</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">4+</div>
+                <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">8+</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Projects</div>
               </div>
             </motion.div>
