@@ -26,7 +26,7 @@ const HomePage: React.FC = () => {
   ];
 
   return (
-    <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-slate-900 py-24">
+    <div className="bg-gradient-to-br from-slate-50/70 via-white/60 to-blue-50/70 dark:from-gray-950/80 dark:via-gray-900/70 dark:to-slate-900/80 py-24">
       <SEO
         title="Home"
         description={personalInfo.objective}

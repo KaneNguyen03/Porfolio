@@ -41,7 +41,15 @@ const Header: React.FC = () => {
           <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-700 dark:text-slate-200">
             <Badge variant="emerald">Open to Junior/Middle roles</Badge>
             <span className="hidden md:inline-flex items-center gap-2 font-semibold">
-              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+              <motion.span
+                className="w-2 h-2 bg-emerald-500 rounded-full"
+                animate={
+                  shouldReduceMotion
+                    ? undefined
+                    : { opacity: [0.6, 1, 0.6], scale: [0.95, 1.15, 0.95] }
+                }
+                transition={shouldReduceMotion ? { duration: 0 } : { duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+              />
               Software Engineer @ Bizzi
             </span>
             <span className="md:hidden font-semibold">Software Engineer @ Bizzi</span>
@@ -70,7 +78,10 @@ const Header: React.FC = () => {
             whileHover={shouldReduceMotion ? undefined : { y: -1 }}
             transition={TRANSITION.fast}
           >
-            <Link to="/" className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">
+            <Link
+              to="/"
+              className="text-xl font-bold tracking-tight bg-[var(--brand-hero)] bg-clip-text text-transparent"
+            >
               Kane Nguyen
             </Link>
           </motion.div>

@@ -121,7 +121,7 @@ const ContactPage: React.FC = () => {
   const itemVariants = fadeUpItem(shouldReduceMotion, 12);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 pt-20 pb-16 transition-colors duration-300">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50/70 via-white/60 to-gray-100/70 dark:from-gray-900/75 dark:via-gray-900/70 dark:to-gray-800/80 pt-20 pb-16 transition-colors duration-300">
       <SEO
         title="Contact"
         description={`Contact ${personalInfo.name} — ${personalInfo.title}. Email, phone, and social links.`}

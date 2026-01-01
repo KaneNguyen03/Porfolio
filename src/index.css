@@ -34,8 +34,7 @@
   
   body {
     font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-    background: #f8fafc;
-    color: var(--brand-ink);
+    @apply bg-slate-50 text-slate-950 dark:bg-slate-950 dark:text-slate-50;
   }
 }
 
@@ -68,6 +67,27 @@
     background: var(--brand-card);
     box-shadow: 0 20px 70px rgba(15, 23, 42, 0.08);
     @apply dark:backdrop-blur;
+  }
+
+  .brand-backdrop {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .brand-backdrop::before {
+    content: '';
+    position: fixed;
+    inset: -40%;
+    background: var(--brand-hero);
+    filter: blur(140px);
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: -1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  html.dark .brand-backdrop::before {
+    opacity: 0.06;
   }
 }
 
