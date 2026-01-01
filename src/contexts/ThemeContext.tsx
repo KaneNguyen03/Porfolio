@@ -9,14 +9,51 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+let localStorageAvailable: boolean | null = null;
+
+const canUseLocalStorage = (): boolean => {
+  if (typeof window === 'undefined') return false;
+  if (localStorageAvailable !== null) return localStorageAvailable;
+
+  try {
+    const testKey = '__portfolio_theme_test__';
+    window.localStorage.setItem(testKey, '1');
+    window.localStorage.removeItem(testKey);
+    localStorageAvailable = true;
+  } catch {
+    localStorageAvailable = false;
+  }
+
+  return localStorageAvailable;
+};
+
+const readStoredTheme = (): Theme | null => {
+  if (!canUseLocalStorage()) return null;
+  try {
+    const savedTheme = window.localStorage.getItem('theme');
+    if (savedTheme === 'light' || savedTheme === 'dark') return savedTheme;
+    return null;
+  } catch {
+    localStorageAvailable = false;
+    return null;
+  }
+};
+
+const writeStoredTheme = (theme: Theme) => {
+  if (!canUseLocalStorage()) return;
+  try {
+    window.localStorage.setItem('theme', theme);
+  } catch {
+    localStorageAvailable = false;
+  }
+};
+
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>(() => {
     // Only check localStorage and system preference on client side
     if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem('theme') as Theme;
-      if (savedTheme === 'light' || savedTheme === 'dark') {
-        return savedTheme;
-      }
+      const storedTheme = readStoredTheme();
+      if (storedTheme) return storedTheme;
       // Check system preference
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
@@ -31,9 +68,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     
     // Add current theme class
     root.classList.add(theme);
-    
-    // Save to localStorage
-    localStorage.setItem('theme', theme);
+
+    // Save to localStorage (may be blocked by tracking prevention)
+    writeStoredTheme(theme);
     
     // Update color scheme for better browser integration
     if (theme === 'dark') {
