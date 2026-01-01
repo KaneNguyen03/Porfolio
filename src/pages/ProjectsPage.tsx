@@ -227,10 +227,12 @@ const ProjectsPage: React.FC = () => {
                       // YouTube embedded video
                       <div className="relative w-full h-full">
                         <iframe
-                          src={`https://www.youtube.com/embed/${project.liveDemo.split('watch?v=')[1]?.split('&')[0]}?start=${project.liveDemo.includes('t=') ? project.liveDemo.split('t=')[1]?.split('s')[0] || '0' : '0'}`}
+                          src={`https://www.youtube-nocookie.com/embed/${project.liveDemo.split('watch?v=')[1]?.split('&')[0]}?start=${project.liveDemo.includes('t=') ? project.liveDemo.split('t=')[1]?.split('s')[0] || '0' : '0'}`}
                           title={`${project.name} Demo`}
                           className="w-full h-full rounded-2xl"
                           frameBorder="0"
+                          loading="lazy"
+                          referrerPolicy="strict-origin-when-cross-origin"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                           allowFullScreen
                         />
@@ -360,13 +362,17 @@ const ProjectsPage: React.FC = () => {
                                 </div>
                               )}
                               
-                              <button
-                                onClick={() => setShowMoreResponsibilities(
-                                  showMoreResponsibilities === project.name ? null : project.name
-                                )}
-                                className="mt-3"
-                              >
-                                <Button variant="link" size="sm" className="h-auto p-0 text-xs">
+                              <div className="mt-3">
+                                <Button
+                                  variant="link"
+                                  size="sm"
+                                  className="h-auto p-0 text-xs"
+                                  onClick={() =>
+                                    setShowMoreResponsibilities(
+                                      showMoreResponsibilities === project.name ? null : project.name
+                                    )
+                                  }
+                                >
                                   <span>
                                     {showMoreResponsibilities === project.name
                                       ? 'Show less'
@@ -380,7 +386,7 @@ const ProjectsPage: React.FC = () => {
                                     ▼
                                   </span>
                                 </Button>
-                              </button>
+                              </div>
                             </div>
                           )}
                         </div>
@@ -452,12 +458,14 @@ const ProjectsPage: React.FC = () => {
                   No projects found for <span className="font-semibold text-sky-700 dark:text-sky-300">{selectedFilter}</span>. 
                   Try selecting a different technology filter.
                 </p>
-                <button
-                  onClick={() => setSelectedFilter('All')}
-                  className="mt-6"
-                >
-                  <Button className="rounded-full h-11 px-6">Show All Projects</Button>
-                </button>
+                <div className="mt-6">
+                  <Button
+                    className="rounded-full h-11 px-6"
+                    onClick={() => setSelectedFilter('All')}
+                  >
+                    Show All Projects
+                  </Button>
+                </div>
               </div>
             </motion.div>
           )}

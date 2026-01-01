@@ -196,7 +196,7 @@ const ExperiencePage: React.FC = () => {
 
             {enhancedExperience.map((experience, index) => (
               <motion.div
-                key={experience.company}
+                key={`${experience.company}-${experience.period}-${experience.position}`}
                 variants={itemVariants}
                 className={`relative mb-14 md:mb-20 md:flex ${
                   index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
