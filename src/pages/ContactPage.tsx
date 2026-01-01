@@ -6,7 +6,7 @@ import { portfolioData } from '../data/portfolio';
 import { useThemeClasses } from '../hooks/useThemeClasses';
 import SEO from '../components/SEO';
 import { Button } from '../components/ui/button';
-import { Card } from '../components/ui/card';
+import { Card, CardContent } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
@@ -121,16 +121,31 @@ const ContactPage: React.FC = () => {
   const itemVariants = fadeUpItem(shouldReduceMotion, 12);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50/70 via-white/60 to-gray-100/70 dark:from-gray-900/75 dark:via-gray-900/70 dark:to-gray-800/80 pt-20 pb-16 transition-colors duration-300">
+    <div className="bg-gradient-to-br from-slate-50/70 via-white/60 to-blue-50/70 dark:from-gray-950/80 dark:via-gray-900/70 dark:to-slate-900/80 py-20 sm:py-24 overflow-hidden">
       <SEO
         title="Contact"
         description={`Contact ${personalInfo.name} — ${personalInfo.title}. Email, phone, and social links.`}
       />
+
+      {/* Subtle spotlight */}
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-24 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[var(--brand-hero)] blur-[110px] opacity-20 dark:opacity-10"
+        animate={
+          shouldReduceMotion
+            ? undefined
+            : { x: ['-50%', '-48%', '-50%'], y: [0, 10, 0], scale: [1, 1.03, 1] }
+        }
+        transition={shouldReduceMotion ? { duration: 0 } : { duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+        style={{ translateX: '-50%' }}
+      />
+
       <div className="container-width">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
+          className="max-w-6xl mx-auto"
         >
           {/* Hero Section */}
           <motion.div variants={itemVariants} className="text-center mb-20">
@@ -140,27 +155,31 @@ const ContactPage: React.FC = () => {
               transition={shouldReduceMotion ? { duration: 0 } : TRANSITION.base}
               className="mb-8"
             >
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-500 to-blue-600 rounded-2xl shadow-lg mb-6">
-                <Mail size={32} className="text-white" />
+              <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6">
+                <div aria-hidden="true" className="absolute -inset-3 rounded-3xl bg-[var(--brand-hero)] blur-2xl opacity-35" />
+                <div className="relative inline-flex items-center justify-center w-20 h-20 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-2xl shadow-xl shadow-slate-900/10">
+                  <Mail size={32} className="text-sky-700 dark:text-sky-300" />
+                </div>
               </div>
             </motion.div>
             
-            <motion.h1 
-              className="p-2 text-4xl md:text-6xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent mb-6"
+            <motion.h1
+              className="text-4xl md:text-6xl font-bold text-slate-950 dark:text-white mb-4 tracking-tight"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.slow, delay: 0.08 }}
             >
-              Let's Work Together
+              Let&apos;s Work Together
             </motion.h1>
             
             <motion.p 
-              className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed"
+              className="text-lg md:text-2xl text-slate-700 dark:text-slate-200 max-w-4xl mx-auto leading-relaxed"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.slow, delay: 0.16 }}
             >
-              Ready to bring your ideas to life? I'm always excited to discuss new <span className="font-semibold text-green-600 dark:text-green-400">opportunities</span> and challenging projects
+              Ready to bring your ideas to life? I'm always excited to discuss new{' '}
+              <span className="font-semibold text-sky-700 dark:text-sky-300">opportunities</span> and challenging projects.
             </motion.p>
           </motion.div>
 
@@ -180,46 +199,37 @@ const ContactPage: React.FC = () => {
                         className="group"
                       >
                         {method.link !== '#' ? (
-                          <a
-                            href={method.link}
-                            className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 block group relative overflow-hidden"
-                          >
-                            {/* Background Pattern */}
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-full -translate-y-16 translate-x-16 opacity-60 group-hover:scale-150 transition-transform duration-500"></div>
-                            
-                            <div className="relative z-10 flex items-center space-x-4">
-                              <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                                <IconComponent size={28} className={method.color} />
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
-                                  {method.title}
-                                </h3>
-                                <p className="text-gray-600 dark:text-gray-400 truncate">
-                                  {method.value}
-                                </p>
-                              </div>
-                            </div>
-                          </a>
+                          <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 overflow-hidden">
+                            <CardContent className="p-0">
+                              <a href={method.link} className="block p-6 relative">
+                                <div aria-hidden="true" className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10" />
+                                <div className="relative z-10 flex items-center space-x-4">
+                                  <div className="w-14 h-14 rounded-2xl bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 flex items-center justify-center shadow-xl shadow-slate-900/10">
+                                    <IconComponent size={26} className={method.color} />
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <h3 className="text-lg font-semibold text-slate-950 dark:text-white mb-1">{method.title}</h3>
+                                    <p className="text-slate-600 dark:text-slate-300 truncate">{method.value}</p>
+                                  </div>
+                                </div>
+                              </a>
+                            </CardContent>
+                          </Card>
                         ) : (
-                          <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 border border-gray-200 dark:border-gray-700 relative overflow-hidden group">
-                            {/* Background Pattern */}
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-red-100 to-orange-100 dark:from-red-900/20 dark:to-orange-900/20 rounded-full -translate-y-16 translate-x-16 opacity-60"></div>
-                            
-                            <div className="relative z-10 flex items-center space-x-4">
-                              <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br from-red-50 to-red-100 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center shadow-lg`}>
-                                <IconComponent size={28} className={method.color} />
+                          <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 overflow-hidden">
+                            <CardContent className="p-6 relative">
+                              <div aria-hidden="true" className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10" />
+                              <div className="relative z-10 flex items-center space-x-4">
+                                <div className="w-14 h-14 rounded-2xl bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 flex items-center justify-center shadow-xl shadow-slate-900/10">
+                                  <IconComponent size={26} className={method.color} />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <h3 className="text-lg font-semibold text-slate-950 dark:text-white mb-1">{method.title}</h3>
+                                  <p className="text-slate-600 dark:text-slate-300">{method.value}</p>
+                                </div>
                               </div>
-                              <div className="flex-1 min-w-0">
-                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
-                                  {method.title}
-                                </h3>
-                                <p className="text-gray-600 dark:text-gray-400">
-                                  {method.value}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
+                            </CardContent>
+                          </Card>
                         )}
                       </motion.div>
                     );
@@ -227,18 +237,16 @@ const ContactPage: React.FC = () => {
                 </div>
 
                 {/* Social Links - Enhanced */}
-                <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 border border-gray-200 dark:border-gray-700 relative overflow-hidden group">
-                  {/* Background Pattern */}
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-100 to-blue-100 dark:from-green-900/20 dark:to-blue-900/20 rounded-full -translate-y-16 translate-x-16 opacity-60 group-hover:scale-125 transition-transform duration-500"></div>
-                  
-                  <div className="relative z-10">
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 text-center flex items-center justify-center">
-                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mr-3">
-                        <Github size={16} className="text-white" />
+                <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 overflow-hidden">
+                  <div aria-hidden="true" className="absolute -top-20 -right-20 h-56 w-56 rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10" />
+                  <CardContent className="relative z-10 p-8">
+                    <h3 className="text-xl font-bold text-slate-950 dark:text-white mb-6 text-center flex items-center justify-center">
+                      <div className="w-8 h-8 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-lg flex items-center justify-center mr-3 shadow-xl shadow-slate-900/10">
+                        <Github size={16} className="text-sky-700 dark:text-sky-300" />
                       </div>
                       Connect & Follow
                     </h3>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-3">
                       {socialLinks.map((social) => {
                         const IconComponent = social.icon;
                         return (
@@ -250,7 +258,7 @@ const ContactPage: React.FC = () => {
                             whileHover={shouldReduceMotion ? undefined : { y: -2, scale: 1.03 }}
                             whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
                             transition={TRANSITION.fast}
-                            className={`${social.color} text-white p-4 rounded-2xl transition-all duration-300 flex flex-col items-center space-y-3 shadow-lg hover:shadow-xl group`}
+                            className={`${social.color} text-white p-4 rounded-2xl transition-all duration-300 flex flex-col items-center space-y-3 shadow-lg hover:shadow-xl`}
                           >
                             <IconComponent size={24} />
                             <span className="text-sm font-semibold">{social.title}</span>
@@ -258,64 +266,63 @@ const ContactPage: React.FC = () => {
                         );
                       })}
                     </div>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
 
                 {/* References */}
-                <div className="card">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
-                    <UserCircle size={20} className="mr-2 text-blue-600" />
-                    Professional References
-                  </h3>
-                  <div className="space-y-4">
-                    {references.map((reference, index) => (
-                      <motion.div
-                        key={index}
-                        {...hoverLift(shouldReduceMotion)}
-                        className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300"
-                      >
-                        <div className="flex items-start space-x-3">
-                          <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/50 dark:to-blue-800/50 rounded-full flex items-center justify-center flex-shrink-0">
-                            <UserCircle size={20} className="text-blue-600 dark:text-blue-400" />
+                <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 overflow-hidden">
+                  <div aria-hidden="true" className="absolute -top-20 -right-20 h-56 w-56 rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10" />
+                  <CardContent className="relative z-10 p-8">
+                    <h3 className="text-lg font-semibold text-slate-950 dark:text-white mb-6 flex items-center">
+                      <UserCircle size={20} className="mr-2 text-sky-700 dark:text-sky-300" />
+                      Professional References
+                    </h3>
+                    <div className="space-y-3">
+                      {references.map((reference, index) => (
+                        <motion.div
+                          key={index}
+                          {...hoverLift(shouldReduceMotion)}
+                          className="p-4 rounded-2xl border border-slate-200/70 dark:border-slate-800/70 bg-white/60 dark:bg-slate-950/30"
+                        >
+                          <div className="flex items-start space-x-3">
+                            <div className="w-12 h-12 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-full flex items-center justify-center flex-shrink-0 shadow-xl shadow-slate-900/10">
+                              <UserCircle size={20} className="text-sky-700 dark:text-sky-300" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-semibold text-slate-950 dark:text-white text-sm">{reference.name}</h4>
+                              <p className="text-slate-600 dark:text-slate-300 text-xs mb-2">{reference.position}</p>
+                              <a
+                                href={`mailto:${reference.email}`}
+                                className="text-sky-700 hover:text-sky-800 dark:text-sky-300 dark:hover:text-sky-200 text-xs font-medium transition-colors duration-200 hover:underline"
+                              >
+                                {reference.email}
+                              </a>
+                            </div>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-semibold text-gray-900 dark:text-white text-sm">
-                              {reference.name}
-                            </h4>
-                            <p className="text-gray-600 dark:text-gray-400 text-xs mb-2">
-                              {reference.position}
-                            </p>
-                            <a
-                              href={`mailto:${reference.email}`}
-                              className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-xs font-medium transition-colors duration-200 hover:underline"
-                            >
-                              {reference.email}
-                            </a>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
               </motion.div>
 
               {/* Contact Form - Enhanced */}
               <motion.div variants={itemVariants} className="xl:col-span-2">
                 <Card className="p-8 md:p-12 relative overflow-hidden group">
                   {/* Background Pattern */}
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-full -translate-y-32 translate-x-32 opacity-60 group-hover:scale-125 transition-transform duration-500"></div>
+                  <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10 group-hover:opacity-15 transition-opacity"></div>
                   
                   <div className="relative z-10">
                     <div className="mb-10">
                       <div className="flex items-center mb-6">
-                        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mr-4">
-                          <Send size={24} className="text-white" />
+                        <div className="w-12 h-12 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-2xl flex items-center justify-center mr-4 shadow-xl shadow-slate-900/10">
+                          <Send size={22} className="text-sky-700 dark:text-sky-300" />
                         </div>
                         <div>
-                          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+                          <h2 className="text-3xl md:text-4xl font-bold text-slate-950 dark:text-white">
                             Send a Message
                           </h2>
-                          <p className="text-gray-600 dark:text-gray-400 mt-2">
+                          <p className="text-slate-600 dark:text-slate-300 mt-2">
                             Let's discuss how we can work together
                           </p>
                         </div>
@@ -439,7 +446,7 @@ const ContactPage: React.FC = () => {
                       )}
                     </Button>
 
-                    <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                    <p className="text-sm text-slate-600 dark:text-slate-300 text-center">
                       I typically respond within 24 hours. For urgent matters, feel free to call me directly.
                     </p>
                   </form>

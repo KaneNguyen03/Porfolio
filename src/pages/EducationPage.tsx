@@ -3,6 +3,8 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { GraduationCap, Calendar, Award, ExternalLink, BookOpen, Target, TrendingUp, Users } from 'lucide-react';
 import { portfolioData } from '../data/portfolio';
 import SEO from '../components/SEO';
+import { Card, CardContent } from '../components/ui/card';
+import { Button } from '../components/ui/button';
 import { fadeUpItem, hoverLift, staggerContainer, TRANSITION } from '../lib/motion';
 
 const EducationPage: React.FC = () => {
@@ -31,16 +33,31 @@ const EducationPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 pt-20 pb-16">
+    <div className="bg-gradient-to-br from-slate-50/70 via-white/60 to-blue-50/70 dark:from-gray-950/80 dark:via-gray-900/70 dark:to-slate-900/80 py-20 sm:py-24 overflow-hidden">
       <SEO
         title="Education"
         description={`Education and certifications for ${portfolioData.personalInfo.name}. Academic background, training, and professional learning.`}
       />
+
+      {/* Subtle spotlight */}
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-24 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[var(--brand-hero)] blur-[110px] opacity-20 dark:opacity-10"
+        animate={
+          shouldReduceMotion
+            ? undefined
+            : { x: ['-50%', '-48%', '-50%'], y: [0, 10, 0], scale: [1, 1.03, 1] }
+        }
+        transition={shouldReduceMotion ? { duration: 0 } : { duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+        style={{ translateX: '-50%' }}
+      />
+
       <div className="container-width">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
+          className="max-w-6xl mx-auto"
         >
           {/* Hero Section */}
           <motion.div variants={itemVariants} className="text-center mb-20">
@@ -50,13 +67,16 @@ const EducationPage: React.FC = () => {
               transition={shouldReduceMotion ? { duration: 0 } : TRANSITION.base}
               className="mb-8"
             >
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-500 to-blue-600 rounded-2xl shadow-lg mb-6">
-                <GraduationCap size={32} className="text-white" />
+              <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6">
+                <div aria-hidden="true" className="absolute -inset-3 rounded-3xl bg-[var(--brand-hero)] blur-2xl opacity-35" />
+                <div className="relative inline-flex items-center justify-center w-20 h-20 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-2xl shadow-xl shadow-slate-900/10">
+                  <GraduationCap size={32} className="text-sky-700 dark:text-sky-300" />
+                </div>
               </div>
             </motion.div>
             
-            <motion.h1 
-              className="p-2 text-2xl md:text-6xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent mb-12"
+            <motion.h1
+              className="text-4xl md:text-6xl font-bold text-slate-950 dark:text-white mb-4 tracking-tight"
               initial={{ y: 24, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.slow, delay: 0.08 }}
@@ -65,89 +85,90 @@ const EducationPage: React.FC = () => {
             </motion.h1>
             
             <motion.p 
-              className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed"
+              className="text-lg md:text-2xl text-slate-700 dark:text-slate-200 max-w-4xl mx-auto leading-relaxed"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.slow, delay: 0.16 }}
             >
-              Building expertise through <span className="font-semibold text-green-600 dark:text-green-400">continuous education</span> and professional development
+              Building expertise through <span className="font-semibold text-sky-700 dark:text-sky-300">continuous education</span> and professional development.
             </motion.p>
             
             {/* Education Summary */}
             <motion.div 
-              className="flex flex-wrap justify-center gap-8 mt-12"
+              className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-10 max-w-4xl mx-auto"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.slow, delay: 0.24 }}
             >
-              <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">4</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Years</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-green-600 dark:text-green-400">3.21</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">GPA</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">{portfolioData.projects.length}+</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Projects</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">{certifications.length}</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Certifications</div>
-              </div>
+              <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 rounded-2xl">
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-slate-950 dark:text-white">4</div>
+                  <div className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Years</div>
+                </CardContent>
+              </Card>
+              <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 rounded-2xl">
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-slate-950 dark:text-white">3.21</div>
+                  <div className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">GPA</div>
+                </CardContent>
+              </Card>
+              <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 rounded-2xl">
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-slate-950 dark:text-white">{portfolioData.projects.length}+</div>
+                  <div className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Projects</div>
+                </CardContent>
+              </Card>
+              <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 rounded-2xl">
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-slate-950 dark:text-white">{certifications.length}</div>
+                  <div className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Certifications</div>
+                </CardContent>
+              </Card>
             </motion.div>
           </motion.div>
 
           {/* Academic Education Section - Enhanced */}
           <motion.div variants={itemVariants} className="mb-20">
-            <motion.h2 
-              className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-4"
-              whileInView={{ y: 0, opacity: 1 }}
-              initial={{ y: 20, opacity: 0 }}
-              transition={{ duration: 0.6 }}
+            <motion.h2
+              className="text-3xl md:text-4xl font-bold text-slate-950 dark:text-white text-center mb-4"
+              variants={itemVariants}
             >
               Academic Foundation
             </motion.h2>
-            <motion.p 
-              className="text-lg text-gray-600 dark:text-gray-400 text-center mb-16 max-w-2xl mx-auto"
-              whileInView={{ y: 0, opacity: 1 }}
-              initial={{ y: 20, opacity: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+            <motion.p
+              className="text-lg text-slate-600 dark:text-slate-300 text-center mb-12 max-w-2xl mx-auto"
+              variants={itemVariants}
             >
               Comprehensive software engineering education with hands-on project experience
             </motion.p>
             
-            <div className="max-w-6xl mx-auto">
+            <motion.div variants={containerVariants} className="max-w-6xl mx-auto" initial={false}>
               {education.map((edu, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={shouldReduceMotion ? { duration: 0 } : TRANSITION.slow}
                   {...hoverLift(shouldReduceMotion)}
-                  className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 md:p-12 border border-gray-200 dark:border-gray-700 relative overflow-hidden group hover:shadow-2xl transition-all duration-500 mb-8"
+                  variants={itemVariants}
+                  transition={shouldReduceMotion ? { duration: 0 } : TRANSITION.slow}
+                  className="mb-6"
                 >
-                  {/* Background Pattern */}
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-green-100 to-blue-100 dark:from-green-900/20 dark:to-blue-900/20 rounded-full -translate-y-32 translate-x-32 opacity-60 group-hover:scale-125 transition-transform duration-500"></div>
-                  
-                  <div className="relative z-10">
+                  <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 overflow-hidden relative">
+                    <div aria-hidden="true" className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10" />
+                    <CardContent className="relative z-10 p-8 md:p-12">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
                       {/* University Info */}
                       <div className="lg:col-span-2">
                         <div className="flex items-start space-x-6 mb-6">
-                          <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-blue-600 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                            <GraduationCap size={32} className="text-white" />
+                          <div className="w-20 h-20 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-xl shadow-slate-900/10">
+                            <GraduationCap size={32} className="text-sky-700 dark:text-sky-300" />
                           </div>
                           <div className="flex-1">
-                            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                            <h3 className="text-2xl md:text-3xl font-bold text-slate-950 dark:text-white mb-2">
                               {edu.degree}
                             </h3>
-                            <p className="text-xl text-green-600 dark:text-green-400 font-semibold mb-3">
+                            <p className="text-xl text-sky-700 dark:text-sky-300 font-semibold mb-3">
                               {edu.institution}
                             </p>
-                            <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-400">
+                            <div className="flex items-center space-x-2 text-slate-600 dark:text-slate-300">
                               <Calendar size={18} />
                               <span className="font-medium">{edu.period}</span>
                             </div>
@@ -155,22 +176,22 @@ const EducationPage: React.FC = () => {
                         </div>
                         
                         {/* Academic Journey */}
-                        <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-2xl p-6 border border-green-200 dark:border-green-700">
-                          <h4 className="font-semibold text-green-800 dark:text-green-300 mb-3 flex items-center">
-                            <BookOpen size={18} className="mr-2" />
+                        <div className="rounded-2xl p-6 border border-slate-200/70 dark:border-slate-800/70 bg-white/60 dark:bg-slate-950/30">
+                          <h4 className="font-semibold text-slate-950 dark:text-white mb-3 flex items-center">
+                            <BookOpen size={18} className="mr-2 text-sky-700 dark:text-sky-300" />
                             Academic Highlights
                           </h4>
-                          <ul className="space-y-2 text-green-700 dark:text-green-300">
+                          <ul className="space-y-2 text-slate-700 dark:text-slate-200">
                             <li className="flex items-start space-x-2">
-                              <Target size={14} className="text-green-500 mt-1 flex-shrink-0" />
+                              <Target size={14} className="text-sky-700 dark:text-sky-300 mt-1 flex-shrink-0" />
                               <span>Specialized in full-stack web development and software architecture</span>
                             </li>
                             <li className="flex items-start space-x-2">
-                              <Target size={14} className="text-green-500 mt-1 flex-shrink-0" />
+                              <Target size={14} className="text-sky-700 dark:text-sky-300 mt-1 flex-shrink-0" />
                               <span>Led multiple capstone projects using modern development methodologies</span>
                             </li>
                             <li className="flex items-start space-x-2">
-                              <Target size={14} className="text-green-500 mt-1 flex-shrink-0" />
+                              <Target size={14} className="text-sky-700 dark:text-sky-300 mt-1 flex-shrink-0" />
                               <span>Gained expertise in cloud computing and DevOps practices</span>
                             </li>
                           </ul>
@@ -180,13 +201,13 @@ const EducationPage: React.FC = () => {
                       {/* Achievements */}
                       <div className="lg:col-span-1">
                         {edu.gpa && (
-                          <div className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl p-6 border border-blue-200 dark:border-blue-700 mb-6">
+                          <div className="rounded-2xl p-6 border border-slate-200/70 dark:border-slate-800/70 bg-white/60 dark:bg-slate-950/30 mb-6">
                             <div className="text-center">
-                              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                                <Award size={28} className="text-white" />
+                              <div className="w-16 h-16 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl shadow-slate-900/10">
+                                <Award size={28} className="text-sky-700 dark:text-sky-300" />
                               </div>
-                              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">{edu.gpa}</div>
-                              <div className="text-sm text-blue-700 dark:text-blue-300 font-medium">Cumulative GPA</div>
+                              <div className="text-3xl font-bold text-slate-950 dark:text-white mb-1">{edu.gpa}</div>
+                              <div className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Cumulative GPA</div>
                             </div>
                           </div>
                         )}
@@ -194,35 +215,32 @@ const EducationPage: React.FC = () => {
                         {/* Academic Achievements */}
                         <div className="grid grid-cols-1 gap-4">
                           {academicAchievements.map((achievement, idx) => (
-                            <div key={idx} className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
-                              <div className="text-lg font-bold text-purple-600 dark:text-purple-400">{achievement.metrics}</div>
-                              <div className="text-xs text-gray-600 dark:text-gray-400">{achievement.title}</div>
+                            <div key={idx} className="text-center p-4 rounded-2xl border border-slate-200/70 dark:border-slate-800/70 bg-white/60 dark:bg-slate-950/30">
+                              <div className="text-lg font-bold text-slate-950 dark:text-white">{achievement.metrics}</div>
+                              <div className="text-xs text-slate-600 dark:text-slate-300">{achievement.title}</div>
                             </div>
                           ))}
                         </div>
                       </div>
                     </div>
-                  </div>
+                    </CardContent>
+                  </Card>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* Certifications Section - Enhanced */}
           <motion.div variants={itemVariants} className="mb-20">
-            <motion.h2 
-              className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-4"
-              whileInView={{ y: 0, opacity: 1 }}
-              initial={{ y: 20, opacity: 0 }}
-              transition={{ duration: 0.6 }}
+            <motion.h2
+              className="text-3xl md:text-4xl font-bold text-slate-950 dark:text-white text-center mb-4"
+              variants={itemVariants}
             >
               Professional Certifications
             </motion.h2>
-            <motion.p 
-              className="text-lg text-gray-600 dark:text-gray-400 text-center mb-16 max-w-2xl mx-auto"
-              whileInView={{ y: 0, opacity: 1 }}
-              initial={{ y: 20, opacity: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+            <motion.p
+              className="text-lg text-slate-600 dark:text-slate-300 text-center mb-12 max-w-2xl mx-auto"
+              variants={itemVariants}
             >
               Validated expertise through industry-recognized certifications
             </motion.p>
@@ -231,54 +249,45 @@ const EducationPage: React.FC = () => {
               {certifications.map((cert, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
                   transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.base, delay: index * 0.06 }}
                   {...hoverLift(shouldReduceMotion)}
-                  className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 border border-gray-200 dark:border-gray-700 relative overflow-hidden group hover:shadow-2xl transition-all duration-500"
+                  variants={itemVariants}
+                  className="relative"
                 >
-                  {/* Background Pattern */}
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 rounded-full -translate-y-16 translate-x-16 opacity-60 group-hover:scale-150 transition-transform duration-500"></div>
-                  
-                  <div className="relative z-10">
-                    {/* Certificate Header */}
-                    <div className="text-center mb-6">
-                      <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                        <Award size={28} className="text-white" />
-                      </div>
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 leading-tight group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors duration-300">
-                        {cert.name}
-                      </h3>
-                    </div>
-                    
-                    {/* Certificate Info */}
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-center space-x-2 text-gray-600 dark:text-gray-400">
-                        <Calendar size={16} />
-                        <span className="font-medium">{cert.date}</span>
-                      </div>
-                      
-                      {/* Validation Badge */}
-                      <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl p-4 border border-green-200 dark:border-green-700">
-                        <div className="text-center">
-                          <div className="w-2 h-2 bg-green-400 rounded-full mx-auto mb-2 animate-pulse"></div>
-                          <span className="text-sm font-medium text-green-700 dark:text-green-300">Verified Credential</span>
+                  <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 overflow-hidden relative">
+                    <div aria-hidden="true" className="absolute -top-24 -right-24 h-56 w-56 rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10" />
+                    <CardContent className="relative z-10 p-8">
+                      <div className="text-center mb-6">
+                        <div className="w-16 h-16 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl shadow-slate-900/10">
+                          <Award size={28} className="text-sky-700 dark:text-sky-300" />
                         </div>
+                        <h3 className="text-xl font-bold text-slate-950 dark:text-white mb-3 leading-tight">
+                          {cert.name}
+                        </h3>
                       </div>
-                      
-                      {/* View Certificate Button */}
-                      <a
-                        href={cert.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-medium py-3 px-6 rounded-2xl transition-all duration-200 transform hover:scale-105 group-hover:shadow-lg"
-                      >
-                        <ExternalLink size={18} />
-                        <span>View Certificate</span>
-                      </a>
-                    </div>
-                  </div>
+
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-center gap-2 text-slate-600 dark:text-slate-300">
+                          <Calendar size={16} className="text-sky-600 dark:text-sky-300" />
+                          <span className="font-medium">{cert.date}</span>
+                        </div>
+
+                        <div className="rounded-2xl p-4 border border-slate-200/70 dark:border-slate-800/70 bg-white/60 dark:bg-slate-950/30">
+                          <div className="text-center">
+                            <div className="w-2 h-2 bg-emerald-400 rounded-full mx-auto mb-2 animate-pulse" />
+                            <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Verified Credential</span>
+                          </div>
+                        </div>
+
+                        <Button asChild size="lg" className="w-full rounded-2xl">
+                          <a href={cert.url} target="_blank" rel="noopener noreferrer">
+                            <ExternalLink size={18} />
+                            <span>View Certificate</span>
+                          </a>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </motion.div>
               ))}
             </div>
@@ -286,60 +295,51 @@ const EducationPage: React.FC = () => {
 
           {/* Learning Philosophy - Enhanced */}
           <motion.div variants={itemVariants}>
-            <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-12 border border-gray-200 dark:border-gray-700 relative overflow-hidden group hover:shadow-2xl transition-all duration-500 max-w-5xl mx-auto">
-              {/* Background Pattern */}
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-green-50 dark:from-blue-900/20 dark:via-purple-900/20 dark:to-green-900/20 opacity-60"></div>
-              
-              <div className="relative z-10 text-center">
-                <div className="flex justify-center mb-8">
-                  <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-                    <TrendingUp size={32} className="text-white" />
-                  </div>
-                </div>
-                
-                <h3 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
-                  Lifelong Learning Mindset
-                </h3>
-                
-                <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl mx-auto mb-10">
-                  Education is not just about acquiring knowledge—it's about developing the ability to adapt, 
-                  innovate, and solve complex problems. My commitment to continuous learning drives me to stay 
-                  at the forefront of technology and best practices in software development.
-                </p>
-                
-                {/* Learning Principles */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
-                  <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-2xl border border-blue-200 dark:border-blue-700">
-                    <BookOpen size={24} className="text-blue-600 dark:text-blue-400 mx-auto mb-3" />
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Knowledge Seeking</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Constantly exploring new technologies and methodologies</p>
-                  </div>
-                  
-                  <div className="text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 rounded-2xl border border-green-200 dark:border-green-700">
-                    <Users size={24} className="text-green-600 dark:text-green-400 mx-auto mb-3" />
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Collaborative Growth</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Learning through mentorship and knowledge sharing</p>
-                  </div>
-                  
-                  <div className="text-center p-6 bg-gradient-to-br from-purple-50 to-violet-50 dark:from-purple-900/30 dark:to-violet-900/30 rounded-2xl border border-purple-200 dark:border-purple-700">
-                    <Target size={24} className="text-purple-600 dark:text-purple-400 mx-auto mb-3" />
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Practical Application</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Applying theoretical knowledge to real-world challenges</p>
-                  </div>
-                </div>
-                
-                {/* Future Learning Goals */}
-                <div className="mt-12">
-                  <div className="inline-flex items-center space-x-4 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 px-8 py-4 rounded-2xl border border-green-200 dark:border-green-700">
-                    <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                    <span className="text-lg font-medium text-gray-700 dark:text-gray-300">
-                      Always evolving, always learning, always growing
-                    </span>
-                    <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse [animation-delay:0.5s]"></div>
-                  </div>
-                </div>
+            <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 overflow-hidden max-w-5xl mx-auto">
+              <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
+                <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10" />
               </div>
-            </div>
+              <CardContent className="relative z-10 p-10 md:p-12 text-center">
+                <div className="flex justify-center mb-8">
+                  <div className="w-20 h-20 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-2xl flex items-center justify-center shadow-xl shadow-slate-900/10">
+                    <TrendingUp size={32} className="text-sky-700 dark:text-sky-300" />
+                  </div>
+                </div>
+
+                <h3 className="text-3xl md:text-4xl font-bold text-slate-950 dark:text-white mb-6">Lifelong Learning Mindset</h3>
+
+                <p className="text-lg text-slate-700 dark:text-slate-200 leading-relaxed max-w-3xl mx-auto mb-10">
+                  Education is about building the ability to adapt, innovate, and solve real problems. I keep learning to
+                  stay current with modern engineering practices.
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 rounded-2xl">
+                    <CardContent className="p-6 text-center">
+                      <BookOpen size={24} className="text-sky-700 dark:text-sky-300 mx-auto mb-3" />
+                      <h4 className="font-semibold text-slate-950 dark:text-white mb-2">Knowledge Seeking</h4>
+                      <p className="text-sm text-slate-600 dark:text-slate-300">Explore new tools & methodologies</p>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 rounded-2xl">
+                    <CardContent className="p-6 text-center">
+                      <Users size={24} className="text-sky-700 dark:text-sky-300 mx-auto mb-3" />
+                      <h4 className="font-semibold text-slate-950 dark:text-white mb-2">Collaborative Growth</h4>
+                      <p className="text-sm text-slate-600 dark:text-slate-300">Learn via mentorship & sharing</p>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 rounded-2xl">
+                    <CardContent className="p-6 text-center">
+                      <Target size={24} className="text-sky-700 dark:text-sky-300 mx-auto mb-3" />
+                      <h4 className="font-semibold text-slate-950 dark:text-white mb-2">Practical Application</h4>
+                      <p className="text-sm text-slate-600 dark:text-slate-300">Turn theory into shipped work</p>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CardContent>
+            </Card>
           </motion.div>
         </motion.div>
       </div>

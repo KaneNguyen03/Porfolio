@@ -15,6 +15,11 @@ dist-ssr
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.vscode/settings.local.json
+.vscode/*.local.json
 .idea
 .DS_Store
 *.suo
@@ -23,3 +28,6 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# Legacy ESLint config (we use eslint.config.js / flat config)
+.eslintrc.*
