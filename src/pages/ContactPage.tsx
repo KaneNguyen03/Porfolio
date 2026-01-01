@@ -275,7 +275,7 @@ const ContactPage: React.FC = () => {
                   <CardContent className="relative z-10 p-8">
                     <h3 className="text-lg font-semibold text-slate-950 dark:text-white mb-6 flex items-center">
                       <UserCircle size={20} className="mr-2 text-sky-700 dark:text-sky-300" />
-                      Professional References
+                      Professional Re ferences
                     </h3>
                     <div className="space-y-3">
                       {references.map((reference, index) => (
@@ -293,7 +293,7 @@ const ContactPage: React.FC = () => {
                               <p className="text-slate-600 dark:text-slate-300 text-xs mb-2">{reference.position}</p>
                               <a
                                 href={`mailto:${reference.email}`}
-                                className="text-sky-700 hover:text-sky-800 dark:text-sky-300 dark:hover:text-sky-200 text-xs font-medium transition-colors duration-200 hover:underline"
+                                className="text-sky-700 hover:text-sky-800 dark:text-sky-300 dark:hover:text-sky-200 text-xs font-medium transition-colors duration-200 hover:underline p-2"
                               >
                                 {reference.email}
                               </a>
