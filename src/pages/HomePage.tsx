@@ -357,30 +357,6 @@ const HomePage: React.FC = () => {
             </motion.div>
           </motion.div>
         </div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.base, delay: 0.9 }}
-          className="absolute bottom-1 left-1/2 -translate-x-1/2 "
-        >
-          <motion.div
-            animate={shouldReduceMotion ? undefined : { y: [0, 6, 0] }}
-            transition={shouldReduceMotion ? { duration: 0 } : { duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              aria-label="Explore More"
-              onClick={() => navigate('/about')}
-              className="rounded-2xl border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-900/40 backdrop-blur shadow-lg hover:shadow-xl"
-            >
-              <ChevronDown className="h-5 w-5 text-gray-700 dark:text-gray-200" />
-            </Button>
-          </motion.div>
-        </motion.div>
       </div>
     </div>
   );
