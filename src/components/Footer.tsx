@@ -2,9 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Github, Linkedin, Mail, Phone, MapPin, Heart } from 'lucide-react';
 import { portfolioData } from '../data/portfolio';
+import { Button } from './ui/button';
+import { motion, useReducedMotion } from 'framer-motion';
+import { fadeUpItem, staggerContainer } from '../lib/motion';
 
 const Footer: React.FC = () => {
   const { personalInfo } = portfolioData;
+  const shouldReduceMotion = useReducedMotion();
+  const container = staggerContainer(shouldReduceMotion, { stagger: 0.06, delay: 0.04 });
+  const item = fadeUpItem(shouldReduceMotion, 10);
 
   const socialLinks = [
     {
@@ -33,9 +39,15 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-gray-900 dark:bg-black text-white">
       <div className="container-width py-12 px-6 md:px-0">{" "}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-10% 0px -10% 0px' }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+        >
           {/* Contact Info */}
-          <div className="lg:col-span-2">
+          <motion.div variants={item} className="lg:col-span-2">
             <h3 className="text-xl font-bold mb-6 text-center md:text-left">Get In Touch</h3>
             <div className="space-y-4">
               <div className="flex items-center justify-start space-x-3">
@@ -67,10 +79,10 @@ const Footer: React.FC = () => {
                 <span className="text-gray-300 text-sm md:text-base">{personalInfo.location}</span>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Quick Links */}
-          <div className="text-center md:text-left">
+          <motion.div variants={item} className="text-center md:text-left">
             <h3 className="text-center md:text-left text-lg font-semibold mb-6">Quick Links</h3>
             <div className="grid grid-cols-2 gap-x-4 gap-y-4 md:flex md:justify-start md:flex-col">
               {['About', 'Projects', 'Experience', 'Education', 'Contact'].map((link, index, array) => (
@@ -88,10 +100,10 @@ const Footer: React.FC = () => {
                 </Link>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* Social Links */}
-          <div className="text-center md:text-left">
+          <motion.div variants={item} className="text-center md:text-left">
             <h3 className="text-lg font-semibold mb-6">Connect</h3>
             <div className="flex justify-center md:justify-start space-x-4">
               {socialLinks.map((social) => {
@@ -99,46 +111,52 @@ const Footer: React.FC = () => {
                 
                 if (social.external) {
                   return (
-                    <a
+                    <Button
                       key={social.label}
-                      href={social.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`w-12 h-12 bg-gray-800 ${social.color} rounded-lg flex items-center justify-center transition-all duration-200 transform hover:scale-110 hover:-translate-y-1 group`}
-                      aria-label={social.label}
+                      asChild
+                      variant="ghost"
+                      size="icon"
+                      className={`w-12 h-12 rounded-lg bg-gray-800 text-gray-300 hover:text-white ${social.color} transition-all duration-200 transform hover:scale-110 hover:-translate-y-1`}
                     >
-                      <IconComponent
-                        size={20}
-                        className="text-gray-300 group-hover:text-white transition-colors duration-200"
-                      />
-                    </a>
+                      <a
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={social.label}
+                      >
+                        <IconComponent size={20} />
+                      </a>
+                    </Button>
                   );
                 } else {
                   return (
-                    <Link
+                    <Button
                       key={social.label}
-                      to={social.url}
-                      className={`w-12 h-12 bg-gray-800 ${social.color} rounded-lg flex items-center justify-center transition-all duration-200 transform hover:scale-110 hover:-translate-y-1 group`}
-                      aria-label={social.label}
-                      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                      asChild
+                      variant="ghost"
+                      size="icon"
+                      className={`w-12 h-12 rounded-lg bg-gray-800 text-gray-300 hover:text-white ${social.color} transition-all duration-200 transform hover:scale-110 hover:-translate-y-1`}
                     >
-                      <IconComponent
-                        size={20}
-                        className="text-gray-300 group-hover:text-white transition-colors duration-200"
-                      />
-                    </Link>
+                      <Link
+                        to={social.url}
+                        aria-label={social.label}
+                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                      >
+                        <IconComponent size={20} />
+                      </Link>
+                    </Button>
                   );
                 }
               })}
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Bottom Section */}
         <div className="border-t border-gray-800 mt-8 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
             <p className="text-gray-400 flex items-center justify-center space-x-2 text-sm">
-              <span>&copy; 2025 {personalInfo.name}. All rights reserved.</span>
+              <span>&copy; {new Date().getFullYear()} {personalInfo.name}. All rights reserved.</span>
             </p>
             <p className="text-gray-400 flex items-center justify-center space-x-1 text-sm">
               <span>Made with</span>

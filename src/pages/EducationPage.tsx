@@ -1,30 +1,16 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { GraduationCap, Calendar, Award, ExternalLink, BookOpen, Target, TrendingUp, Users } from 'lucide-react';
 import { portfolioData } from '../data/portfolio';
+import SEO from '../components/SEO';
+import { fadeUpItem, hoverLift, staggerContainer, TRANSITION } from '../lib/motion';
 
 const EducationPage: React.FC = () => {
   const { education, certifications } = portfolioData;
+  const shouldReduceMotion = useReducedMotion();
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 50, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.8 }
-    }
-  };
+  const containerVariants = staggerContainer(shouldReduceMotion, { stagger: 0.08, delay: 0.08 });
+  const itemVariants = fadeUpItem(shouldReduceMotion, 12);
 
   const academicAchievements = [
     {
@@ -46,6 +32,10 @@ const EducationPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 pt-20 pb-16">
+      <SEO
+        title="Education"
+        description={`Education and certifications for ${portfolioData.personalInfo.name}. Academic background, training, and professional learning.`}
+      />
       <div className="container-width">
         <motion.div
           variants={containerVariants}
@@ -55,9 +45,9 @@ const EducationPage: React.FC = () => {
           {/* Hero Section */}
           <motion.div variants={itemVariants} className="text-center mb-20">
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
+              initial={{ scale: shouldReduceMotion ? 1 : 0.96, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.8 }}
+              transition={shouldReduceMotion ? { duration: 0 } : TRANSITION.base}
               className="mb-8"
             >
               <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-500 to-blue-600 rounded-2xl shadow-lg mb-6">
@@ -69,7 +59,7 @@ const EducationPage: React.FC = () => {
               className="p-2 text-2xl md:text-6xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent mb-12"
               initial={{ y: 24, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.slow, delay: 0.08 }}
             >
               Learning Journey
             </motion.h1>
@@ -78,7 +68,7 @@ const EducationPage: React.FC = () => {
               className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.slow, delay: 0.16 }}
             >
               Building expertise through <span className="font-semibold text-green-600 dark:text-green-400">continuous education</span> and professional development
             </motion.p>
@@ -88,7 +78,7 @@ const EducationPage: React.FC = () => {
               className="flex flex-wrap justify-center gap-8 mt-12"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
+              transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.slow, delay: 0.24 }}
             >
               <div className="text-center">
                 <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">4</div>
@@ -99,7 +89,7 @@ const EducationPage: React.FC = () => {
                 <div className="text-sm text-gray-600 dark:text-gray-400">GPA</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">6+</div>
+                <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">{portfolioData.projects.length}+</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Projects</div>
               </div>
               <div className="text-center">
@@ -135,11 +125,8 @@ const EducationPage: React.FC = () => {
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.8 }}
-                  whileHover={{ 
-                    y: -8,
-                    transition: { duration: 0.3 }
-                  }}
+                  transition={shouldReduceMotion ? { duration: 0 } : TRANSITION.slow}
+                  {...hoverLift(shouldReduceMotion)}
                   className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 md:p-12 border border-gray-200 dark:border-gray-700 relative overflow-hidden group hover:shadow-2xl transition-all duration-500 mb-8"
                 >
                   {/* Background Pattern */}
@@ -247,11 +234,8 @@ const EducationPage: React.FC = () => {
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  whileHover={{ 
-                    y: -8,
-                    transition: { duration: 0.3 }
-                  }}
+                  transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.base, delay: index * 0.06 }}
+                  {...hoverLift(shouldReduceMotion)}
                   className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 border border-gray-200 dark:border-gray-700 relative overflow-hidden group hover:shadow-2xl transition-all duration-500"
                 >
                   {/* Background Pattern */}

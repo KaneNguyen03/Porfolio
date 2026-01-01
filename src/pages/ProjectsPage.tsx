@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Calendar, User, Code, ExternalLink, Github, Play } from 'lucide-react';
 import { portfolioData } from '../data/portfolio';
+import SEO from '../components/SEO';
+import { Button } from '../components/ui/button';
+import { Card } from '../components/ui/card';
+import { Badge } from '../components/ui/badge';
+import { fadeUpItem, hoverLift, scaleInItem, staggerContainer, TRANSITION } from '../lib/motion';
 
 // Normalize technology labels to avoid duplicates (e.g., React.js vs React)
 const normalizeTech = (tech: string): string => {
@@ -35,6 +40,7 @@ const normalizeTech = (tech: string): string => {
 
 const ProjectsPage: React.FC = () => {
   const { projects } = portfolioData;
+  const shouldReduceMotion = useReducedMotion();
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [showMoreTech, setShowMoreTech] = useState<string | null>(null);
   const [showMoreResponsibilities, setShowMoreResponsibilities] = useState<string | null>(null);
@@ -51,28 +57,16 @@ const ProjectsPage: React.FC = () => {
     ? projects
     : projects.filter(project => project.technologies.map(normalizeTech).includes(selectedFilter));
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.6 }
-    }
-  };
+  const containerVariants = staggerContainer(shouldReduceMotion, { stagger: 0.06, delay: 0.08 });
+  const itemVariants = fadeUpItem(shouldReduceMotion, 10);
+  const cardVariants = scaleInItem(shouldReduceMotion, 0.985);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 pt-20 pb-16">
+      <SEO
+        title="Projects"
+        description={`Projects by ${portfolioData.personalInfo.name}: full-stack and backend work with Node.js, TypeScript, React, AWS, and more.`}
+      />
       <div className="container-width">
         <motion.div
           variants={containerVariants}
@@ -82,9 +76,9 @@ const ProjectsPage: React.FC = () => {
           {/* Hero Section */}
           <motion.div variants={itemVariants} className="text-center mb-20">
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
+              initial={{ scale: shouldReduceMotion ? 1 : 0.96, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.8 }}
+              transition={shouldReduceMotion ? { duration: 0 } : TRANSITION.base}
               className="mb-8"
             >
               <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl shadow-lg mb-6">
@@ -96,7 +90,7 @@ const ProjectsPage: React.FC = () => {
               className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent mb-6"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.slow, delay: 0.08 }}
             >
               Project Portfolio
             </motion.h1>
@@ -105,7 +99,7 @@ const ProjectsPage: React.FC = () => {
               className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.slow, delay: 0.16 }}
             >
               Showcasing <span className="font-semibold text-blue-600 dark:text-blue-400">innovative solutions</span> and technical excellence across diverse domains
             </motion.p>
@@ -115,7 +109,7 @@ const ProjectsPage: React.FC = () => {
               className="flex flex-wrap justify-center gap-8 mt-12"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
+              transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.slow, delay: 0.24 }}
             >
               <div className="text-center">
                 <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{projects.length}</div>
@@ -148,19 +142,15 @@ const ProjectsPage: React.FC = () => {
             </div>
             <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
               {filters.map((filter) => (
-                <motion.button
-                  key={filter}
-                  onClick={() => setSelectedFilter(filter)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`px-6 py-3 rounded-2xl text-sm font-medium transition-all duration-300 shadow-lg ${
-                    selectedFilter === filter
-                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-blue-500/25'
-                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:shadow-xl'
-                  }`}
-                >
-                  {filter}
-                </motion.button>
+                <motion.div key={filter} {...hoverLift(shouldReduceMotion)}>
+                  <Button
+                    onClick={() => setSelectedFilter(filter)}
+                    variant={selectedFilter === filter ? 'default' : 'outline'}
+                    className="h-12 rounded-2xl px-6 shadow-lg"
+                  >
+                    {filter}
+                  </Button>
+                </motion.div>
               ))}
             </div>
             
@@ -169,6 +159,7 @@ const ProjectsPage: React.FC = () => {
               <motion.div 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
+                transition={shouldReduceMotion ? { duration: 0 } : TRANSITION.base}
                 className="text-center mt-6"
               >
                 <div className="inline-flex items-center space-x-2 bg-blue-50 dark:bg-blue-900/20 px-4 py-2 rounded-full border border-blue-200 dark:border-blue-700">
@@ -185,25 +176,22 @@ const ProjectsPage: React.FC = () => {
           <motion.div
             variants={containerVariants}
             className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.18 }}
           >
-            {filteredProjects.map((project, index) => (
+            {filteredProjects.map((project) => (
               <motion.div
                 key={project.name}
-                variants={itemVariants}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ 
-                  y: -8,
-                  transition: { duration: 0.3 }
-                }}
-                className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 border border-gray-200 dark:border-gray-700 relative overflow-hidden group hover:shadow-2xl transition-all duration-500 flex flex-col h-full"
+                variants={cardVariants}
+                {...hoverLift(shouldReduceMotion)}
+                className="h-full"
               >
-                {/* Background Pattern */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-full -translate-y-32 translate-x-32 opacity-60 group-hover:scale-125 transition-transform duration-500"></div>
-                
-                <div className="relative z-10 flex flex-col h-full">
+                <Card className="relative overflow-hidden group hover:shadow-2xl transition-all duration-500 flex flex-col h-full p-6 bg-white dark:bg-gray-800">
+                  {/* Background Pattern */}
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-full -translate-y-32 translate-x-32 opacity-60 group-hover:scale-125 transition-transform duration-500"></div>
+
+                  <div className="relative z-10 flex flex-col h-full">
                   {/* Project Header */}
                   <div className="relative h-52 md:h-66 rounded-2xl overflow-hidden mb-6 flex-shrink-0 shadow-lg group-hover:shadow-xl transition-shadow duration-300">
                     {project.liveDemo && project.liveDemo.includes('youtube.com') ? (
@@ -268,22 +256,23 @@ const ProjectsPage: React.FC = () => {
                       </div>
                       <div className="flex flex-wrap gap-2">
                         {project.technologies.slice(0, 6).map((tech) => (
-                          <span
+                          <Badge
                             key={tech}
-                            className="px-3 py-1.5 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-700 dark:text-blue-300 rounded-xl text-xs font-medium border border-blue-200 dark:border-blue-700 hover:scale-105 transition-transform duration-200"
+                            variant="sky"
+                            className="rounded-xl px-3 py-1.5 text-xs font-medium normal-case hover:scale-105 transition-transform duration-200"
                           >
                             {tech}
-                          </span>
+                          </Badge>
                         ))}
                         {project.technologies.length > 6 && (
                           <div className="relative group">
-                            <span 
-                              className="px-3 py-1.5 bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/30 dark:to-red-900/30 text-orange-700 dark:text-orange-300 rounded-xl text-xs font-medium border border-orange-200 dark:border-orange-700 cursor-pointer hover:scale-105 transition-transform duration-200"
+                            <Badge
+                              className="rounded-xl px-3 py-1.5 text-xs font-medium normal-case cursor-pointer hover:scale-105 transition-transform duration-200"
                               onMouseEnter={() => setShowMoreTech(project.name)}
                               onMouseLeave={() => setShowMoreTech(null)}
                             >
                               +{project.technologies.length - 6} more
-                            </span>
+                            </Badge>
                             
                             {/* Tooltip for additional technologies */}
                             {showMoreTech === project.name && (
@@ -292,10 +281,7 @@ const ProjectsPage: React.FC = () => {
                                   <div className="text-xs font-semibold mb-2 text-center">Additional Technologies:</div>
                                   <div className="flex flex-wrap gap-1.5">
                                     {project.technologies.slice(6).map((tech) => (
-                                      <span
-                                        key={tech}
-                                        className="px-2 py-1 bg-white/20 dark:bg-gray-800/20 rounded-lg text-xs font-medium"
-                                      >
+                                      <span key={tech} className="px-2 py-1 bg-white/20 dark:bg-gray-800/20 rounded-lg text-xs font-medium">
                                         {tech}
                                       </span>
                                     ))}
@@ -349,19 +335,22 @@ const ProjectsPage: React.FC = () => {
                                 onClick={() => setShowMoreResponsibilities(
                                   showMoreResponsibilities === project.name ? null : project.name
                                 )}
-                                className="mt-3 text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium flex items-center space-x-1 transition-colors duration-200 group"
+                                className="mt-3"
                               >
-                                <span>
-                                  {showMoreResponsibilities === project.name 
-                                    ? 'Show less' 
-                                    : `+${project.responsibilities.length - 3} more achievements`
-                                  }
-                                </span>
-                                <span className={`transform transition-transform duration-200 ${
-                                  showMoreResponsibilities === project.name ? 'rotate-180' : ''
-                                }`}>
-                                  ▼
-                                </span>
+                                <Button variant="link" size="sm" className="h-auto p-0 text-xs">
+                                  <span>
+                                    {showMoreResponsibilities === project.name
+                                      ? 'Show less'
+                                      : `+${project.responsibilities.length - 3} more achievements`}
+                                  </span>
+                                  <span
+                                    className={`transform transition-transform duration-200 ${
+                                      showMoreResponsibilities === project.name ? 'rotate-180' : ''
+                                    }`}
+                                  >
+                                    ▼
+                                  </span>
+                                </Button>
                               </button>
                             </div>
                           )}
@@ -373,47 +362,46 @@ const ProjectsPage: React.FC = () => {
                     <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200 dark:border-gray-700 flex-shrink-0 mt-auto">
                       <div className="flex flex-1 gap-3">
                         {project.liveDemo && !project.liveDemo.includes('youtube.com') ? (
-                          <a
-                            href={project.liveDemo}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center justify-center space-x-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-2xl transition-all duration-300 text-sm font-medium flex-1 min-w-0 shadow-lg hover:shadow-xl transform hover:scale-105"
-                          >
-                            <ExternalLink size={16} />
-                            <span>Live Demo</span>
-                          </a>
+                          <motion.div className="flex-1" {...hoverLift(shouldReduceMotion)}>
+                            <Button asChild className="w-full rounded-2xl h-12">
+                              <a href={project.liveDemo} target="_blank" rel="noopener noreferrer">
+                                <ExternalLink size={16} />
+                                <span>Live Demo</span>
+                              </a>
+                            </Button>
+                          </motion.div>
                         ) : !project.liveDemo ? (
-                          <div className="flex items-center justify-center space-x-2 px-4 py-3 bg-gray-400 cursor-not-allowed text-white rounded-2xl text-sm font-medium flex-1 min-w-0 shadow-lg">
+                          <Button disabled className="w-full rounded-2xl h-12 flex-1 bg-gray-400 text-white hover:bg-gray-400">
                             <ExternalLink size={16} />
                             <span>Coming Soon</span>
-                          </div>
+                          </Button>
                         ) : (
-                          <div className="flex items-center justify-center space-x-2 px-4 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-2xl text-sm font-medium flex-1 min-w-0 shadow-lg">
+                          <Button variant="secondary" className="w-full rounded-2xl h-12 flex-1">
                             <Play size={16} />
                             <span>Video Demo</span>
-                          </div>
+                          </Button>
                         )}
                         
                         {project.github ? (
-                          <a
-                            href={project.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center justify-center space-x-2 px-4 py-3 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-2xl transition-all duration-300 text-sm font-medium flex-1 min-w-0 shadow-lg hover:shadow-xl transform hover:scale-105"
-                          >
-                            <Github size={16} />
-                            <span>Code</span>
-                          </a>
+                          <motion.div className="flex-1" {...hoverLift(shouldReduceMotion)}>
+                            <Button asChild variant="secondary" className="w-full rounded-2xl h-12">
+                              <a href={project.github} target="_blank" rel="noopener noreferrer">
+                                <Github size={16} />
+                                <span>Code</span>
+                              </a>
+                            </Button>
+                          </motion.div>
                         ) : (
-                          <div className="flex items-center justify-center space-x-2 px-4 py-3 bg-gray-300 cursor-not-allowed text-gray-500 rounded-2xl text-sm font-medium flex-1 min-w-0 shadow-lg">
+                          <Button disabled variant="secondary" className="w-full rounded-2xl h-12 flex-1">
                             <Github size={16} />
                             <span>Private</span>
-                          </div>
+                          </Button>
                         )}
                       </div>
                     </div>
                   </div>
-                </div>
+                  </div>
+                </Card>
               </motion.div>
             ))}
           </motion.div>
@@ -437,9 +425,9 @@ const ProjectsPage: React.FC = () => {
                 </p>
                 <button
                   onClick={() => setSelectedFilter('All')}
-                  className="mt-6 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  className="mt-6"
                 >
-                  Show All Projects
+                  <Button className="rounded-2xl h-12 px-6">Show All Projects</Button>
                 </button>
               </div>
             </motion.div>

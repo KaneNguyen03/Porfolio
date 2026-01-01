@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Mail, Phone, MapPin, Github, Linkedin, Send, UserCircle } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 import { portfolioData } from '../data/portfolio';
 import { useThemeClasses } from '../hooks/useThemeClasses';
+import SEO from '../components/SEO';
+import { Button } from '../components/ui/button';
+import { Card } from '../components/ui/card';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
+import { Textarea } from '../components/ui/textarea';
+import { fadeUpItem, hoverLift, staggerContainer, TRANSITION } from '../lib/motion';
 
 const ContactPage: React.FC = () => {
   const { personalInfo, references } = portfolioData;
+  const shouldReduceMotion = useReducedMotion();
   useThemeClasses(); // Ensure component re-renders on theme change
   const [formData, setFormData] = useState({
     name: '',
@@ -109,28 +117,15 @@ const ContactPage: React.FC = () => {
     }
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.6 }
-    }
-  };
+  const containerVariants = staggerContainer(shouldReduceMotion, { stagger: 0.08, delay: 0.08 });
+  const itemVariants = fadeUpItem(shouldReduceMotion, 12);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 pt-20 pb-16 transition-colors duration-300">
+      <SEO
+        title="Contact"
+        description={`Contact ${personalInfo.name} — ${personalInfo.title}. Email, phone, and social links.`}
+      />
       <div className="container-width">
         <motion.div
           variants={containerVariants}
@@ -140,9 +135,9 @@ const ContactPage: React.FC = () => {
           {/* Hero Section */}
           <motion.div variants={itemVariants} className="text-center mb-20">
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
+              initial={{ scale: shouldReduceMotion ? 1 : 0.96, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.8 }}
+              transition={shouldReduceMotion ? { duration: 0 } : TRANSITION.base}
               className="mb-8"
             >
               <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-500 to-blue-600 rounded-2xl shadow-lg mb-6">
@@ -154,7 +149,7 @@ const ContactPage: React.FC = () => {
               className="p-2 text-4xl md:text-6xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent mb-6"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.slow, delay: 0.08 }}
             >
               Let's Work Together
             </motion.h1>
@@ -163,7 +158,7 @@ const ContactPage: React.FC = () => {
               className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.slow, delay: 0.16 }}
             >
               Ready to bring your ideas to life? I'm always excited to discuss new <span className="font-semibold text-green-600 dark:text-green-400">opportunities</span> and challenging projects
             </motion.p>
@@ -181,7 +176,7 @@ const ContactPage: React.FC = () => {
                     return (
                       <motion.div
                         key={method.title}
-                        whileHover={{ scale: 1.02 }}
+                        {...hoverLift(shouldReduceMotion)}
                         className="group"
                       >
                         {method.link !== '#' ? (
@@ -252,8 +247,9 @@ const ContactPage: React.FC = () => {
                             href={social.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            whileHover={{ scale: 1.05, y: -2 }}
-                            whileTap={{ scale: 0.95 }}
+                            whileHover={shouldReduceMotion ? undefined : { y: -2, scale: 1.03 }}
+                            whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
+                            transition={TRANSITION.fast}
                             className={`${social.color} text-white p-4 rounded-2xl transition-all duration-300 flex flex-col items-center space-y-3 shadow-lg hover:shadow-xl group`}
                           >
                             <IconComponent size={24} />
@@ -275,7 +271,7 @@ const ContactPage: React.FC = () => {
                     {references.map((reference, index) => (
                       <motion.div
                         key={index}
-                        whileHover={{ scale: 1.02 }}
+                        {...hoverLift(shouldReduceMotion)}
                         className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300"
                       >
                         <div className="flex items-start space-x-3">
@@ -305,7 +301,7 @@ const ContactPage: React.FC = () => {
 
               {/* Contact Form - Enhanced */}
               <motion.div variants={itemVariants} className="xl:col-span-2">
-                <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 md:p-12 border border-gray-200 dark:border-gray-700 relative overflow-hidden group">
+                <Card className="p-8 md:p-12 relative overflow-hidden group">
                   {/* Background Pattern */}
                   <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 rounded-full -translate-y-32 translate-x-32 opacity-60 group-hover:scale-125 transition-transform duration-500"></div>
                   
@@ -331,6 +327,7 @@ const ContactPage: React.FC = () => {
                       <motion.div
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
+                        transition={shouldReduceMotion ? { duration: 0 } : TRANSITION.fast}
                         className="p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 border border-green-200 dark:border-green-700 text-green-800 dark:text-green-300 rounded-xl"
                       >
                         <div className="flex items-center space-x-2">
@@ -348,6 +345,7 @@ const ContactPage: React.FC = () => {
                       <motion.div
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
+                        transition={shouldReduceMotion ? { duration: 0 } : TRANSITION.fast}
                         className="p-4 bg-gradient-to-r from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20 border border-red-200 dark:border-red-700 text-red-800 dark:text-red-300 rounded-xl"
                       >
                         <div className="flex items-center space-x-2">
@@ -363,96 +361,90 @@ const ContactPage: React.FC = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <label htmlFor="name" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                        <Label htmlFor="name" className="mb-3 block">
                           Full Name *
-                        </label>
-                        <input
+                        </Label>
+                        <Input
                           type="text"
                           id="name"
                           name="name"
                           value={formData.name}
                           onChange={handleInputChange}
                           required
-                          className="w-full px-4 py-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all duration-300 hover:border-gray-400 dark:hover:border-gray-500"
+                          className="h-12 rounded-xl px-4"
                           placeholder="John Doe"
                         />
                       </div>
 
                       <div>
-                        <label htmlFor="email" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                        <Label htmlFor="email" className="mb-3 block">
                           Email Address *
-                        </label>
-                        <input
+                        </Label>
+                        <Input
                           type="email"
                           id="email"
                           name="email"
                           value={formData.email}
                           onChange={handleInputChange}
                           required
-                          className="w-full px-4 py-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all duration-300 hover:border-gray-400 dark:hover:border-gray-500"
+                          className="h-12 rounded-xl px-4"
                           placeholder="john@example.com"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label htmlFor="subject" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                      <Label htmlFor="subject" className="mb-3 block">
                         Subject *
-                      </label>
-                      <input
+                      </Label>
+                      <Input
                         type="text"
                         id="subject"
                         name="subject"
                         value={formData.subject}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all duration-300 hover:border-gray-400 dark:hover:border-gray-500"
+                        className="h-12 rounded-xl px-4"
                         placeholder="Project Collaboration Opportunity"
                       />
                     </div>
 
                     <div>
-                      <label htmlFor="message" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                      <Label htmlFor="message" className="mb-3 block">
                         Message *
-                      </label>
-                      <textarea
+                      </Label>
+                      <Textarea
                         id="message"
                         name="message"
                         value={formData.message}
                         onChange={handleInputChange}
                         required
                         rows={6}
-                        className="w-full px-4 py-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all duration-300 hover:border-gray-400 dark:hover:border-gray-500 resize-none"
+                        className="rounded-xl px-4 py-3 resize-none"
                         placeholder="Tell me about your project, timeline, budget, and what you're looking to achieve. The more details you provide, the better I can help you."
                       />
                     </div>
 
-                    <motion.button
-                      type="submit"
-                      disabled={isSubmitting}
-                      whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-                      whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 flex items-center justify-center space-x-3 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
-                    >
+                    <Button type="submit" disabled={isSubmitting} className="w-full h-12 rounded-xl">
                       {isSubmitting ? (
                         <>
-                          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
                           <span>Sending Message...</span>
                         </>
                       ) : (
                         <>
-                          <Send size={22} />
+                          <Send size={20} />
                           <span>Send Message</span>
                         </>
                       )}
-                    </motion.button>
+                    </Button>
 
                     <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
                       I typically respond within 24 hours. For urgent matters, feel free to call me directly.
                     </p>
                   </form>
                   </div>
-                </div>
+                </Card>
               </motion.div>
             </div>
           </div>

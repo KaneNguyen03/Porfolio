@@ -1,10 +1,12 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import LoadingSpinner from './components/LoadingSpinner';
 import ErrorBoundary from './components/ErrorBoundary';
+import { pageVariants, TRANSITION } from './lib/motion';
 
 // Lazy load pages for better performance
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -19,11 +21,35 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider>
         <Router>
-          <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
-            <Header />
-            <main>
-              <Suspense fallback={<LoadingSpinner />}>
-                <Routes>
+          <AppLayout />
+        </Router>
+      </ThemeProvider>
+    </ErrorBoundary>
+  );
+}
+
+function AppLayout() {
+  const location = useLocation();
+  const shouldReduceMotion = useReducedMotion();
+  const variants = pageVariants(shouldReduceMotion);
+
+  return (
+    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 transition-colors duration-300">
+      <Header />
+      <main className="flex-1 flex flex-col">
+        <Suspense fallback={<LoadingSpinner className="flex-1" label="Loading page…" />}>
+          <div className="flex flex-col flex-1">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={location.pathname}
+                className="flex-1"
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={variants}
+                transition={shouldReduceMotion ? { duration: 0 } : TRANSITION.fast}
+              >
+                <Routes location={location}>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/projects" element={<ProjectsPage />} />
@@ -31,13 +57,16 @@ function App() {
                   <Route path="/education" element={<EducationPage />} />
                   <Route path="/contact" element={<ContactPage />} />
                 </Routes>
-              </Suspense>
-            </main>
-            <Footer />
+              </motion.div>
+            </AnimatePresence>
+
+            <div className="mt-auto">
+              <Footer />
+            </div>
           </div>
-        </Router>
-      </ThemeProvider>
-    </ErrorBoundary>
+        </Suspense>
+      </main>
+    </div>
   );
 }
 

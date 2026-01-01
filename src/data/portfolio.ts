@@ -89,7 +89,7 @@ export const portfolioData: PortfolioData = {
     title: "Software Engineer",
     phone: "0915421830",
     email: "nguyenxuankha5371@gmail.com",
-    location: "Ho Chi Minh City, Viet Nam",
+    location: "Ho Chi Minh City, Vietnam",
     github: "https://github.com/KaneNguyen03",
     linkedin: "https://www.linkedin.com/in/kha-nguyen-29732a209",
     objective: "Full-stack/Backend Engineer with ~2 years shipping Node.js and React applications. Currently delivering AP automation at Bizzi and targeting junior-to-middle roles where I can own API-first products, strengthen system design, and scale event-driven services on AWS."

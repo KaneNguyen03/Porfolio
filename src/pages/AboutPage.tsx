@@ -1,11 +1,14 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Code, Database, Server, Cloud, GitBranch, Award, MapPin, Calendar, Mail } from 'lucide-react';
 import { portfolioData } from '../data/portfolio';
 import avatarImage from '../assets/ava.jpg';
+import SEO from '../components/SEO';
+import { TRANSITION } from '../lib/motion';
 
 const AboutPage: React.FC = () => {
   const { personalInfo, skills, awards } = portfolioData;
+  const shouldReduceMotion = useReducedMotion();
 
   const skillCategories = [
     {
@@ -57,31 +60,44 @@ const AboutPage: React.FC = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
+        ...(shouldReduceMotion
+          ? { duration: 0 }
+          : {
+              staggerChildren: 0.08,
+              delayChildren: 0.08
+            })
       }
     }
   };
 
   const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
+    hidden: { y: shouldReduceMotion ? 0 : 12, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.5 }
+      transition: shouldReduceMotion
+        ? { duration: 0 }
+        : { duration: 0.35, ease: [0.16, 1, 0.3, 1] }
     }
   };
 
   const skillCardVariants = {
-    hidden: { scale: 0.9, opacity: 0 },
+    hidden: { scale: shouldReduceMotion ? 1 : 0.98, opacity: 0 },
     visible: {
       scale: 1,
       opacity: 1,
-      transition: { duration: 0.6 }
+      transition: shouldReduceMotion
+        ? { duration: 0 }
+        : { duration: 0.35, ease: [0.16, 1, 0.3, 1] }
     }
   };
 
   return (
+    <>
+      <SEO
+        title="About"
+        description={`About ${personalInfo.name} — ${personalInfo.title} based in ${personalInfo.location}. Skills, awards, and professional background.`}
+      />
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 pt-20 pb-16">
       <div className="container-width">
         <motion.div
@@ -92,9 +108,9 @@ const AboutPage: React.FC = () => {
           {/* Hero Section */}
           <motion.div variants={itemVariants} className="text-center mb-20">
             <motion.div
-              initial={{ scale: 0.5, opacity: 0 }}
+              initial={{ scale: shouldReduceMotion ? 1 : 0.92, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
+              transition={shouldReduceMotion ? { duration: 0 } : TRANSITION.base}
               className="mb-8"
             >
               <div className="relative inline-block">
@@ -111,7 +127,7 @@ const AboutPage: React.FC = () => {
               className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent mb-6"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.slow, delay: 0.08 }}
             >
               About Me
             </motion.h1>
@@ -120,7 +136,7 @@ const AboutPage: React.FC = () => {
               className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
+              transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.slow, delay: 0.16 }}
             >
               Passionate <span className="font-semibold text-blue-600 dark:text-blue-400">Full-Stack Developer</span> crafting exceptional digital experiences
             </motion.p>
@@ -130,11 +146,11 @@ const AboutPage: React.FC = () => {
               className="flex flex-wrap justify-center gap-6 mt-8"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
+              transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.slow, delay: 0.24 }}
             >
               <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                 <MapPin size={16} />
-                <span className="text-sm font-medium">Ho Chi Minh City, Vietnam</span>
+                <span className="text-sm font-medium">{personalInfo.location}</span>
               </div>
               <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                 <Calendar size={16} />
@@ -171,9 +187,9 @@ const AboutPage: React.FC = () => {
                     transition={{ duration: 0.5 }}
                   >
                     <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-                      As a dedicated Software Engineering student at FPT University, I'm pursuing my passion for creating 
-                      impactful digital solutions. With hands-on experience in full-stack development, I specialize in 
-                      building modern web applications that solve real-world problems.
+                      As a Software Engineering graduate from FPT University, I focus on creating impactful digital solutions.
+                      With hands-on experience in full-stack development, I specialize in building modern web applications
+                      that solve real-world problems.
                     </p>
                     <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
                       My journey in tech began with curiosity and has evolved into expertise across the development stack. 
@@ -185,7 +201,7 @@ const AboutPage: React.FC = () => {
                     {/* Key Stats */}
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-8">
                       <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-xl text-wrap">
-                        <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">6+</div>
+                        <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{portfolioData.projects.length}+</div>
                         <div className="text-sm text-gray-600 dark:text-gray-400">Projects</div>
                       </div>
                       <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
@@ -225,15 +241,27 @@ const AboutPage: React.FC = () => {
                         {/* Status Indicator */}
                         <div className="absolute -bottom-3 -right-3 bg-white dark:bg-gray-800 rounded-full px-4 py-2 shadow-lg border border-gray-200 dark:border-gray-600">
                           <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                            <motion.div
+                              className="w-3 h-3 bg-green-400 rounded-full"
+                              animate={shouldReduceMotion ? undefined : { scale: [1, 1.15, 1] }}
+                              transition={shouldReduceMotion ? { duration: 0 } : { duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+                            />
                             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Available</span>
                           </div>
                         </div>
                       </div>
                       
                       {/* Decorative Elements */}
-                      <div className="absolute -top-6 -right-6 w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl animate-bounce opacity-80 shadow-lg"></div>
-                      <div className="absolute -bottom-6 -left-6 w-8 h-8 bg-gradient-to-br from-green-400 to-blue-500 rounded-xl animate-pulse opacity-80 shadow-lg"></div>
+                      <motion.div
+                        className="absolute -top-6 -right-6 w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl opacity-80 shadow-lg"
+                        animate={shouldReduceMotion ? undefined : { y: [0, -10, 0] }}
+                        transition={shouldReduceMotion ? { duration: 0 } : { duration: 3.4, repeat: Infinity, ease: 'easeInOut' }}
+                      />
+                      <motion.div
+                        className="absolute -bottom-6 -left-6 w-8 h-8 bg-gradient-to-br from-green-400 to-blue-500 rounded-xl opacity-80 shadow-lg"
+                        animate={shouldReduceMotion ? undefined : { opacity: [0.7, 1, 0.7] }}
+                        transition={shouldReduceMotion ? { duration: 0 } : { duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+                      />
                       
                       {/* Subtle Background Glow */}
                       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-3xl blur-2xl -z-10 group-hover:blur-xl transition-all duration-500"></div>
@@ -368,7 +396,11 @@ const AboutPage: React.FC = () => {
                         </p>
                         {/* Achievement indicator */}
                         <div className="mt-4 flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+                          <motion.div
+                            className="w-2 h-2 bg-yellow-400 rounded-full"
+                            animate={shouldReduceMotion ? undefined : { opacity: [0.6, 1, 0.6] }}
+                            transition={shouldReduceMotion ? { duration: 0 } : { duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                          />
                           <span className="text-sm text-gray-500 dark:text-gray-400">Achievement Unlocked</span>
                         </div>
                       </div>
@@ -387,17 +419,30 @@ const AboutPage: React.FC = () => {
               transition={{ duration: 0.5, delay: 0.4 }}
             >
               <div className="inline-flex items-center space-x-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 px-8 py-4 rounded-2xl border border-blue-200 dark:border-blue-700">
-                <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                <motion.div
+                  className="w-3 h-3 bg-green-400 rounded-full"
+                  animate={shouldReduceMotion ? undefined : { scale: [1, 1.18, 1] }}
+                  transition={shouldReduceMotion ? { duration: 0 } : { duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+                />
                 <span className="text-lg font-medium text-gray-700 dark:text-gray-300">
                   Ready to create amazing things together
                 </span>
-                <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse [animation-delay:0.5s]"></div>
+                <motion.div
+                  className="w-3 h-3 bg-blue-400 rounded-full"
+                  animate={shouldReduceMotion ? undefined : { scale: [1, 1.18, 1] }}
+                  transition={
+                    shouldReduceMotion
+                      ? { duration: 0 }
+                      : { duration: 2.2, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }
+                  }
+                />
               </div>
             </motion.div>
           </motion.div>
         </motion.div>
       </div>
     </div>
+    </>
   );
 };
 

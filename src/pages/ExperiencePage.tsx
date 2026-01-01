@@ -1,10 +1,14 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Building, Calendar, CheckCircle, Code, TrendingUp, Users, Target, Lightbulb } from 'lucide-react';
 import { portfolioData } from '../data/portfolio';
+import SEO from '../components/SEO';
+import { fadeUpItem, hoverLift, staggerContainer, TRANSITION } from '../lib/motion';
 
 const ExperiencePage: React.FC = () => {
   const { workExperience } = portfolioData;
+  const shouldReduceMotion = useReducedMotion();
+  const uniqueCompanies = new Set(workExperience.map((experience) => experience.company)).size;
 
   const experienceMeta: Record<string, {
     learnings?: string[];
@@ -82,36 +86,25 @@ const ExperiencePage: React.FC = () => {
     };
   });
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 50, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.8 }
-    }
-  };
+  const containerVariants = staggerContainer(shouldReduceMotion, { stagger: 0.08, delay: 0.08 });
+  const itemVariants = fadeUpItem(shouldReduceMotion, 12);
 
   const timelineVariants = {
-    hidden: { scaleY: 0 },
+    hidden: { scaleY: shouldReduceMotion ? 1 : 0 },
     visible: {
       scaleY: 1,
-      transition: { duration: 1.5 }
+      transition: shouldReduceMotion
+        ? { duration: 0 }
+        : TRANSITION.slow
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 pt-20 pb-16">
+      <SEO
+        title="Experience"
+        description={`Work experience for ${portfolioData.personalInfo.name}, including roles and accomplishments with Node.js/TypeScript, React, AWS, and enterprise systems.`}
+      />
       <div className="container-width">
         <motion.div
           variants={containerVariants}
@@ -121,9 +114,9 @@ const ExperiencePage: React.FC = () => {
           {/* Hero Section */}
           <motion.div variants={itemVariants} className="text-center mb-20">
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
+              initial={{ scale: shouldReduceMotion ? 1 : 0.96, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.8 }}
+              transition={shouldReduceMotion ? { duration: 0 } : TRANSITION.base}
               className="mb-8"
             >
               <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl shadow-lg mb-6">
@@ -135,7 +128,7 @@ const ExperiencePage: React.FC = () => {
               className="p-2 text-4xl md:text-6xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent mb-6"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.slow, delay: 0.08 }}
             >
               Professional Journey
             </motion.h1>
@@ -144,7 +137,7 @@ const ExperiencePage: React.FC = () => {
               className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.slow, delay: 0.16 }}
             >
               Transforming challenges into <span className="font-semibold text-blue-600 dark:text-blue-400">growth opportunities</span> through continuous learning and meaningful contributions
             </motion.p>
@@ -154,10 +147,10 @@ const ExperiencePage: React.FC = () => {
               className="flex flex-wrap justify-center gap-8 mt-12"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
+              transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.slow, delay: 0.24 }}
             >
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">3</div>
+                <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{uniqueCompanies}</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Companies</div>
               </div>
               <div className="text-center">
@@ -165,7 +158,7 @@ const ExperiencePage: React.FC = () => {
                 <div className="text-sm text-gray-600 dark:text-gray-400">Years</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">8+</div>
+                <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">{portfolioData.projects.length}+</div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Projects</div>
               </div>
             </motion.div>
@@ -183,6 +176,9 @@ const ExperiencePage: React.FC = () => {
               <motion.div
                 key={experience.company}
                 variants={itemVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.22 }}
                 className={`relative mb-20 ${
                   index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
                 }`}
@@ -197,10 +193,7 @@ const ExperiencePage: React.FC = () => {
                   index % 2 === 0 ? 'md:mr-auto md:pr-12' : 'md:ml-auto md:pl-12'
                 }`}>
                   <motion.div
-                    whileHover={{ 
-                      y: -8,
-                      transition: { duration: 0.3 }
-                    }}
+                    {...hoverLift(shouldReduceMotion)}
                     className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 border border-gray-200 dark:border-gray-700 relative overflow-hidden group hover:shadow-2xl transition-all duration-500"
                   >
                     {/* Background Pattern */}

@@ -14,20 +14,23 @@ export const usePerformance = () => {
 
   useEffect(() => {
     const measurePerformance = () => {
+      type LayoutShiftEntry = PerformanceEntry & { value?: number };
+      type TimedEntry = PerformanceEntry & { startTime: number };
+
       // Wait for page to fully load
       if (document.readyState === 'complete') {
         const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
         const paint = performance.getEntriesByType('paint');
         const fcp = paint.find(entry => entry.name === 'first-contentful-paint');
-        const lcp = performance.getEntriesByType('largest-contentful-paint')[0];
-        const cls = performance.getEntriesByType('layout-shift')[0];
+        const lcp = performance.getEntriesByType('largest-contentful-paint')[0] as TimedEntry | undefined;
+        const cls = performance.getEntriesByType('layout-shift')[0] as LayoutShiftEntry | undefined;
 
         const performanceMetrics: PerformanceMetrics = {
           loadTime: navigation.loadEventEnd - navigation.loadEventStart,
           domContentLoaded: navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart,
           firstContentfulPaint: fcp ? fcp.startTime : 0,
           largestContentfulPaint: lcp ? lcp.startTime : 0,
-          cumulativeLayoutShift: cls ? (cls as any).value : 0,
+          cumulativeLayoutShift: cls?.value ?? 0,
           firstInputDelay: 0 // Would need to be measured with event listeners
         };
 
