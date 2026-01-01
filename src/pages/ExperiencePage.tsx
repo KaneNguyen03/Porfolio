@@ -6,70 +6,81 @@ import { portfolioData } from '../data/portfolio';
 const ExperiencePage: React.FC = () => {
   const { workExperience } = portfolioData;
 
-  // Enhanced work experience with learning outcomes and contributions
-  const enhancedExperience = [
-    {
-      ...workExperience[0], // Cigro
+  const experienceMeta: Record<string, {
+    learnings?: string[];
+    contributions?: string[];
+    techStack?: string[];
+    impact?: string;
+  }> = {
+    Bizzi: {
       learnings: [
-        "Mastered real-time messaging integration with Sendbird API and custom database design",
-        "Gained expertise in payment system integration with Google/Apple IAP and webhook handling",
-        "Learned AWS cloud services migration from EventEmitter2 to SQS + Lambda architecture",
-        "Developed proficiency in load testing methodologies using Autocannon and K6 with Grafana visualization"
+        'Scaled asynchronous workflows with AWS SQS/Lambda and Redis caching to keep AP flows responsive',
+        'Shipped secure audit trails and RBAC for enterprise customers',
+        'Partnered with design to smooth onboarding and document status visibility',
+        'Optimized database indexing and timeouts to stabilize critical jobs'
       ],
       contributions: [
-        "Successfully integrated real-time messaging for EveryTalk Project with personalized chat data storage",
-        "Implemented robust payment system handling subscription workflows for Uobong platform",
-        "Migrated event architecture improving system scalability and reducing response time by 35%",
-        "Conducted comprehensive load testing ensuring system stability under high concurrent user scenarios"
+        'Delivered invoice capture, approvals, and payment flows for AP automation',
+        'Hardened compliance surface with audit logging and secure file storage',
+        'Cut latency on event-driven steps by tuning queues, caches, and queries'
       ],
-      techStack: ["Node.js", "TypeScript", "Sendbird API", "AWS SQS", "AWS Lambda", "Google IAP", "Apple IAP", "PostgreSQL", "Webhooks", "Autocannon", "K6", "Grafana"],
-      impact: "Enhanced user engagement through real-time messaging and streamlined payment processing"
+      techStack: ['Node.js', 'TypeScript', 'PostgreSQL', 'Redis', 'AWS SQS', 'AWS Lambda', 'React'],
+      impact: 'Improved reliability and UX for finance teams processing invoices at scale'
     },
-    {
-      ...workExperience[1], // FSoft
+    Cigro: {
       learnings: [
-        "Mastered React ecosystem and modern state management patterns",
-        "Implemented performance optimization techniques reducing load time by 40%",
-        "Gained expertise in React Query for efficient data synchronization"
+        'Built real-time messaging with Sendbird and custom chat persistence',
+        'Implemented subscription payments via Google/Apple IAP webhooks',
+        'Practiced load testing with Autocannon/K6 plus Grafana dashboards',
+        'Migrated events from EventEmitter2 to SQS + Lambda for scale'
       ],
       contributions: [
-        "Developed 5+ reusable UI components adopted across 1 product teams",
-        "Reduced codebase redundancy by 30% through component abstraction"
+        'Integrated personalized chat storage for EveryTalk',
+        'Launched reliable payment verification for Uobong',
+        'Reduced response time through event-queue migration and caching'
       ],
-      techStack: ["React.js", "TypeScript", "React Query", "Tailwind CSS", "Git", "Scrum"],
-      impact: "Improved team productivity by 25% through reusable component library"
+      techStack: ['Node.js', 'TypeScript', 'Sendbird', 'PostgreSQL', 'AWS SQS', 'AWS Lambda', 'IAP', 'Autocannon', 'K6'],
+      impact: 'Enabled stable messaging and billing for consumer apps under growth'
     },
-    {
-      ...workExperience[2], // Axpara - Fresher
+    FSoft: {
       learnings: [
-        "Advanced React.js development skills with complex application architectures",
-        "Enhanced cross-functional collaboration with designers and product managers",
-        "Deepened understanding of software development best practices and quality standards"
+        'Strengthened React patterns and state management',
+        'Applied performance optimizations and code-splitting',
+        'Used React Query to keep UI and API state in sync'
       ],
       contributions: [
-        "Delivered multiple high-quality web applications using React.js and related technologies",
-        "Collaborated effectively with cross-functional teams to create user-centric products",
-        "Contributed to maintaining high code quality and development standards"
+        'Built reusable UI components used across the squad',
+        'Helped lower redundancy via component abstraction and docs'
       ],
-      techStack: ["React.js", "JavaScript", "CSS3", "HTML5", "Git", "Agile"],
-      impact: "Contributed to successful product delivery through effective team collaboration"
+      techStack: ['React', 'TypeScript', 'React Query', 'Tailwind CSS', 'Git', 'Scrum'],
+      impact: 'Accelerated feature delivery with a shared UI toolkit'
     },
-    {
-      ...workExperience[3], // Axpara - Internship
+    Axpara: {
       learnings: [
-        "Foundational software engineering principles and code review processes",
-        "Practical experience with agile development methodologies",
-        "Professional development environment and team collaboration skills"
+        'Learned to collaborate closely with designers and PMs',
+        'Practiced shipping React apps with iterative feedback',
+        'Adopted engineering quality habits and code reviews'
       ],
       contributions: [
-        "Provided constructive feedback in code reviews improving overall code quality",
-        "Gained valuable hands-on experience in software development lifecycle",
-        "Successfully transitioned from academic learning to professional development"
+        'Delivered user-facing features across multiple web apps',
+        'Maintained code quality through review cycles and refactors'
       ],
-      techStack: ["JavaScript", "React.js", "Git", "Code Review", "Agile"],
-      impact: "Built strong foundation for professional software development career"
+      techStack: ['React', 'JavaScript', 'CSS', 'HTML', 'Git'],
+      impact: 'Shipped stable interfaces that matched customer expectations'
     }
-  ];
+  };
+
+  // Merge base data with meta so ordering always follows portfolioData
+  const enhancedExperience = workExperience.map((experience) => {
+    const meta = experienceMeta[experience.company] ?? {};
+    return {
+      ...experience,
+      learnings: meta.learnings ?? experience.responsibilities.slice(0, 3),
+      contributions: meta.contributions ?? experience.responsibilities,
+      techStack: meta.techStack ?? [],
+      impact: meta.impact ?? 'Delivered features and collaborated across the team'
+    };
+  });
 
   const containerVariants = {
     hidden: { opacity: 0 },

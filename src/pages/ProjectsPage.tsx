@@ -3,21 +3,53 @@ import { motion } from 'framer-motion';
 import { Calendar, User, Code, ExternalLink, Github, Play } from 'lucide-react';
 import { portfolioData } from '../data/portfolio';
 
+// Normalize technology labels to avoid duplicates (e.g., React.js vs React)
+const normalizeTech = (tech: string): string => {
+  const t = tech.trim().toLowerCase();
+  switch (t) {
+    case 'react.js':
+    case 'react':
+      return 'React';
+    case 'tailwind css':
+    case 'tailwindcss':
+      return 'Tailwind CSS';
+    case 'vitejs':
+    case 'vite':
+      return 'Vite';
+    case 'material-ui':
+    case 'mui':
+      return 'MUI';
+    case 'styled-components':
+    case 'styled components':
+      return 'Styled Components';
+    case 'node.js':
+    case 'nodejs':
+      return 'Node.js';
+    case 'react query':
+    case 'tanstack query':
+      return 'React Query';
+    default:
+      return tech; // keep original label when no mapping
+  }
+};
+
 const ProjectsPage: React.FC = () => {
   const { projects } = portfolioData;
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [showMoreTech, setShowMoreTech] = useState<string | null>(null);
   const [showMoreResponsibilities, setShowMoreResponsibilities] = useState<string | null>(null);
 
-  // Extract unique technologies for filtering
+  // Extract unique normalized technologies for filtering and counting
   const allTechnologies = Array.from(
-    new Set(projects.flatMap(project => project.technologies))
+    new Set(
+      projects.flatMap(project => project.technologies.map(normalizeTech))
+    )
   );
   const filters = ['All', ...allTechnologies.slice(0, 8)]; // Show first 8 technologies
 
-  const filteredProjects = selectedFilter === 'All' 
-    ? projects 
-    : projects.filter(project => project.technologies.includes(selectedFilter));
+  const filteredProjects = selectedFilter === 'All'
+    ? projects
+    : projects.filter(project => project.technologies.map(normalizeTech).includes(selectedFilter));
 
   const containerVariants = {
     hidden: { opacity: 0 },

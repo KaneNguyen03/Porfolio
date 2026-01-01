@@ -1,6 +1,16 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --brand-ink: #0f172a;
+  --brand-ink-subtle: #1f2937;
+  --brand-hero: linear-gradient(120deg, #0ea5e9, #6366f1 35%, #a855f7);
+  --brand-glow: 0 30px 120px rgba(99, 102, 241, 0.25);
+  --brand-card: rgba(255, 255, 255, 0.72);
+  --brand-card-dark: rgba(15, 23, 42, 0.8);
+}
 
 @layer base {
   * {
@@ -22,7 +32,9 @@
   }
   
   body {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    background: #f8fafc;
+    color: var(--brand-ink);
   }
 }
 
@@ -45,6 +57,16 @@
   
   .card {
     @apply bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-gray-700 transition-colors duration-200;
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700;
+  }
+
+  .glass-panel {
+    background: var(--brand-card);
+    box-shadow: 0 20px 70px rgba(15, 23, 42, 0.08);
+    @apply dark:backdrop-blur;
   }
 }
 

@@ -7,7 +7,9 @@ import {
   proofnImage, 
   auzunoImage,
   everytalkImage,
-  uobongImage
+  uobongImage,
+  ipaLoginImage,
+  ipaCompaniesImage
 } from '../assets/projectImages';
 
 export interface PersonalInfo {
@@ -90,7 +92,7 @@ export const portfolioData: PortfolioData = {
     location: "Ho Chi Minh City, Viet Nam",
     github: "https://github.com/KaneNguyen03",
     linkedin: "https://www.linkedin.com/in/kha-nguyen-29732a209",
-    objective: "Motivated Full-stack Developer with nearly 2 years of experience in Node.js and React.js, seeking a Junior Developer role to contribute to scalable web applications and enhance my skills in a professional, growth-driven environment. Proficient in AWS EC2, RDS, and DevOps workflows."
+    objective: "Full-stack/Backend Engineer with ~2 years shipping Node.js and React applications. Currently delivering AP automation at Bizzi and targeting junior-to-middle roles where I can own API-first products, strengthen system design, and scale event-driven services on AWS."
   },
   education: [
     {
@@ -101,6 +103,17 @@ export const portfolioData: PortfolioData = {
     }
   ],
   workExperience: [
+    {
+      company: "Bizzi",
+      period: "Nov 2025 - Present",
+      position: "Software Engineer",
+      responsibilities: [
+        "Build AP automation features (invoice capture, approvals, payments) with Node.js/TypeScript services and React dashboards.",
+        "Implemented role-based access control, audit logging, and secure document storage to satisfy enterprise compliance.",
+        "Optimized asynchronous workflows using AWS SQS/Lambda, Redis caching, and database indexing to reduce latency and timeouts.",
+        "Partnered with design and product to polish UX flows for onboarding, document status visibility, and batch exports."
+      ]
+    },
     {
       company: "Cigro",
       period: "Aug 2025 - Oct 2025",
@@ -143,6 +156,36 @@ export const portfolioData: PortfolioData = {
     }
   ],
   projects: [
+  {
+    name: "B-eInvoice – AP Automation for Enterprises",
+    period: "Nov 2025 - Present",
+    role: "Full-stack Engineer",
+    technologies: ["Angular", "Fastify", "Node.js", "RBAC", "REST", "Moqui", "PostgreSQL"],
+    responsibilities: [
+      "Implemented role-based access control down to feature level for enterprise tenants and user groups.",
+      "Migrated invoicing and approval APIs from legacy Moqui services to Fastify with improved validation and logging.",
+      "Delivered customer-specific financial reports (Galaxy, GS25, and others) with parameterized exports and scheduling.",
+      "Hardened auth/session flows and added audit trails to meet procurement compliance needs."
+    ],
+    liveDemo: "",
+    github: "",
+    image: ipaCompaniesImage
+  },
+  {
+    name: "IPA Expense Ops – Cost Control & Reconciliation",
+    period: "Nov 2025 - Present",
+    role: "Frontend Engineer",
+    technologies: ["Next.js", "TypeScript", "TailwindCSS", "React Query", "RBAC", "REST"],
+    responsibilities: [
+      "Built expense automation dashboards for finance teams with multi-role access and approval workflows.",
+      "Implemented reconciliation screens and data grids with drill-downs to spot mismatches across vendors and ledgers.",
+      "Hooked into cost ingestion APIs and surfaced real-time status with optimistic UI and background refetch.",
+      "Partnered with product/design to ship responsive layouts and keyboard-friendly interactions for ops users."
+    ],
+    liveDemo: "https://ipa-uat.bizzi.vn/login",
+    github: "",
+    image: ipaLoginImage
+  },
   {
     name: "EveryTalk - Real-time Communication Platform",
     period: "Aug 2025 - Oct 2025",

@@ -7,7 +7,8 @@ import bmcmsImg from './bmcms.png';
 import fptAcademyImg from './fams.jpg';
 import everytalkImg from './everytalk.png'; 
 import uobongImg from './uobong.png';   
-
+import beinoivceImg from './ipa.png';
+import ipaCompanies from './beinvoice.png';
 
 // Export the imported images
 export const claritasImage = claritasImg;
@@ -19,6 +20,11 @@ export const everytalkImage = everytalkImg; // Using fallback until everytalk.pn
 export const buildingMaintenanceImage = bmcmsImg;
 export const pokeLifeImage = pokeImg;
 export const fptAcademyImage = fptAcademyImg;
+
+// IPA/Bizzi screenshots served from public/projects
+// Place files under: public/projects/ipa-login.png and public/projects/ipa-companies.png
+export const ipaLoginImage: string = beinoivceImg;
+export const ipaCompaniesImage: string = ipaCompanies;
 
 
 // To use your actual project images:

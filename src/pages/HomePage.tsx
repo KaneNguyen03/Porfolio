@@ -37,7 +37,7 @@ const HomePage: React.FC = () => {
   ];
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 py-28">
+    <div className="bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-slate-900 py-24">
       <div className="min-h-screen flex items-center justify-center relative">
         <div className="container-width">
           <motion.div
@@ -86,9 +86,9 @@ const HomePage: React.FC = () => {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
-                className="text-2xl md:text-4xl font-semibold text-blue-600 dark:text-blue-400 mb-6"
+                className="text-2xl md:text-4xl font-semibold text-blue-700 dark:text-blue-300 mb-6"
               >
-                {personalInfo.title}
+                Software Engineer @ Bizzi • Open to Junior/Middle roles
               </motion.h2>
 
               {/* Location with enhanced styling */}
@@ -109,10 +109,31 @@ const HomePage: React.FC = () => {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.8 }}
-                className="text-left px-4 md:text-center text-xl md:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-4xl mx-auto"
+                className="text-left px-4 md:text-center text-xl md:text-2xl text-gray-700 dark:text-gray-200 leading-relaxed max-w-4xl mx-auto"
               >
                 {personalInfo.objective}
               </motion.p>
+            </motion.div>
+
+            {/* Opportunity + Strengths */}
+            <motion.div variants={itemVariants} className="mb-14">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="glass-panel border border-blue-100 dark:border-gray-800 rounded-2xl p-4 text-left">
+                  <div className="pill mb-3">Currently</div>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">Shipping AP automation features</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-white">Software Engineer @ Bizzi</p>
+                </div>
+                <div className="glass-panel border border-blue-100 dark:border-gray-800 rounded-2xl p-4 text-left">
+                  <div className="pill mb-3">Target roles</div>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">Open to backend / full-stack tracks</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-white">Junior → Middle</p>
+                </div>
+                <div className="glass-panel border border-blue-100 dark:border-gray-800 rounded-2xl p-4 text-left">
+                  <div className="pill mb-3">Stack I love</div>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">Node.js, React, AWS, SQL/Redis</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-white">API-first, event-driven</p>
+                </div>
+              </div>
             </motion.div>
 
 
@@ -126,7 +147,7 @@ const HomePage: React.FC = () => {
               >
                 <Link
                   to="/projects"
-                  className="inline-flex items-center justify-center space-x-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 group"
+                  className="inline-flex items-center justify-center space-x-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 group"
                 >
                   <Briefcase size={20} />
                   <span>View My Work</span>
@@ -144,7 +165,7 @@ const HomePage: React.FC = () => {
                 <a
                   href={cvFile}
                   download="Nguyen_Xuan_Kha_Fullstack_CV.pdf"
-                  className="inline-flex items-center justify-center space-x-3 px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  className="inline-flex items-center justify-center space-x-3 px-8 py-4 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
                 >
                   <Download size={20} />
                   <span>Download CV</span>
