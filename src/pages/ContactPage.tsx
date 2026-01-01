@@ -271,29 +271,29 @@ const ContactPage: React.FC = () => {
 
                 {/* References */}
                 <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 overflow-hidden">
-                  <div aria-hidden="true" className="absolute -top-20 -right-20 h-56 w-56 rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10" />
+                  <div aria-hidden="true" className="absolute -top-20 -right-20 h-56 w-full rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10" />
                   <CardContent className="relative z-10 p-8">
                     <h3 className="text-lg font-semibold text-slate-950 dark:text-white mb-6 flex items-center">
                       <UserCircle size={20} className="mr-2 text-sky-700 dark:text-sky-300" />
                       Professional Re ferences
                     </h3>
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                       {references.map((reference, index) => (
                         <motion.div
                           key={index}
                           {...hoverLift(shouldReduceMotion)}
-                          className="p-4 rounded-2xl border border-slate-200/70 dark:border-slate-800/70 bg-white/60 dark:bg-slate-950/30"
+                          className="rounded-2xl border border-slate-200/70 dark:border-slate-800/70 bg-white/60 dark:bg-slate-950/30"
                         >
-                          <div className="flex items-start space-x-3">
-                            <div className="w-12 h-12 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-full flex items-center justify-center flex-shrink-0 shadow-xl shadow-slate-900/10">
+                          <div className="flex items-start space-x-3 p-2">
+                            <div className="w-8 h-8 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-full flex items-center justify-center flex-shrink-0 shadow-xl shadow-slate-900/10">
                               <UserCircle size={20} className="text-sky-700 dark:text-sky-300" />
                             </div>
                             <div className="flex-1 min-w-0">
                               <h4 className="font-semibold text-slate-950 dark:text-white text-sm">{reference.name}</h4>
-                              <p className="text-slate-600 dark:text-slate-300 text-xs mb-2">{reference.position}</p>
+                              <p className="text-slate-600 dark:text-slate-300 text-xs">{reference.position}</p>
                               <a
                                 href={`mailto:${reference.email}`}
-                                className="text-sky-700 hover:text-sky-800 dark:text-sky-300 dark:hover:text-sky-200 text-xs font-medium transition-colors duration-200 hover:underline p-2"
+                                className="text-sky-700 hover:text-sky-800 dark:text-sky-300 dark:hover:text-sky-200 text-xs font-medium transition-colors duration-200 hover:underline"
                               >
                                 {reference.email}
                               </a>
