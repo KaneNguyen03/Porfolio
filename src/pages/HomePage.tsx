@@ -1,10 +1,10 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import avatarImage from '../assets/ava.jpg';
 import cvFile from '../assets/Nguyen_Xuan_Kha_Fullstack_CV.pdf';
 import { portfolioData } from '../data/portfolio';
-import { ArrowRight, Briefcase, ChevronDown, Download, Github, Linkedin, Mail, MapPin, Star } from 'lucide-react';
+import { ArrowRight, Briefcase, Download, Github, Linkedin, Mail, MapPin, Star } from 'lucide-react';
 import SEO from '../components/SEO';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
@@ -14,7 +14,6 @@ import { calculateExperienceYears } from '../lib/experience';
 
 const HomePage: React.FC = () => {
   const { personalInfo, projects, workExperience } = portfolioData;
-  const navigate = useNavigate();
   const shouldReduceMotion = useReducedMotion();
 
   const containerVariants = staggerContainer(shouldReduceMotion, { stagger: 0.08, delay: 0.08 });
