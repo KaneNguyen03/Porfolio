@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useMemo } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Header from './components/Header';
@@ -31,24 +31,24 @@ function App() {
 function AppLayout() {
   const location = useLocation();
   const shouldReduceMotion = useReducedMotion();
-  const variants = pageVariants(shouldReduceMotion);
+  const variants = useMemo(() => pageVariants(shouldReduceMotion), [shouldReduceMotion]);
 
   return (
     <div className="brand-backdrop min-h-screen flex flex-col bg-transparent transition-colors duration-300">
       <Header />
       <main className="flex-1 flex flex-col">
-        <Suspense fallback={<LoadingSpinner className="flex-1" label="Loading page…" />}>
-          <div className="flex flex-col flex-1">
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={location.pathname}
-                className="flex-1"
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                variants={variants}
-                transition={shouldReduceMotion ? { duration: 0 } : TRANSITION.fast}
-              >
+        <div className="flex flex-col flex-1">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={location.pathname}
+              className="flex-1"
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              variants={variants}
+              transition={shouldReduceMotion ? { duration: 0 } : TRANSITION.fast}
+            >
+              <Suspense fallback={<LoadingSpinner className="flex-1" label="Loading page…" />}>
                 <Routes location={location}>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/about" element={<AboutPage />} />
@@ -57,14 +57,12 @@ function AppLayout() {
                   <Route path="/education" element={<EducationPage />} />
                   <Route path="/contact" element={<ContactPage />} />
                 </Routes>
-              </motion.div>
-            </AnimatePresence>
+              </Suspense>
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
-            <div className="mt-auto">
-              <Footer />
-            </div>
-          </div>
-        </Suspense>
+        <Footer />
       </main>
     </div>
   );
