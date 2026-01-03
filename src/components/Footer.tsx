@@ -51,7 +51,7 @@ const Footer: React.FC = () => {
             <h3 className="text-xl font-bold mb-6 text-center md:text-left">Get In Touch</h3>
             <div className="space-y-4">
               <div className="flex items-center justify-start space-x-3">
-                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shrink-0">
                   <Mail size={18} className="text-white" />
                 </div>
                 <a
@@ -62,7 +62,7 @@ const Footer: React.FC = () => {
                 </a>
               </div>
               <div className="flex items-center justify-start space-x-3">
-                <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center shrink-0">
                   <Phone size={18} className="text-white" />
                 </div>
                 <a
@@ -73,7 +73,7 @@ const Footer: React.FC = () => {
                 </a>
               </div>
               <div className="flex items-center justify-start space-x-3">
-                <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center shrink-0">
                   <MapPin size={18} className="text-white" />
                 </div>
                 <span className="text-gray-300 text-sm md:text-base">{personalInfo.location}</span>

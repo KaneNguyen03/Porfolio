@@ -105,7 +105,7 @@ const ExperiencePage: React.FC = () => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-slate-50/70 via-white/60 to-blue-50/70 dark:from-gray-950/80 dark:via-gray-900/70 dark:to-slate-900/80 py-20 sm:py-24 overflow-hidden">
+    <div className="bg-linear-to-br from-slate-50/70 via-white/60 to-blue-50/70 dark:from-gray-950/80 dark:via-gray-900/70 dark:to-slate-900/80 py-20 sm:py-24 overflow-hidden">
       <SEO
         title="Experience"
         description={`Work experience for ${portfolioData.personalInfo.name}, including roles and accomplishments with Node.js/TypeScript, React, AWS, and enterprise systems.`}
@@ -114,7 +114,7 @@ const ExperiencePage: React.FC = () => {
       {/* Subtle spotlight */}
       <motion.div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-24 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[var(--brand-hero)] blur-[110px] opacity-20 dark:opacity-10"
+        className="pointer-events-none absolute -top-24 left-1/2 h-130 w-130 -translate-x-1/2 rounded-full bg-(--brand-hero) blur-[110px] opacity-20 dark:opacity-10"
         animate={
           shouldReduceMotion
             ? undefined
@@ -135,7 +135,7 @@ const ExperiencePage: React.FC = () => {
               className="mb-8"
             >
               <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6">
-                <div aria-hidden="true" className="absolute -inset-3 rounded-3xl bg-[var(--brand-hero)] blur-2xl opacity-35" />
+                <div aria-hidden="true" className="absolute -inset-3 rounded-3xl bg-(--brand-hero) blur-2xl opacity-35" />
                 <div className="relative inline-flex items-center justify-center w-20 h-20 bg-white/80 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-xl shadow-slate-900/10">
                   <Building size={32} className="text-sky-700 dark:text-sky-300" />
                 </div>
@@ -190,7 +190,7 @@ const ExperiencePage: React.FC = () => {
           {/* Timeline */}
           <section className="relative max-w-6xl mx-auto">
             <motion.div
-              className="absolute left-4 md:left-1/2 md:transform md:-translate-x-1/2 w-1 h-full bg-gradient-to-b from-blue-500 via-purple-500 to-green-500 rounded-full origin-top"
+              className="absolute left-4 md:left-1/2 md:transform md:-translate-x-1/2 w-1 h-full bg-linear-to-b from-blue-500 via-purple-500 to-green-500 rounded-full origin-top"
               variants={timelineVariants}
             />
 
@@ -214,7 +214,7 @@ const ExperiencePage: React.FC = () => {
                 >
                   <motion.div {...hoverLift(shouldReduceMotion)} className="h-full">
                     <Card className="glass-panel border border-gray-200 dark:border-gray-800 overflow-hidden relative">
-                      <div aria-hidden="true" className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10" />
+                      <div aria-hidden="true" className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-(--brand-hero) blur-3xl opacity-10" />
                       <CardContent className="relative z-10 p-6 md:p-8">
                         <div className="mb-6">
                           <div className="flex items-start justify-between gap-4 mb-2">
@@ -230,7 +230,7 @@ const ExperiencePage: React.FC = () => {
                           </div>
 
                           <div className="mt-3 flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
-                            <TrendingUp size={16} className="mt-0.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                            <TrendingUp size={16} className="mt-0.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
                             <p className="leading-relaxed">{experience.impact}</p>
                           </div>
 
@@ -254,7 +254,7 @@ const ExperiencePage: React.FC = () => {
                             <ul className="space-y-2">
                               {experience.learnings.map((learning, idx) => (
                                 <li key={idx} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-200">
-                                  <CheckCircle size={14} className="text-emerald-600 dark:text-emerald-400 mt-0.5 flex-shrink-0" />
+                                  <CheckCircle size={14} className="text-emerald-600 dark:text-emerald-400 mt-0.5 shrink-0" />
                                   <span>{learning}</span>
                                 </li>
                               ))}
@@ -269,7 +269,7 @@ const ExperiencePage: React.FC = () => {
                             <ul className="space-y-2">
                               {experience.contributions.map((contribution, idx) => (
                                 <li key={idx} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-200">
-                                  <CheckCircle size={14} className="text-sky-700 dark:text-sky-300 mt-0.5 flex-shrink-0" />
+                                  <CheckCircle size={14} className="text-sky-700 dark:text-sky-300 mt-0.5 shrink-0" />
                                   <span>{contribution}</span>
                                 </li>
                               ))}
@@ -288,12 +288,12 @@ const ExperiencePage: React.FC = () => {
           <motion.section variants={itemVariants} className="text-center mt-16 sm:mt-20">
             <Card className="glass-panel border border-gray-200 dark:border-gray-800 overflow-hidden max-w-4xl mx-auto">
               <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
-                <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10" />
+                <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-(--brand-hero) blur-3xl opacity-10" />
               </div>
               <CardContent className="relative z-10 p-8 md:p-12">
                 <div className="flex justify-center mb-6">
                   <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-2xl">
-                    <div aria-hidden="true" className="absolute -inset-3 rounded-3xl bg-[var(--brand-hero)] blur-2xl opacity-30" />
+                    <div aria-hidden="true" className="absolute -inset-3 rounded-3xl bg-(--brand-hero) blur-2xl opacity-30" />
                     <div className="relative inline-flex items-center justify-center w-20 h-20 bg-white/80 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-xl shadow-slate-900/10">
                       <Users size={32} className="text-sky-700 dark:text-sky-300" />
                     </div>

@@ -16,6 +16,8 @@
 
   "typescript.updateImportsOnFileMove.enabled": "always",
 
+  "tailwindCSS.lint.suggestCanonicalClasses": "ignore",
+
   "files.autoSave": "afterDelay",
   "files.autoSaveDelay": 1000
 }

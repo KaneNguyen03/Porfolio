@@ -47,11 +47,11 @@ const AboutPage: React.FC = () => {
         title="About"
         description={`About ${personalInfo.name} — ${personalInfo.title} based in ${personalInfo.location}. Skills, awards, and professional background.`}
       />
-      <div className="bg-gradient-to-br from-slate-50/70 via-white/60 to-blue-50/70 dark:from-gray-950/80 dark:via-gray-900/70 dark:to-slate-900/80 py-20 sm:py-24 overflow-hidden">
+      <div className="bg-linear-to-br from-slate-50/70 via-white/60 to-blue-50/70 dark:from-gray-950/80 dark:via-gray-900/70 dark:to-slate-900/80 py-20 sm:py-24 overflow-hidden">
         {/* Subtle spotlight */}
         <motion.div
           aria-hidden="true"
-          className="pointer-events-none absolute -top-24 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[var(--brand-hero)] blur-[110px] opacity-20 dark:opacity-10"
+          className="pointer-events-none absolute -top-24 left-1/2 h-130 w-130 -translate-x-1/2 rounded-full bg-(--brand-hero) blur-[110px] opacity-20 dark:opacity-10"
           animate={
             shouldReduceMotion
               ? undefined
@@ -74,7 +74,7 @@ const AboutPage: React.FC = () => {
                 <div className="relative inline-block">
                   <motion.div
                     aria-hidden="true"
-                    className="absolute -inset-4 rounded-full bg-[var(--brand-hero)] blur-lg opacity-35"
+                    className="absolute -inset-4 rounded-full bg-(--brand-hero) blur-lg opacity-35"
                     animate={
                       shouldReduceMotion
                         ? undefined
@@ -171,7 +171,7 @@ const AboutPage: React.FC = () => {
             <motion.section variants={itemVariants} className="mb-16 sm:mb-20">
               <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 overflow-hidden">
                 <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
-                  <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10 dark:opacity-10" />
+                  <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-(--brand-hero) blur-3xl opacity-10 dark:opacity-10" />
                 </div>
 
                 <CardContent className="p-8 md:p-12 relative">
@@ -226,7 +226,7 @@ const AboutPage: React.FC = () => {
 
                     <motion.div variants={itemVariants} className="lg:col-span-5 flex justify-center lg:justify-end">
                       <div className="relative w-full max-w-sm">
-                        <div className="absolute -inset-4 rounded-3xl bg-[var(--brand-hero)] blur-2xl opacity-20" aria-hidden="true" />
+                        <div className="absolute -inset-4 rounded-3xl bg-(--brand-hero) blur-2xl opacity-20" aria-hidden="true" />
                         <div className="relative rounded-3xl p-2 bg-white/70 dark:bg-slate-950/50 border border-slate-200/70 dark:border-slate-800/70">
                           <img
                             src={avatarImage}
@@ -317,7 +317,7 @@ const AboutPage: React.FC = () => {
                   >
                     <Card className="border border-slate-200/70 dark:border-slate-800/70 overflow-hidden">
                       <CardContent className="p-6 relative">
-                        <div aria-hidden="true" className="absolute -top-12 -right-12 h-32 w-32 rounded-full bg-[var(--brand-hero)] blur-2xl opacity-10" />
+                        <div aria-hidden="true" className="absolute -top-12 -right-12 h-32 w-32 rounded-full bg-(--brand-hero) blur-2xl opacity-10" />
 
                         <div className="relative flex items-start gap-4">
                           <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 text-sky-700 dark:text-sky-300 inline-flex items-center justify-center">

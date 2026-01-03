@@ -121,7 +121,7 @@ const ContactPage: React.FC = () => {
   const itemVariants = fadeUpItem(shouldReduceMotion, 12);
 
   return (
-    <div className="bg-gradient-to-br from-slate-50/70 via-white/60 to-blue-50/70 dark:from-gray-950/80 dark:via-gray-900/70 dark:to-slate-900/80 py-20 sm:py-24 overflow-hidden">
+    <div className="bg-linear-to-br from-slate-50/70 via-white/60 to-blue-50/70 dark:from-gray-950/80 dark:via-gray-900/70 dark:to-slate-900/80 py-20 sm:py-24 overflow-hidden">
       <SEO
         title="Contact"
         description={`Contact ${personalInfo.name} — ${personalInfo.title}. Email, phone, and social links.`}
@@ -130,7 +130,7 @@ const ContactPage: React.FC = () => {
       {/* Subtle spotlight */}
       <motion.div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-24 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[var(--brand-hero)] blur-[110px] opacity-20 dark:opacity-10"
+        className="pointer-events-none absolute -top-24 left-1/2 h-130 w-130 -translate-x-1/2 rounded-full bg-(--brand-hero) blur-[110px] opacity-20 dark:opacity-10"
         animate={
           shouldReduceMotion
             ? undefined
@@ -156,7 +156,7 @@ const ContactPage: React.FC = () => {
               className="mb-8"
             >
               <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6">
-                <div aria-hidden="true" className="absolute -inset-3 rounded-3xl bg-[var(--brand-hero)] blur-2xl opacity-35" />
+                <div aria-hidden="true" className="absolute -inset-3 rounded-3xl bg-(--brand-hero) blur-2xl opacity-35" />
                 <div className="relative inline-flex items-center justify-center w-20 h-20 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-2xl shadow-xl shadow-slate-900/10">
                   <Mail size={32} className="text-sky-700 dark:text-sky-300" />
                 </div>
@@ -202,7 +202,7 @@ const ContactPage: React.FC = () => {
                           <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 overflow-hidden">
                             <CardContent className="p-0">
                               <a href={method.link} className="block p-6 relative">
-                                <div aria-hidden="true" className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10" />
+                                <div aria-hidden="true" className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-(--brand-hero) blur-3xl opacity-10" />
                                 <div className="relative z-10 flex items-center space-x-4">
                                   <div className="w-14 h-14 rounded-2xl bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 flex items-center justify-center shadow-xl shadow-slate-900/10">
                                     <IconComponent size={26} className={method.color} />
@@ -218,7 +218,7 @@ const ContactPage: React.FC = () => {
                         ) : (
                           <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 overflow-hidden">
                             <CardContent className="p-6 relative">
-                              <div aria-hidden="true" className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10" />
+                              <div aria-hidden="true" className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-(--brand-hero) blur-3xl opacity-10" />
                               <div className="relative z-10 flex items-center space-x-4">
                                 <div className="w-14 h-14 rounded-2xl bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 flex items-center justify-center shadow-xl shadow-slate-900/10">
                                   <IconComponent size={26} className={method.color} />
@@ -238,7 +238,7 @@ const ContactPage: React.FC = () => {
 
                 {/* Social Links - Enhanced */}
                 <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 overflow-hidden">
-                  <div aria-hidden="true" className="absolute -top-20 -right-20 h-56 w-56 rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10" />
+                  <div aria-hidden="true" className="absolute -top-20 -right-20 h-56 w-56 rounded-full bg-(--brand-hero) blur-3xl opacity-10" />
                   <CardContent className="relative z-10 p-8">
                     <h3 className="text-xl font-bold text-slate-950 dark:text-white mb-6 text-center flex items-center justify-center">
                       <div className="w-8 h-8 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-lg flex items-center justify-center mr-3 shadow-xl shadow-slate-900/10">
@@ -271,7 +271,7 @@ const ContactPage: React.FC = () => {
 
                 {/* References */}
                 <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 overflow-hidden">
-                  <div aria-hidden="true" className="absolute -top-20 -right-20 h-56 w-full rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10" />
+                  <div aria-hidden="true" className="absolute -top-20 -right-20 h-56 w-full rounded-full bg-(--brand-hero) blur-3xl opacity-10" />
                   <CardContent className="relative z-10 p-8">
                     <h3 className="text-lg font-semibold text-slate-950 dark:text-white mb-6 flex items-center">
                       <UserCircle size={20} className="mr-2 text-sky-700 dark:text-sky-300" />
@@ -285,7 +285,7 @@ const ContactPage: React.FC = () => {
                           className="rounded-2xl border border-slate-200/70 dark:border-slate-800/70 bg-white/60 dark:bg-slate-950/30"
                         >
                           <div className="flex items-start space-x-3 p-2">
-                            <div className="w-8 h-8 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-full flex items-center justify-center flex-shrink-0 shadow-xl shadow-slate-900/10">
+                            <div className="w-8 h-8 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-full flex items-center justify-center shrink-0 shadow-xl shadow-slate-900/10">
                               <UserCircle size={20} className="text-sky-700 dark:text-sky-300" />
                             </div>
                             <div className="flex-1 min-w-0">
@@ -310,7 +310,7 @@ const ContactPage: React.FC = () => {
               <motion.div variants={itemVariants} className="xl:col-span-2">
                 <Card className="p-8 md:p-12 relative overflow-hidden group">
                   {/* Background Pattern */}
-                  <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10 group-hover:opacity-15 transition-opacity"></div>
+                  <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-(--brand-hero) blur-3xl opacity-10 group-hover:opacity-15 transition-opacity"></div>
                   
                   <div className="relative z-10">
                     <div className="mb-10">
@@ -335,7 +335,7 @@ const ContactPage: React.FC = () => {
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={shouldReduceMotion ? { duration: 0 } : TRANSITION.fast}
-                        className="p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 border border-green-200 dark:border-green-700 text-green-800 dark:text-green-300 rounded-xl"
+                        className="p-4 bg-linear-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 border border-green-200 dark:border-green-700 text-green-800 dark:text-green-300 rounded-xl"
                       >
                         <div className="flex items-center space-x-2">
                           <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
@@ -353,7 +353,7 @@ const ContactPage: React.FC = () => {
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={shouldReduceMotion ? { duration: 0 } : TRANSITION.fast}
-                        className="p-4 bg-gradient-to-r from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20 border border-red-200 dark:border-red-700 text-red-800 dark:text-red-300 rounded-xl"
+                        className="p-4 bg-linear-to-r from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20 border border-red-200 dark:border-red-700 text-red-800 dark:text-red-300 rounded-xl"
                       >
                         <div className="flex items-center space-x-2">
                           <div className="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">

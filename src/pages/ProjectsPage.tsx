@@ -66,7 +66,7 @@ const ProjectsPage: React.FC = () => {
   const cardVariants = scaleInItem(shouldReduceMotion, 0.985);
 
   return (
-    <div className="bg-gradient-to-br from-slate-50/70 via-white/60 to-blue-50/70 dark:from-gray-950/80 dark:via-gray-900/70 dark:to-slate-900/80 py-20 sm:py-24 overflow-hidden">
+    <div className="bg-linear-to-br from-slate-50/70 via-white/60 to-blue-50/70 dark:from-gray-950/80 dark:via-gray-900/70 dark:to-slate-900/80 py-20 sm:py-24 overflow-hidden">
       <SEO
         title="Projects"
         description={`Projects by ${portfolioData.personalInfo.name}: full-stack and backend work with Node.js, TypeScript, React, AWS, and more.`}
@@ -75,7 +75,7 @@ const ProjectsPage: React.FC = () => {
       {/* Subtle spotlight */}
       <motion.div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-24 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[var(--brand-hero)] blur-[110px] opacity-20 dark:opacity-10"
+        className="pointer-events-none absolute -top-24 left-1/2 h-130 w-130 -translate-x-1/2 rounded-full bg-(--brand-hero) blur-[110px] opacity-20 dark:opacity-10"
         animate={
           shouldReduceMotion
             ? undefined
@@ -101,7 +101,7 @@ const ProjectsPage: React.FC = () => {
               className="mb-8"
             >
               <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6">
-                <div aria-hidden="true" className="absolute -inset-3 rounded-3xl bg-[var(--brand-hero)] blur-2xl opacity-35" />
+                <div aria-hidden="true" className="absolute -inset-3 rounded-3xl bg-(--brand-hero) blur-2xl opacity-35" />
                 <div className="relative inline-flex items-center justify-center w-20 h-20 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-2xl shadow-xl shadow-slate-900/10">
                   <Code size={32} className="text-sky-700 dark:text-sky-300" />
                 </div>
@@ -218,11 +218,11 @@ const ProjectsPage: React.FC = () => {
                 className="h-full"
               >
                 <Card className="relative overflow-hidden group transition-all duration-300 flex flex-col h-full border border-slate-200/70 dark:border-slate-800/70">
-                  <div aria-hidden="true" className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10 group-hover:opacity-15 transition-opacity" />
+                  <div aria-hidden="true" className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-(--brand-hero) blur-3xl opacity-10 group-hover:opacity-15 transition-opacity" />
 
                   <CardContent className="relative z-10 flex flex-col h-full p-6">
                   {/* Project Header */}
-                  <div className="relative h-52 md:h-66 rounded-2xl overflow-hidden mb-6 flex-shrink-0 shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                  <div className="relative h-52 md:h-66 rounded-2xl overflow-hidden mb-6 shrink-0 shadow-lg group-hover:shadow-xl transition-shadow duration-300">
                     {project.liveDemo && project.liveDemo.includes('youtube.com') ? (
                       // YouTube embedded video
                       <div className="relative w-full h-full">
@@ -245,7 +245,7 @@ const ProjectsPage: React.FC = () => {
                           alt={project.name}
                           className="w-full h-full object-contain rounded-2xl group-hover:scale-110 transition-transform duration-500"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end rounded-2xl p-4">
+                        <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent flex items-end rounded-2xl p-4">
                           <h3 className="text-white text-lg md:text-xl font-bold leading-tight">
                             {project.name}
                           </h3>
@@ -263,10 +263,10 @@ const ProjectsPage: React.FC = () => {
                     </div>
                   )}
 
-                  {/* Project Details - Using flex-grow to expand */}
-                  <div className="flex flex-col flex-grow space-y-4">
+                  {/* Project Details - Using grow to expand */}
+                  <div className="flex flex-col grow space-y-4">
                     {/* Meta Information */}
-                    <div className="flex items-center justify-between text-sm text-slate-600 dark:text-slate-300 flex-shrink-0">
+                    <div className="flex items-center justify-between text-sm text-slate-600 dark:text-slate-300 shrink-0">
                       <div className="flex items-center space-x-2">
                         <Calendar size={16} className="text-sky-600 dark:text-sky-300" />
                         <span className="font-medium">{project.period}</span>
@@ -278,7 +278,7 @@ const ProjectsPage: React.FC = () => {
                     </div>
 
                     {/* Technologies - Enhanced with Tooltip */}
-                    <div className="flex-shrink-0">
+                    <div className="shrink-0">
                       <div className="flex items-center space-x-2 mb-4">
                         <Code size={18} className="text-sky-700 dark:text-sky-300" />
                         <span className="text-sm font-semibold text-slate-800 dark:text-slate-100">
@@ -328,7 +328,7 @@ const ProjectsPage: React.FC = () => {
                     </div>
 
                     {/* Responsibilities - Enhanced with Expandable Content */}
-                    <div className="flex-grow">
+                    <div className="grow">
                       <h4 className="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-4 flex items-center">
                         <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full mr-3"></span>
                         Key Achievements
@@ -340,7 +340,7 @@ const ProjectsPage: React.FC = () => {
                               key={idx}
                               className="text-sm text-slate-700 dark:text-slate-200 flex items-start space-x-3 leading-relaxed"
                             >
-                              <span className="mt-1.5 w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0"></span>
+                              <span className="mt-1.5 w-2 h-2 bg-emerald-500 rounded-full shrink-0"></span>
                               <span className="flex-1 font-medium">{responsibility}</span>
                             </div>
                           ))}
@@ -355,7 +355,7 @@ const ProjectsPage: React.FC = () => {
                                       key={idx + 3}
                                       className="text-sm text-slate-700 dark:text-slate-200 flex items-start space-x-3 leading-relaxed"
                                     >
-                                      <span className="mt-1.5 w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0"></span>
+                                      <span className="mt-1.5 w-2 h-2 bg-emerald-500 rounded-full shrink-0"></span>
                                       <span className="flex-1 font-medium">{responsibility}</span>
                                     </div>
                                   ))}
@@ -394,7 +394,7 @@ const ProjectsPage: React.FC = () => {
                     </div>
 
                     {/* Action Buttons - Enhanced */}
-                    <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200 dark:border-gray-700 flex-shrink-0 mt-auto">
+                    <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200 dark:border-gray-700 shrink-0 mt-auto">
                       <div className="flex flex-1 gap-3">
                         {project.liveDemo && !project.liveDemo.includes('youtube.com') ? (
                           <motion.div className="flex-1" {...hoverLift(shouldReduceMotion)}>

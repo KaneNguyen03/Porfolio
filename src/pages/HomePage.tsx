@@ -45,7 +45,7 @@ const HomePage: React.FC = () => {
   ];
 
   return (
-    <div className="bg-gradient-to-br from-slate-50/70 via-white/60 to-blue-50/70 dark:from-gray-950/80 dark:via-gray-900/70 dark:to-slate-900/80 py-20 sm:py-24 overflow-hidden">
+    <div className="bg-linear-to-br from-slate-50/70 via-white/60 to-blue-50/70 dark:from-gray-950/80 dark:via-gray-900/70 dark:to-slate-900/80 py-20 sm:py-24 overflow-hidden">
       <SEO
         title="Home"
         description={personalInfo.objective}
@@ -54,7 +54,7 @@ const HomePage: React.FC = () => {
         {/* Subtle hero spotlight (lets the global brand backdrop feel intentional) */}
         <motion.div
           aria-hidden="true"
-          className="pointer-events-none absolute -top-24 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[var(--brand-hero)] blur-[110px] opacity-20 dark:opacity-10"
+          className="pointer-events-none absolute -top-24 left-1/2 h-130 w-130 -translate-x-1/2 rounded-full bg-(--brand-hero) blur-[110px] opacity-20 dark:opacity-10"
           animate={
             shouldReduceMotion
               ? undefined
@@ -88,7 +88,7 @@ const HomePage: React.FC = () => {
                   >
                     <div className="relative inline-block">
                       <motion.div
-                        className="absolute -inset-4 bg-gradient-to-r from-blue-500 via-purple-500 to-green-500 rounded-full opacity-75 blur-lg"
+                        className="absolute -inset-4 bg-linear-to-r from-blue-500 via-purple-500 to-green-500 rounded-full opacity-75 blur-lg"
                         animate={
                           shouldReduceMotion
                             ? undefined
@@ -175,7 +175,7 @@ const HomePage: React.FC = () => {
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={shouldReduceMotion ? { duration: 0 } : { ...TRANSITION.slow, delay: 0.05 }}
-                    className="text-4xl md:text-6xl font-bold bg-[var(--brand-hero)] bg-clip-text text-transparent mb-4"
+                    className="text-4xl md:text-6xl font-bold bg-(--brand-hero) bg-clip-text text-transparent mb-4"
                   >
                     {personalInfo.name}
                   </motion.h1>
@@ -329,7 +329,7 @@ const HomePage: React.FC = () => {
               >
                 <Card className="rounded-3xl shadow-xl p-8 border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center justify-center mb-6">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center">
+                    <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center">
                       <Star size={24} className="text-white" />
                     </div>
                   </div>

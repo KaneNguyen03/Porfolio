@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { startTransition, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Sun, Moon, ArrowUpRight } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
@@ -13,6 +13,12 @@ const Header: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const shouldReduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    // Avoid mobile menu re-animating/lingering across route changes.
+    if (!isMenuOpen) return;
+    startTransition(() => setIsMenuOpen(false));
+  }, [location.pathname, isMenuOpen]);
 
   const navigationItems = [
     { name: 'Home', path: '/' },
@@ -36,7 +42,7 @@ const Header: React.FC = () => {
       transition={shouldReduceMotion ? { duration: 0 } : TRANSITION.base}
       className="sticky top-0 z-50 w-full bg-white/85 dark:bg-slate-950/85 backdrop-blur-xl border-b border-slate-200/70 dark:border-slate-800/70 shadow-lg shadow-slate-900/10"
     >
-      <div className="bg-gradient-to-r from-sky-50/70 via-emerald-50/70 to-amber-50/70 dark:from-slate-900 dark:via-slate-900 dark:to-slate-900 border-b border-slate-200/60 dark:border-slate-800/60">
+      <div className="bg-linear-to-r from-sky-50/70 via-emerald-50/70 to-amber-50/70 dark:from-slate-900 dark:via-slate-900 dark:to-slate-900 border-b border-slate-200/60 dark:border-slate-800/60">
         <div className="container-width py-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-700 dark:text-slate-200">
             <Badge variant="emerald">Open to Junior/Middle roles</Badge>
@@ -80,7 +86,7 @@ const Header: React.FC = () => {
           >
             <Link
               to="/"
-              className="text-xl font-bold tracking-tight bg-[var(--brand-hero)] bg-clip-text text-transparent"
+              className="text-xl font-bold tracking-tight bg-(--brand-hero) bg-clip-text text-transparent"
             >
               Kane Nguyen
             </Link>

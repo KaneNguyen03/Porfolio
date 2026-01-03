@@ -33,7 +33,7 @@ const EducationPage: React.FC = () => {
   ];
 
   return (
-    <div className="bg-gradient-to-br from-slate-50/70 via-white/60 to-blue-50/70 dark:from-gray-950/80 dark:via-gray-900/70 dark:to-slate-900/80 py-20 sm:py-24 overflow-hidden">
+    <div className="bg-linear-to-br from-slate-50/70 via-white/60 to-blue-50/70 dark:from-gray-950/80 dark:via-gray-900/70 dark:to-slate-900/80 py-20 sm:py-24 overflow-hidden">
       <SEO
         title="Education"
         description={`Education and certifications for ${portfolioData.personalInfo.name}. Academic background, training, and professional learning.`}
@@ -42,7 +42,7 @@ const EducationPage: React.FC = () => {
       {/* Subtle spotlight */}
       <motion.div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-24 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[var(--brand-hero)] blur-[110px] opacity-20 dark:opacity-10"
+        className="pointer-events-none absolute -top-24 left-1/2 h-130 w-130 -translate-x-1/2 rounded-full bg-(--brand-hero) blur-[110px] opacity-20 dark:opacity-10"
         animate={
           shouldReduceMotion
             ? undefined
@@ -68,7 +68,7 @@ const EducationPage: React.FC = () => {
               className="mb-8"
             >
               <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6">
-                <div aria-hidden="true" className="absolute -inset-3 rounded-3xl bg-[var(--brand-hero)] blur-2xl opacity-35" />
+                <div aria-hidden="true" className="absolute -inset-3 rounded-3xl bg-(--brand-hero) blur-2xl opacity-35" />
                 <div className="relative inline-flex items-center justify-center w-20 h-20 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-2xl shadow-xl shadow-slate-900/10">
                   <GraduationCap size={32} className="text-sky-700 dark:text-sky-300" />
                 </div>
@@ -152,13 +152,13 @@ const EducationPage: React.FC = () => {
                   className="mb-6"
                 >
                   <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 overflow-hidden relative">
-                    <div aria-hidden="true" className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10" />
+                    <div aria-hidden="true" className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-(--brand-hero) blur-3xl opacity-10" />
                     <CardContent className="relative z-10 p-8 md:p-12">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
                       {/* University Info */}
                       <div className="lg:col-span-2">
                         <div className="flex items-start space-x-6 mb-6">
-                          <div className="w-20 h-20 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-xl shadow-slate-900/10">
+                          <div className="w-20 h-20 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-2xl flex items-center justify-center shrink-0 shadow-xl shadow-slate-900/10">
                             <GraduationCap size={32} className="text-sky-700 dark:text-sky-300" />
                           </div>
                           <div className="flex-1">
@@ -183,15 +183,15 @@ const EducationPage: React.FC = () => {
                           </h4>
                           <ul className="space-y-2 text-slate-700 dark:text-slate-200">
                             <li className="flex items-start space-x-2">
-                              <Target size={14} className="text-sky-700 dark:text-sky-300 mt-1 flex-shrink-0" />
+                              <Target size={14} className="text-sky-700 dark:text-sky-300 mt-1 shrink-0" />
                               <span>Specialized in full-stack web development and software architecture</span>
                             </li>
                             <li className="flex items-start space-x-2">
-                              <Target size={14} className="text-sky-700 dark:text-sky-300 mt-1 flex-shrink-0" />
+                              <Target size={14} className="text-sky-700 dark:text-sky-300 mt-1 shrink-0" />
                               <span>Led multiple capstone projects using modern development methodologies</span>
                             </li>
                             <li className="flex items-start space-x-2">
-                              <Target size={14} className="text-sky-700 dark:text-sky-300 mt-1 flex-shrink-0" />
+                              <Target size={14} className="text-sky-700 dark:text-sky-300 mt-1 shrink-0" />
                               <span>Gained expertise in cloud computing and DevOps practices</span>
                             </li>
                           </ul>
@@ -255,7 +255,7 @@ const EducationPage: React.FC = () => {
                   className="relative"
                 >
                   <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 overflow-hidden relative">
-                    <div aria-hidden="true" className="absolute -top-24 -right-24 h-56 w-56 rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10" />
+                    <div aria-hidden="true" className="absolute -top-24 -right-24 h-56 w-56 rounded-full bg-(--brand-hero) blur-3xl opacity-10" />
                     <CardContent className="relative z-10 p-8">
                       <div className="text-center mb-6">
                         <div className="w-16 h-16 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl shadow-slate-900/10">
@@ -297,7 +297,7 @@ const EducationPage: React.FC = () => {
           <motion.div variants={itemVariants}>
             <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 overflow-hidden max-w-5xl mx-auto">
               <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
-                <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-[var(--brand-hero)] blur-3xl opacity-10" />
+                <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-(--brand-hero) blur-3xl opacity-10" />
               </div>
               <CardContent className="relative z-10 p-10 md:p-12 text-center">
                 <div className="flex justify-center mb-8">
