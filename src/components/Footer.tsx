@@ -1,54 +1,61 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Github, Linkedin, Mail, Phone, MapPin, Heart } from 'lucide-react';
-import { portfolioData } from '../data/portfolio';
-import { Button } from './ui/button';
-import { motion, useReducedMotion } from 'framer-motion';
-import { fadeUpItem, staggerContainer } from '../lib/motion';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Github, Linkedin, Mail, Phone, MapPin, Heart } from "lucide-react";
+import { portfolioData } from "../data/portfolio";
+import { Button } from "./ui/button";
+import { motion } from "framer-motion";
+import { fadeUpItem, staggerContainer } from "../lib/motion";
+import { useReducedMotion } from "../hooks/use-reduced-motion";
 
 const Footer: React.FC = () => {
   const { personalInfo } = portfolioData;
   const shouldReduceMotion = useReducedMotion();
-  const container = staggerContainer(shouldReduceMotion, { stagger: 0.06, delay: 0.04 });
+  const container = staggerContainer(shouldReduceMotion, {
+    stagger: 0.06,
+    delay: 0.04,
+  });
   const item = fadeUpItem(shouldReduceMotion, 10);
 
   const socialLinks = [
     {
       icon: Github,
       url: personalInfo.github,
-      label: 'GitHub',
-      color: 'hover:bg-gray-700',
-      external: true
+      label: "GitHub",
+      color: "hover:bg-gray-700",
+      external: true,
     },
     {
       icon: Linkedin,
       url: personalInfo.linkedin,
-      label: 'LinkedIn',
-      color: 'hover:bg-blue-700',
-      external: true
+      label: "LinkedIn",
+      color: "hover:bg-blue-700",
+      external: true,
     },
     {
       icon: Mail,
-      url: '/contact',
-      label: 'Email',
-      color: 'hover:bg-red-600',
-      external: false
-    }
+      url: "/contact",
+      label: "Email",
+      color: "hover:bg-red-600",
+      external: false,
+    },
   ];
 
   return (
     <footer className="bg-gray-900 dark:bg-black text-white">
-      <div className="container-width py-12 px-6 md:px-0">{" "}
+      <div className="container-width py-12 px-6 md:px-0">
+        {" "}
         <motion.div
           variants={container}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-10% 0px -10% 0px' }}
+          viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
         >
           {/* Contact Info */}
           <motion.div variants={item} className="lg:col-span-2">
-            <h3 className="text-xl font-bold mb-6 text-center md:text-left">Get In Touch</h3>
+            <h3 className="text-xl font-bold mb-6 text-center md:text-left">
+              Get In Touch
+            </h3>
             <div className="space-y-4">
               <div className="flex items-center justify-start space-x-3">
                 <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shrink-0">
@@ -76,29 +83,37 @@ const Footer: React.FC = () => {
                 <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center shrink-0">
                   <MapPin size={18} className="text-white" />
                 </div>
-                <span className="text-gray-300 text-sm md:text-base">{personalInfo.location}</span>
+                <span className="text-gray-300 text-sm md:text-base">
+                  {personalInfo.location}
+                </span>
               </div>
             </div>
           </motion.div>
 
           {/* Quick Links */}
           <motion.div variants={item} className="text-center md:text-left">
-            <h3 className="text-center md:text-left text-lg font-semibold mb-6">Quick Links</h3>
+            <h3 className="text-center md:text-left text-lg font-semibold mb-6">
+              Quick Links
+            </h3>
             <div className="grid grid-cols-2 gap-x-4 gap-y-4 md:flex md:justify-start md:flex-col">
-              {['About', 'Projects', 'Experience', 'Education', 'Contact'].map((link, index, array) => (
-                <Link
-                  key={link}
-                  to={`/${link.toLowerCase()}`}
-                  className={`block text-gray-300 hover:text-white transition-colors duration-200 text-sm hover:transform hover:translate-x-1 ${
-                    index === array.length - 1 && array.length % 2 !== 0 
-                      ? 'col-span-2 text-center' 
-                      : ''
-                  } md:col-span-1 md:text-left`}
-                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                >
-                  {link}
-                </Link>
-              ))}
+              {["About", "Projects", "Experience", "Education", "Contact"].map(
+                (link, index, array) => (
+                  <Link
+                    key={link}
+                    to={`/${link.toLowerCase()}`}
+                    className={`block text-gray-300 hover:text-white transition-colors duration-200 text-sm hover:transform hover:translate-x-1 ${
+                      index === array.length - 1 && array.length % 2 !== 0
+                        ? "col-span-2 text-center"
+                        : ""
+                    } md:col-span-1 md:text-left`}
+                    onClick={() =>
+                      window.scrollTo({ top: 0, behavior: "smooth" })
+                    }
+                  >
+                    {link}
+                  </Link>
+                ),
+              )}
             </div>
           </motion.div>
 
@@ -108,7 +123,7 @@ const Footer: React.FC = () => {
             <div className="flex justify-center md:justify-start space-x-4">
               {socialLinks.map((social) => {
                 const IconComponent = social.icon;
-                
+
                 if (social.external) {
                   return (
                     <Button
@@ -140,7 +155,9 @@ const Footer: React.FC = () => {
                       <Link
                         to={social.url}
                         aria-label={social.label}
-                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                        onClick={() =>
+                          window.scrollTo({ top: 0, behavior: "smooth" })
+                        }
                       >
                         <IconComponent size={20} />
                       </Link>
@@ -151,12 +168,14 @@ const Footer: React.FC = () => {
             </div>
           </motion.div>
         </motion.div>
-
         {/* Bottom Section */}
         <div className="border-t border-gray-800 mt-8 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
             <p className="text-gray-400 flex items-center justify-center space-x-2 text-sm">
-              <span>&copy; {new Date().getFullYear()} {personalInfo.name}. All rights reserved.</span>
+              <span>
+                &copy; {new Date().getFullYear()} {personalInfo.name}. All
+                rights reserved.
+              </span>
             </p>
             <p className="text-gray-400 flex items-center justify-center space-x-1 text-sm">
               <span>Made with</span>
