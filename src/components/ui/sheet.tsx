@@ -44,17 +44,15 @@ export const SheetTrigger = ({
 
   // Handle asChild: clone the child and inject onClick
   if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(
-      children as React.ReactElement<{
-        onClick?: (e: React.MouseEvent) => void;
-      }>,
-      {
-        onClick: (e: React.MouseEvent) => {
-          children.props.onClick?.(e);
-          context.setOpen(true);
-        },
+    const child = children as React.ReactElement<{
+      onClick?: (e: React.MouseEvent) => void;
+    }>;
+    return React.cloneElement(child, {
+      onClick: (e: React.MouseEvent) => {
+        child.props.onClick?.(e);
+        context.setOpen(true);
       },
-    );
+    });
   }
 
   return (
