@@ -1,15 +1,8 @@
+"use client";
+
 import emailjs from "@emailjs/browser";
-import { motion } from "framer-motion";
-import {
-  Github,
-  Linkedin,
-  Mail,
-  MapPin,
-  Phone,
-  Send,
-  UserCircle,
-} from "lucide-react";
-import { useActionState } from "react";
+import { Mail, MapPin, Phone, Send } from "lucide-react";
+import { memo, useActionState, useLayoutEffect } from "react";
 import { useFormStatus } from "react-dom";
 import SEO from "../components/SEO";
 import { Button } from "../components/ui/button";
@@ -18,590 +11,126 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Textarea } from "../components/ui/textarea";
 import { portfolioData } from "../data/portfolio";
-import { useReducedMotion } from "../hooks/use-reduced-motion";
-import { useThemeClasses } from "../hooks/useThemeClasses";
-import {
-  fadeUpItem,
-  hoverLift,
-  staggerContainer,
-  TRANSITION,
-} from "../lib/motion";
 
-interface FormState {
-  status: "idle" | "success" | "error";
-  message?: string;
-}
-
-const submitContactForm = async (
-  _prevState: FormState,
-  formData: FormData,
-): Promise<FormState> => {
+const submitContactForm = async (_prevState: any, formData: FormData) => {
   const name = formData.get("name") as string;
   const email = formData.get("email") as string;
   const subject = formData.get("subject") as string;
   const message = formData.get("message") as string;
 
   try {
-    // Get EmailJS credentials from environment variables
     const serviceId = import.meta.env.VITE_SERVICE_ID;
     const templateId = import.meta.env.VITE_TEMPLATE_ID;
     const publicKey = import.meta.env.VITE_PUBLIC_KEY;
 
-    // Check if all credentials are available
-    if (
-      !serviceId ||
-      !templateId ||
-      !publicKey ||
-      templateId === "YOUR_TEMPLATE_ID" ||
-      publicKey === "YOUR_PUBLIC_KEY"
-    ) {
-      console.log("EmailJS not configured, using mailto fallback");
-      // Fallback to mailto
-      const mailtoLink = `mailto:${portfolioData.personalInfo.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-        `Hi ${portfolioData.personalInfo.name},\n\n${message}\n\nBest regards,\n${name}\n${email}`,
-      )}`;
+    if (!serviceId || !templateId || !publicKey) {
+      const mailtoLink = `mailto:${portfolioData.personalInfo.email}?subject=${subject}&body=${message}`;
       window.open(mailtoLink);
-      return {
-        status: "success",
-        message: "Email client opened successfully!",
-      };
+      return { status: "success", message: "Email client opened!" };
     }
 
-    const templateParams = {
-      from_name: name,
-      from_email: email,
-      subject,
-      message,
-      to_email: portfolioData.personalInfo.email,
-      sent_date: new Date().toISOString(),
-    };
-
-    await emailjs.send(serviceId, templateId, templateParams, publicKey);
-
-    return { status: "success", message: "Message sent successfully!" };
+    await emailjs.send(serviceId, templateId, { from_name: name, from_email: email, subject, message }, publicKey);
+    return { status: "success", message: "Message sent!" };
   } catch (error) {
-    console.error("Failed to send email:", error);
-    return {
-      status: "error",
-      message: "Failed to send message. Please try again.",
-    };
+    return { status: "error", message: "Failed to send." };
   }
 };
 
 const SubmitButton = () => {
   const { pending } = useFormStatus();
-
   return (
-    <Button type="submit" disabled={pending} className="w-full h-12 rounded-xl">
-      {pending ? (
-        <>
-          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
-          <span>Sending Message...</span>
-        </>
-      ) : (
-        <>
-          <Send size={20} />
-          <span>Send Message</span>
-        </>
-      )}
+    <Button type="submit" disabled={pending} className="w-full h-12 rounded-xl flex items-center justify-center gap-2">
+      {pending ? <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" /> : <Send size={20} />}
+      <span>{pending ? "Sending..." : "Send Message"}</span>
     </Button>
   );
 };
 
 const ContactPage = () => {
-  console.log("ContactPage render");
   const { personalInfo, references } = portfolioData;
-  const shouldReduceMotion = useReducedMotion();
-  useThemeClasses(); // Ensure component re-renders on theme change
+  const [formState, formAction] = useActionState(submitContactForm, { status: "idle", message: "" });
 
-  // React 19: Use useActionState for form state management instead of multiple useState
-  const [formState, formAction] = useActionState(submitContactForm, {
-    status: "idle" as const,
-  });
-
-  // ES2025: Object.groupBy not yet available, keeping array for now
-  const contactMethods = [
-    {
-      icon: Mail,
-      title: "Email",
-      value: personalInfo.email,
-      link: `mailto:${personalInfo.email}`,
-      color: "text-blue-600",
-    },
-    {
-      icon: Phone,
-      title: "Phone",
-      value: personalInfo.phone,
-      link: `tel:${personalInfo.phone}`,
-      color: "text-green-600",
-    },
-    {
-      icon: MapPin,
-      title: "Location",
-      value: personalInfo.location,
-      link: "#",
-      color: "text-red-600",
-    },
-  ];
-
-  const socialLinks = [
-    {
-      icon: Github,
-      title: "GitHub",
-      url: personalInfo.github,
-      color: "bg-gray-800 hover:bg-gray-700",
-    },
-    {
-      icon: Linkedin,
-      title: "LinkedIn",
-      url: personalInfo.linkedin,
-      color: "bg-blue-600 hover:bg-blue-700",
-    },
-  ];
-
-  const containerVariants = staggerContainer(shouldReduceMotion, {
-    stagger: 0.08,
-    delay: 0.08,
-  });
-  const itemVariants = fadeUpItem(shouldReduceMotion, 12);
+  useLayoutEffect(() => {
+    // UI Sync
+  }, []);
 
   return (
-    <div className="bg-linear-to-br from-slate-50/70 via-white/60 to-blue-50/70 dark:from-gray-950/80 dark:via-gray-900/70 dark:to-slate-900/80 py-20 sm:py-24 overflow-hidden">
-      <SEO
-        title="Contact"
-        description={`Contact ${personalInfo.name} — ${personalInfo.title}. Email, phone, and social links.`}
-      />
+    <div className="bg-slate-50 dark:bg-gray-950 py-16 sm:py-24 min-h-screen">
+      <SEO title="Contact" description="Get in touch for professional opportunities." />
+      
+      <div className="container-width max-w-5xl mx-auto px-4">
+        <header className="mb-16 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold dark:text-white mb-4">Get in Touch</h1>
+          <p className="text-lg text-slate-600 dark:text-slate-400">Let's connect and build something great.</p>
+        </header>
 
-      {/* Subtle spotlight */}
-      <motion.div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-24 left-1/2 h-130 w-130 -translate-x-1/2 rounded-full bg-(--brand-hero) blur-[110px] opacity-20 dark:opacity-10"
-        animate={
-          shouldReduceMotion
-            ? undefined
-            : {
-                x: ["-50%", "-48%", "-50%"],
-                y: [0, 10, 0],
-                scale: [1, 1.03, 1],
-              }
-        }
-        transition={
-          shouldReduceMotion
-            ? { duration: 0 }
-            : { duration: 10, repeat: Infinity, ease: "easeInOut" }
-        }
-        style={{ translateX: "-50%" }}
-      />
-
-      <div className="container-width">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="max-w-6xl mx-auto"
-        >
-          {/* Hero Section */}
-          <motion.div variants={itemVariants} className="text-center mb-20">
-            <motion.div
-              initial={{ scale: shouldReduceMotion ? 1 : 0.96, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={
-                shouldReduceMotion ? { duration: 0 } : TRANSITION.base
-              }
-              className="mb-8"
-            >
-              <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6">
-                <div
-                  aria-hidden="true"
-                  className="absolute -inset-3 rounded-3xl bg-(--brand-hero) blur-2xl opacity-35"
-                />
-                <div className="relative inline-flex items-center justify-center w-20 h-20 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-2xl shadow-xl shadow-slate-900/10">
-                  <Mail size={32} className="text-sky-700 dark:text-sky-300" />
-                </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Form Side */}
+          <Card className="p-6 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
+            <form action={formAction} className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="name">Name</Label>
+                <Input id="name" name="name" placeholder="Your Name" required className="rounded-xl" />
               </div>
-            </motion.div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" name="email" type="email" placeholder="email@example.com" required className="rounded-xl" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="message">Message</Label>
+                <Textarea id="message" name="message" placeholder="How can I help you?" required className="rounded-xl min-h-32" />
+              </div>
+              <SubmitButton />
+              {formState.status === "success" && <p className="text-emerald-500 text-center font-medium">{formState.message}</p>}
+              {formState.status === "error" && <p className="text-red-500 text-center font-medium">{formState.message}</p>}
+            </form>
+          </Card>
 
-            <motion.h1
-              className="text-4xl md:text-6xl font-bold text-slate-950 dark:text-white mb-4 tracking-tight"
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={
-                shouldReduceMotion
-                  ? { duration: 0 }
-                  : { ...TRANSITION.slow, delay: 0.08 }
-              }
-            >
-              Let&apos;s Work Together
-            </motion.h1>
-
-            <motion.p
-              className="text-lg md:text-2xl text-slate-700 dark:text-slate-200 max-w-4xl mx-auto leading-relaxed"
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={
-                shouldReduceMotion
-                  ? { duration: 0 }
-                  : { ...TRANSITION.slow, delay: 0.16 }
-              }
-            >
-              Ready to bring your ideas to life? I'm always excited to discuss
-              new{" "}
-              <span className="font-semibold text-sky-700 dark:text-sky-300">
-                opportunities
-              </span>{" "}
-              and challenging projects.
-            </motion.p>
-          </motion.div>
-
-          {/* Main Content */}
-          <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 lg:gap-12">
-              {/* Contact Information - 1/3 width */}
-              <motion.div
-                variants={itemVariants}
-                className="xl:col-span-1 space-y-8"
-              >
-                {/* Quick Contact Cards */}
-                <div className="space-y-4">
-                  {contactMethods.map((method) => {
-                    const IconComponent = method.icon;
-                    return (
-                      <motion.div
-                        key={method.title}
-                        {...hoverLift(shouldReduceMotion)}
-                        className="group"
-                      >
-                        {method.link !== "#" ? (
-                          <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 overflow-hidden">
-                            <CardContent className="p-0">
-                              <a
-                                href={method.link}
-                                className="block p-6 relative"
-                              >
-                                <div
-                                  aria-hidden="true"
-                                  className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-(--brand-hero) blur-3xl opacity-10"
-                                />
-                                <div className="relative z-10 flex items-center space-x-4">
-                                  <div className="w-14 h-14 rounded-2xl bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 flex items-center justify-center shadow-xl shadow-slate-900/10">
-                                    <IconComponent
-                                      size={26}
-                                      className={method.color}
-                                    />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <h3 className="text-lg font-semibold text-slate-950 dark:text-white mb-1">
-                                      {method.title}
-                                    </h3>
-                                    <p className="text-slate-600 dark:text-slate-300 truncate">
-                                      {method.value}
-                                    </p>
-                                  </div>
-                                </div>
-                              </a>
-                            </CardContent>
-                          </Card>
-                        ) : (
-                          <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 overflow-hidden">
-                            <CardContent className="p-6 relative">
-                              <div
-                                aria-hidden="true"
-                                className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-(--brand-hero) blur-3xl opacity-10"
-                              />
-                              <div className="relative z-10 flex items-center space-x-4">
-                                <div className="w-14 h-14 rounded-2xl bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 flex items-center justify-center shadow-xl shadow-slate-900/10">
-                                  <IconComponent
-                                    size={26}
-                                    className={method.color}
-                                  />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <h3 className="text-lg font-semibold text-slate-950 dark:text-white mb-1">
-                                    {method.title}
-                                  </h3>
-                                  <p className="text-slate-600 dark:text-slate-300">
-                                    {method.value}
-                                  </p>
-                                </div>
-                              </div>
-                            </CardContent>
-                          </Card>
-                        )}
-                      </motion.div>
-                    );
-                  })}
-                </div>
-
-                {/* Social Links - Enhanced */}
-                <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 overflow-hidden">
-                  <div
-                    aria-hidden="true"
-                    className="absolute -top-20 -right-20 h-56 w-56 rounded-full bg-(--brand-hero) blur-3xl opacity-10"
-                  />
-                  <CardContent className="relative z-10 p-8">
-                    <h3 className="text-xl font-bold text-slate-950 dark:text-white mb-6 text-center flex items-center justify-center">
-                      <div className="w-8 h-8 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-lg flex items-center justify-center mr-3 shadow-xl shadow-slate-900/10">
-                        <Github
-                          size={16}
-                          className="text-sky-700 dark:text-sky-300"
-                        />
-                      </div>
-                      Connect & Follow
-                    </h3>
-                    <div className="grid grid-cols-2 gap-3">
-                      {socialLinks.map((social) => {
-                        const IconComponent = social.icon;
-                        return (
-                          <motion.a
-                            key={social.title}
-                            href={social.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            whileHover={
-                              shouldReduceMotion
-                                ? undefined
-                                : { y: -2, scale: 1.03 }
-                            }
-                            whileTap={
-                              shouldReduceMotion ? undefined : { scale: 0.98 }
-                            }
-                            transition={TRANSITION.fast}
-                            className={`${social.color} text-white p-4 rounded-2xl transition-all duration-300 flex flex-col items-center space-y-3 shadow-lg hover:shadow-xl`}
-                          >
-                            <IconComponent size={24} />
-                            <span className="text-sm font-semibold">
-                              {social.title}
-                            </span>
-                          </motion.a>
-                        );
-                      })}
+          {/* Info Side */}
+          <div className="space-y-10">
+            <div className="space-y-6">
+              <h2 className="text-2xl font-bold dark:text-white">Contact Information</h2>
+              <div className="grid gap-4">
+                {[
+                  { icon: Mail, label: "Email", info: personalInfo.email },
+                  { icon: Phone, label: "Phone", info: personalInfo.phone },
+                  { icon: MapPin, label: "Location", info: personalInfo.location }
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-4 p-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
+                    <item.icon className="text-blue-600" size={24} />
+                    <div>
+                      <p className="text-xs font-bold text-slate-500 uppercase">{item.label}</p>
+                      <p className="font-semibold dark:text-white">{item.info}</p>
                     </div>
-                  </CardContent>
-                </Card>
-
-                {/* References */}
-                <Card className="glass-panel border border-slate-200/70 dark:border-slate-800/70 overflow-hidden">
-                  <div
-                    aria-hidden="true"
-                    className="absolute -top-20 -right-20 h-56 w-full rounded-full bg-(--brand-hero) blur-3xl opacity-10"
-                  />
-                  <CardContent className="relative z-10 p-8">
-                    <h3 className="text-lg font-semibold text-slate-950 dark:text-white mb-6 flex items-center">
-                      <UserCircle
-                        size={20}
-                        className="mr-2 text-sky-700 dark:text-sky-300"
-                      />
-                      Professional Re ferences
-                    </h3>
-                    <div className="space-y-4">
-                      {references.map((reference, index) => (
-                        <motion.div
-                          key={index}
-                          {...hoverLift(shouldReduceMotion)}
-                          className="rounded-2xl border border-slate-200/70 dark:border-slate-800/70 bg-white/60 dark:bg-slate-950/30"
-                        >
-                          <div className="flex items-start space-x-3 p-2">
-                            <div className="w-8 h-8 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-full flex items-center justify-center shrink-0 shadow-xl shadow-slate-900/10">
-                              <UserCircle
-                                size={20}
-                                className="text-sky-700 dark:text-sky-300"
-                              />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <h4 className="font-semibold text-slate-950 dark:text-white text-sm">
-                                {reference.name}
-                              </h4>
-                              <p className="text-slate-600 dark:text-slate-300 text-xs">
-                                {reference.position}
-                              </p>
-                              <a
-                                href={`mailto:${reference.email}`}
-                                className="text-sky-700 hover:text-sky-800 dark:text-sky-300 dark:hover:text-sky-200 text-xs font-medium transition-colors duration-200 hover:underline"
-                              >
-                                {reference.email}
-                              </a>
-                            </div>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              {/* Contact Form - Enhanced */}
-              <motion.div variants={itemVariants} className="xl:col-span-2">
-                <Card className="p-8 md:p-12 relative overflow-hidden group">
-                  {/* Background Pattern */}
-                  <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-(--brand-hero) blur-3xl opacity-10 group-hover:opacity-15 transition-opacity"></div>
-
-                  <div className="relative z-10">
-                    <div className="mb-10">
-                      <div className="flex items-center mb-6">
-                        <div className="w-12 h-12 bg-white/80 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70 rounded-2xl flex items-center justify-center mr-4 shadow-xl shadow-slate-900/10">
-                          <Send
-                            size={22}
-                            className="text-sky-700 dark:text-sky-300"
-                          />
-                        </div>
-                        <div>
-                          <h2 className="text-3xl md:text-4xl font-bold text-slate-950 dark:text-white">
-                            Send a Message
-                          </h2>
-                          <p className="text-slate-600 dark:text-slate-300 mt-2">
-                            Let's discuss how we can work together
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <form action={formAction} className="space-y-6">
-                      {formState.status === "success" && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={
-                            shouldReduceMotion
-                              ? { duration: 0 }
-                              : TRANSITION.fast
-                          }
-                          className="p-4 bg-linear-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 border border-green-200 dark:border-green-700 text-green-800 dark:text-green-300 rounded-xl"
-                        >
-                          <div className="flex items-center space-x-2">
-                            <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                              <svg
-                                role="img"
-                                aria-label="Success"
-                                className="w-3 h-3 text-white"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                              >
-                                <title>Success</title>
-                                <path
-                                  fillRule="evenodd"
-                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                            </div>
-                            <span className="font-medium">
-                              {formState.message ||
-                                "Message sent successfully! I'll get back to you soon."}
-                            </span>
-                          </div>
-                        </motion.div>
-                      )}
-
-                      {formState.status === "error" && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={
-                            shouldReduceMotion
-                              ? { duration: 0 }
-                              : TRANSITION.fast
-                          }
-                          className="p-4 bg-linear-to-r from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20 border border-red-200 dark:border-red-700 text-red-800 dark:text-red-300 rounded-xl"
-                        >
-                          <div className="flex items-center space-x-2">
-                            <div className="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
-                              <svg
-                                role="img"
-                                aria-label="Error"
-                                className="w-3 h-3 text-white"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                              >
-                                <title>Error</title>
-                                <path
-                                  fillRule="evenodd"
-                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                            </div>
-                            <span className="font-medium">
-                              {formState.message ||
-                                "Failed to send message. Please try again or contact me directly."}
-                            </span>
-                          </div>
-                        </motion.div>
-                      )}
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                          <Label htmlFor="name" className="mb-3 block">
-                            Full Name *
-                          </Label>
-                          <Input
-                            type="text"
-                            id="name"
-                            name="name"
-                            required
-                            className="h-12 rounded-xl px-4"
-                            placeholder="John Doe"
-                          />
-                        </div>
-
-                        <div>
-                          <Label htmlFor="email" className="mb-3 block">
-                            Email Address *
-                          </Label>
-                          <Input
-                            type="email"
-                            id="email"
-                            name="email"
-                            required
-                            className="h-12 rounded-xl px-4"
-                            placeholder="john@example.com"
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <Label htmlFor="subject" className="mb-3 block">
-                          Subject *
-                        </Label>
-                        <Input
-                          type="text"
-                          id="subject"
-                          name="subject"
-                          required
-                          className="h-12 rounded-xl px-4"
-                          placeholder="Project Collaboration Opportunity"
-                        />
-                      </div>
-
-                      <div>
-                        <Label htmlFor="message" className="mb-3 block">
-                          Message *
-                        </Label>
-                        <Textarea
-                          id="message"
-                          name="message"
-                          required
-                          rows={6}
-                          className="rounded-xl px-4 py-3 resize-none"
-                          placeholder="Tell me about your project, timeline, budget, and what you're looking to achieve. The more details you provide, the better I can help you."
-                        />
-                      </div>
-
-                      <SubmitButton />
-
-                      <p className="text-sm text-slate-600 dark:text-slate-300 text-center">
-                        I typically respond within 24 hours. For urgent matters,
-                        feel free to call me directly.
-                      </p>
-                    </form>
                   </div>
-                </Card>
-              </motion.div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <h2 className="text-2xl font-bold dark:text-white">References</h2>
+              <div className="grid gap-4">
+                {references.map((ref, i) => (
+                  <Card key={i} className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <p className="font-bold dark:text-white">{ref.name}</p>
+                          <p className="text-xs text-slate-500 uppercase font-semibold">{ref.position}</p>
+                        </div>
+                        <Mail size={16} className="text-slate-400" />
+                      </div>
+                      <p className="text-sm text-blue-600 dark:text-blue-400 font-medium truncate">{ref.email}</p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default ContactPage;
+export default memo(ContactPage);

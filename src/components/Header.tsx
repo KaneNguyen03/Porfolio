@@ -20,8 +20,6 @@ export default function Header() {
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  console.log("Header render (Static Shell)");
-
   const navClass = ({ isActive }: { isActive: boolean }) =>
     `relative inline-flex items-center px-3 py-2 text-sm font-semibold rounded-full transition-colors duration-200 ${
       isActive

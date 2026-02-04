@@ -1,15 +1,14 @@
 import { useSyncExternalStore } from "react";
 
-/**
- * Optimized React 19 hook to track user reduced motion preference.
- */
+const subscribe = (callback: () => void) => {
+  const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mql.addEventListener("change", callback);
+  return () => mql.removeEventListener("change", callback);
+};
+
 export function useReducedMotion() {
   return useSyncExternalStore(
-    (callback) => {
-      const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-      mediaQuery.addEventListener("change", callback);
-      return () => mediaQuery.removeEventListener("change", callback);
-    },
+    subscribe,
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
     () => false,
   );

@@ -239,7 +239,7 @@ export const portfolioData: PortfolioData = {
 		{
 			name: "FPT Fresher Academy Training Management",
 			period: "Dec 2023 - Apr 2024",
-			role: "Member",
+			role: "Frontend Developer",
 			technologies: [
 				"TypeScript",
 				"ViteJS",
@@ -308,7 +308,7 @@ export const portfolioData: PortfolioData = {
 		{
 			name: "Auzuno",
 			period: "Oct 2022 - Dec 2022",
-			role: "Member",
+			role: "Frontend Developer",
 			technologies: ["JavaScript", "React", "Styled-components"],
 			responsibilities: [
 				"Developed customizable UI components to meet customer requirements.",

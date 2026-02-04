@@ -3,18 +3,13 @@ import { Github, Heart, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 import { portfolioData } from "../data/portfolio";
-import { useReducedMotion } from "../hooks/use-reduced-motion";
 import { fadeUpItem, staggerContainer } from "../lib/motion";
 import { Button } from "./ui/button";
 
 const Footer = () => {
 	const { personalInfo } = portfolioData;
-	const shouldReduceMotion = useReducedMotion();
-	const container = staggerContainer(shouldReduceMotion, {
-		stagger: 0.06,
-		delay: 0.04,
-	});
-	const item = fadeUpItem(shouldReduceMotion, 10);
+	const container = staggerContainer(0.06, 0.04);
+	const item = fadeUpItem(10);
 
 	const socialLinks = [
 		{
