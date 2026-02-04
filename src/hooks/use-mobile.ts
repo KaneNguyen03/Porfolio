@@ -1,26 +1,22 @@
-import * as React from "react";
+import { useSyncExternalStore } from "react";
 
 const MOBILE_BREAKPOINT = 768;
 
+/**
+ * Modern React 19 hook to track mobile viewport state using useSyncExternalStore.
+ * This eliminates unnecessary re-renders and mount-time state synchronization.
+ */
 export function useIsMobile() {
-  const [isMobile, setIsMobile] = React.useState<boolean>(() =>
-    typeof window !== "undefined"
-      ? window.innerWidth < MOBILE_BREAKPOINT
-      : false,
+  return useSyncExternalStore(
+    // 1. Subscribe: Listen for resize events
+    (callback) => {
+      const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
+      mql.addEventListener("change", callback);
+      return () => mql.removeEventListener("change", callback);
+    },
+    // 2. Snapshot: Get the current value
+    () => window.innerWidth < MOBILE_BREAKPOINT,
+    // 3. Server Snapshot: Default for SSR
+    () => false,
   );
-
-  const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  React.useEffect(() => {
-    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
-    const handler = () => setIsMobile(mql.matches);
-
-    mql.addEventListener("change", handler);
-    return () => {
-      mql.removeEventListener("change", handler);
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
-  }, []);
-
-  return isMobile;
 }

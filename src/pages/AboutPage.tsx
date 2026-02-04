@@ -25,6 +25,7 @@ import {
 } from "../lib/motion";
 
 const AboutPage = () => {
+  console.log("AboutPage render");
   const { personalInfo, skills, awards, workExperience, projects } =
     portfolioData;
   const shouldReduceMotion = useReducedMotion();

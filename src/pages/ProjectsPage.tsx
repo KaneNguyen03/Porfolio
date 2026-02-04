@@ -106,6 +106,7 @@ const YouTubeEmbed = ({ url, title }: { url: string; title: string }) => {
 };
 
 const ProjectsPage = () => {
+  console.log("ProjectsPage render");
   const { projects, workExperience } = portfolioData;
   const shouldReduceMotion = useReducedMotion();
   const [selectedFilter, setSelectedFilter] = useState("All");

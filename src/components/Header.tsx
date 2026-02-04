@@ -30,15 +30,15 @@ const useMobileMenuInternal = () => {
 // Navigation Link Component
 interface NavLinkProps {
   item: { name: string; path: string };
+  isActive: boolean;
   shouldReduceMotion: boolean;
   context: "desktop" | "mobile";
   onClick?: () => void;
 }
 
 const NavLink = memo(
-  ({ item, shouldReduceMotion, context, onClick }: NavLinkProps) => {
-    const { pathname } = useLocation();
-    const isActive = pathname === item.path;
+  ({ item, isActive, shouldReduceMotion, context, onClick }: NavLinkProps) => {
+    console.log(`NavLink render [${context}]: ${item.name}`); // Proof of healthy logic
 
     return (
       <motion.div
@@ -74,10 +74,12 @@ NavLink.displayName = "NavLink";
 interface MobileMenuProps {
   navigationItems: typeof NAVIGATION_ITEMS;
   shouldReduceMotion: boolean;
+  pathname: string;
 }
 
 const MobileMenu = memo(
-  ({ navigationItems, shouldReduceMotion }: MobileMenuProps) => {
+  ({ navigationItems, shouldReduceMotion, pathname }: MobileMenuProps) => {
+    console.log("MobileMenu render");
     const { isOpen, setIsOpen, closeMenu } = useMobileMenuInternal();
 
     return (
@@ -102,6 +104,7 @@ const MobileMenu = memo(
                 <NavLink
                   key={item.name}
                   item={item}
+                  isActive={pathname === item.path}
                   shouldReduceMotion={shouldReduceMotion}
                   context="mobile"
                   onClick={closeMenu}
@@ -128,9 +131,11 @@ const MobileMenu = memo(
 MobileMenu.displayName = "MobileMenu";
 
 const Header = memo(() => {
+  console.log("Header render");
   const { theme, toggleTheme } = useTheme();
   const isMobile = useIsMobile();
   const shouldReduceMotion = useReducedMotion();
+  const { pathname } = useLocation();
 
   const { personalInfo } = portfolioData;
 
@@ -208,6 +213,7 @@ const Header = memo(() => {
                 <NavLink
                   key={item.name}
                   item={item}
+                  isActive={pathname === item.path}
                   shouldReduceMotion={shouldReduceMotion}
                   context="desktop"
                 />
@@ -231,6 +237,7 @@ const Header = memo(() => {
               <MobileMenu
                 navigationItems={NAVIGATION_ITEMS}
                 shouldReduceMotion={shouldReduceMotion}
+                pathname={pathname}
               />
             )}
           </div>

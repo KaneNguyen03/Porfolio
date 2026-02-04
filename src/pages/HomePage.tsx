@@ -31,6 +31,7 @@ import {
 import type { PortfolioData } from "../types/portfolio"; // Precise typing
 
 const HomePage = () => {
+  console.log("HomePage render");
   // Strict typing for data access
   const { personalInfo, projects, workExperience } =
     portfolioData as PortfolioData;

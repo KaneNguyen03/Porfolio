@@ -22,6 +22,7 @@ import {
 } from "../lib/motion";
 
 const EducationPage = () => {
+  console.log("EducationPage render");
   const { education, certifications } = portfolioData;
   const shouldReduceMotion = useReducedMotion();
 

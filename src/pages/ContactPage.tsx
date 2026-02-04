@@ -109,6 +109,7 @@ const SubmitButton = () => {
 };
 
 const ContactPage = () => {
+  console.log("ContactPage render");
   const { personalInfo, references } = portfolioData;
   const shouldReduceMotion = useReducedMotion();
   useThemeClasses(); // Ensure component re-renders on theme change

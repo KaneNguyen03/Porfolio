@@ -23,6 +23,7 @@ import {
 } from "../lib/motion";
 
 const ExperiencePage = () => {
+  console.log("ExperiencePage render");
   const { workExperience } = portfolioData;
   const shouldReduceMotion = useReducedMotion();
   const uniqueCompanies = new Set(
