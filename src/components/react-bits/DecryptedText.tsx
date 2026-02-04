@@ -1,5 +1,6 @@
-import React, { useLayoutEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
+import { useReducedMotion } from "../../hooks/use-reduced-motion";
 
 interface DecryptedTextProps {
   text: string;
@@ -23,93 +24,75 @@ const DecryptedText: React.FC<DecryptedTextProps> = ({
   animateOn = "view",
   revealDirection = "start",
 }) => {
-  const [displayText, setDisplayText] = useState<string>(text);
-  const [isScrambling, setIsScrambling] = useState<boolean>(false);
-  const [revealedIndices, setRevealedIndices] = useState<Set<number>>(
-    new Set(),
-  );
-  const intervalRef = useRef<number | null>(null);
+  const shouldReduceMotion = useReducedMotion();
+  const [step, setStep] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
-  useLayoutEffect(() => {
-    let interval: number;
-    let currentIteration = 0;
+  const displayText = useMemo(() => {
+    if (shouldReduceMotion || !isAnimating || step === 0) return text;
 
-    if (isScrambling) {
-      interval = window.setInterval(() => {
-        setDisplayText((prev) =>
-          prev
-            .split("")
-            .map((char, index) => {
-              if (revealedIndices.has(index) || char === " ")
-                return text[index];
-              return characters[Math.floor(Math.random() * characters.length)];
-            })
-            .join(""),
-        );
-        currentIteration++;
-        if (currentIteration >= maxIterations) {
-          // Simplified logic for brevity: just reveal all after maxIterations
-          // In a full implementation, we'd reveal character by character based on revealDirection
-          setRevealedIndices(new Set(text.split("").map((_, i) => i)));
-          setIsScrambling(false);
-          setDisplayText(text);
+    return text
+      .split("")
+      .map((char, i) => {
+        if (char === " ") return " ";
+
+        let revealThreshold;
+        switch (revealDirection) {
+          case "end":
+            revealThreshold = maxIterations + (text.length - 1 - i);
+            break;
+          case "center": {
+            const center = Math.floor(text.length / 2);
+            revealThreshold = maxIterations + Math.abs(center - i);
+            break;
+          }
+          case "start":
+          default:
+            revealThreshold = maxIterations + i;
+            break;
         }
-      }, speed);
-    }
 
-    // Cleanup
-    return () => {
-      if (interval) clearInterval(interval);
-    };
+        if (step >= revealThreshold) return char;
+        return characters[Math.floor(Math.random() * characters.length)];
+      })
+      .join("");
   }, [
-    isScrambling,
     text,
+    isAnimating,
+    step,
     maxIterations,
-    speed,
-    revealedIndices,
     revealDirection,
+    shouldReduceMotion,
   ]);
 
-  // Better implementation for the effect using explicit interval management
-  // to closely match the "High-end" feel.
-  // Let's rewrite the effect slightly to be more robust.
+  useEffect(() => {
+    if (!isAnimating || shouldReduceMotion) return;
 
-  useLayoutEffect(() => {
-    // Reset when text changes
-    setDisplayText(text);
-    setRevealedIndices(new Set());
+    const interval = setInterval(() => {
+      setStep((prev) => {
+        const next = prev + 1;
+        const maxStep = maxIterations + text.length;
+        if (next > maxStep) {
+          setIsAnimating(false);
+          return 0;
+        }
+        return next;
+      });
+    }, speed);
+
+    return () => clearInterval(interval);
+  }, [isAnimating, text.length, maxIterations, speed, shouldReduceMotion]);
+
+  useEffect(() => {
+    setStep(0);
+    setIsAnimating(false);
   }, [text]);
 
-  const startAnimation = () => {
-    setIsScrambling(true);
-    setRevealedIndices(new Set());
-
-    const totalSteps = text.length;
-    let step = 0;
-
-    if (intervalRef.current) window.clearInterval(intervalRef.current);
-
-    intervalRef.current = window.setInterval(() => {
-      step++;
-
-      setDisplayText(() =>
-        text
-          .split("")
-          .map((originalChar, i) => {
-            if (originalChar === " ") return " ";
-            if (step >= maxIterations + i) return originalChar; // simple sequential reveal
-            return characters[Math.floor(Math.random() * characters.length)];
-          })
-          .join(""),
-      );
-
-      if (step > maxIterations + totalSteps) {
-        if (intervalRef.current) clearInterval(intervalRef.current);
-        setIsScrambling(false);
-        setDisplayText(text);
-      }
-    }, speed);
-  };
+  const startAnimation = useCallback(() => {
+    if (shouldReduceMotion) return;
+    setStep(0);
+    setIsAnimating(true);
+  }, [shouldReduceMotion]);
 
   const containerProps =
     animateOn === "view"

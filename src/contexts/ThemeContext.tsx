@@ -3,6 +3,7 @@ import React, {
   useContext,
   useLayoutEffect,
   useState,
+  useCallback,
 } from "react";
 
 type Theme = "light" | "dark";
@@ -89,9 +90,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [theme]);
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  };
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
