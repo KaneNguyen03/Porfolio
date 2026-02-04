@@ -39,7 +39,7 @@ function App() {
 function AppLayout() {
   const location = useLocation();
   const shouldReduceMotion = useReducedMotion();
-  const variants = pageVariants(shouldReduceMotion);
+  const variants = pageVariants();
 
   // Eliminate layout shift/flicker by ensuring scroll resets before paint.
   useLayoutEffect(() => {
@@ -54,13 +54,13 @@ function AppLayout() {
           <AnimatePresence initial={false} mode="wait">
             <motion.div
               key={location.pathname}
-              className="flex-1 contents" // using contents to avoid nested div issues with flex
+              className="flex-1"
               initial="initial"
               animate="animate"
               exit="exit"
               variants={variants}
               transition={
-                shouldReduceMotion ? { duration: 0 } : TRANSITION.fast
+                shouldReduceMotion ? { duration: 0 } : TRANSITION.base
               }
             >
               <Suspense
