@@ -1,135 +1,135 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 interface PerformanceMetrics {
-	loadTime: number;
-	domContentLoaded: number;
-	firstContentfulPaint: number;
-	largestContentfulPaint: number;
-	cumulativeLayoutShift: number;
-	firstInputDelay: number;
+  loadTime: number;
+  domContentLoaded: number;
+  firstContentfulPaint: number;
+  largestContentfulPaint: number;
+  cumulativeLayoutShift: number;
+  firstInputDelay: number;
 }
 
 export const usePerformance = () => {
-	const [metrics, setMetrics] = useState<PerformanceMetrics | null>(null);
+  const [metrics, setMetrics] = useState<PerformanceMetrics | null>(null);
 
-	const measure = useCallback(() => {
-		// Skip performance measurement on mobile to reduce overhead
-		if (window.innerWidth < 768) return;
+  const measure = useCallback(() => {
+    // Skip performance measurement on mobile to reduce overhead
+    if (window.innerWidth < 768) return;
 
-		type LayoutShiftEntry = PerformanceEntry & { value?: number };
-		type TimedEntry = PerformanceEntry & { startTime: number };
+    type LayoutShiftEntry = PerformanceEntry & { value?: number };
+    type TimedEntry = PerformanceEntry & { startTime: number };
 
-		const navigation = performance.getEntriesByType(
-			"navigation",
-		)[0] as PerformanceNavigationTiming;
-		const paint = performance.getEntriesByType("paint");
-		const fcp = paint.find((entry) => entry.name === "first-contentful-paint");
-		const lcp = performance.getEntriesByType("largest-contentful-paint")[0] as
-			| TimedEntry
-			| undefined;
-		const cls = performance.getEntriesByType("layout-shift")[0] as
-			| LayoutShiftEntry
-			| undefined;
+    const navigation = performance.getEntriesByType(
+      "navigation",
+    )[0] as PerformanceNavigationTiming;
+    const paint = performance.getEntriesByType("paint");
+    const fcp = paint.find((entry) => entry.name === "first-contentful-paint");
+    const lcp = performance.getEntriesByType("largest-contentful-paint")[0] as
+      | TimedEntry
+      | undefined;
+    const cls = performance.getEntriesByType("layout-shift")[0] as
+      | LayoutShiftEntry
+      | undefined;
 
-		const performanceMetrics: PerformanceMetrics = {
-			loadTime: navigation.loadEventEnd - navigation.loadEventStart,
-			domContentLoaded:
-				navigation.domContentLoadedEventEnd -
-				navigation.domContentLoadedEventStart,
-			firstContentfulPaint: fcp ? fcp.startTime : 0,
-			largestContentfulPaint: lcp ? lcp.startTime : 0,
-			cumulativeLayoutShift: cls?.value ?? 0,
-			firstInputDelay: 0, // Would need to be measured with event listeners
-		};
+    const performanceMetrics: PerformanceMetrics = {
+      loadTime: navigation.loadEventEnd - navigation.loadEventStart,
+      domContentLoaded:
+        navigation.domContentLoadedEventEnd -
+        navigation.domContentLoadedEventStart,
+      firstContentfulPaint: fcp ? fcp.startTime : 0,
+      largestContentfulPaint: lcp ? lcp.startTime : 0,
+      cumulativeLayoutShift: cls?.value ?? 0,
+      firstInputDelay: 0, // Would need to be measured with event listeners
+    };
 
-		setMetrics(performanceMetrics);
+    setMetrics(performanceMetrics);
 
-		// Log performance metrics
-		console.log("Performance Metrics:", performanceMetrics);
+    // Log performance metrics
+    console.log("Performance Metrics:", performanceMetrics);
 
-		// Send to analytics in production
-		if (process.env.NODE_ENV === "production") {
-			// Example: send to Google Analytics, custom analytics, etc.
-			// gtag('event', 'performance', performanceMetrics);
-		}
-	}, []);
+    // Send to analytics in production
+    if (process.env.NODE_ENV === "production") {
+      // Example: send to Google Analytics, custom analytics, etc.
+      // gtag('event', 'performance', performanceMetrics);
+    }
+  }, []);
 
-	const loadHandler = useCallback(() => {
-		measure();
-	}, [measure]);
+  const loadHandler = useCallback(() => {
+    measure();
+  }, [measure]);
 
-	useEffect(() => {
-		// Start measuring when component mounts
-		if (document.readyState === "complete") {
-			// eslint-disable-next-line react-hooks/set-state-in-effect
-			measure();
-		} else {
-			window.addEventListener("load", loadHandler, { once: true });
-			return () => {
-				window.removeEventListener("load", loadHandler);
-			};
-		}
-	}, [measure, loadHandler]);
+  useEffect(() => {
+    // Start measuring when component mounts
+    if (document.readyState === "complete") {
+      measure();
+    } else {
+      window.addEventListener("load", loadHandler, { once: true });
+    }
 
-	return useMemo(() => metrics, [metrics]);
+    return () => {
+      window.removeEventListener("load", loadHandler);
+    };
+  }, [measure, loadHandler]);
+
+  return useMemo(() => metrics, [metrics]);
 };
 
 // Hook for measuring component render performance
 export const useRenderPerformance = (componentName: string) => {
-	useEffect(() => {
-		const startTime = performance.now();
+  useEffect(() => {
+    const startTime = performance.now();
 
-		return () => {
-			const endTime = performance.now();
-			const renderTime = endTime - startTime;
+    return () => {
+      const endTime = performance.now();
+      const renderTime = endTime - startTime;
 
-			console.log(`${componentName} render time: ${renderTime.toFixed(2)}ms`);
+      console.log(`${componentName} render time: ${renderTime.toFixed(2)}ms`);
 
-			// Log slow renders
-			if (renderTime > 16) {
-				// 60fps threshold
-				console.warn(
-					`${componentName} took ${renderTime.toFixed(2)}ms to render (slow)`,
-				);
-			}
-		};
-	}, [componentName]);
+      // Log slow renders
+      if (renderTime > 16) {
+        // 60fps threshold
+        console.warn(
+          `${componentName} took ${renderTime.toFixed(2)}ms to render (slow)`,
+        );
+      }
+    };
+  }, [componentName]);
 };
 
 // Hook for measuring API call performance
 export const useApiPerformance = () => {
-	const measureApiCall = useCallback(
-		async <T>(apiCall: () => Promise<T>, endpoint: string): Promise<T> => {
-			const startTime = performance.now();
+  const measureApiCall = useCallback(
+    async <T>(apiCall: () => Promise<T>, endpoint: string): Promise<T> => {
+      const startTime = performance.now();
 
-			try {
-				const result = await apiCall();
-				const endTime = performance.now();
-				const duration = endTime - startTime;
+      try {
+        const result = await apiCall();
+        const endTime = performance.now();
+        const duration = endTime - startTime;
 
-				console.log(`API call to ${endpoint} took ${duration.toFixed(2)}ms`);
+        console.log(`API call to ${endpoint} took ${duration.toFixed(2)}ms`);
 
-				// Log slow API calls
-				if (duration > 1000) {
-					console.warn(
-						`Slow API call to ${endpoint}: ${duration.toFixed(2)}ms`,
-					);
-				}
+        // Log slow API calls
+        if (duration > 1000) {
+          console.warn(
+            `Slow API call to ${endpoint}: ${duration.toFixed(2)}ms`,
+          );
+        }
 
-				return result;
-			} catch (error) {
-				const endTime = performance.now();
-				const duration = endTime - startTime;
+        return result;
+      } catch (error) {
+        const endTime = performance.now();
+        const duration = endTime - startTime;
 
-				console.error(
-					`API call to ${endpoint} failed after ${duration.toFixed(2)}ms:`,
-					error,
-				);
-				throw error;
-			}
-		},
-		[],
-	);
+        console.error(
+          `API call to ${endpoint} failed after ${duration.toFixed(2)}ms:`,
+          error,
+        );
+        throw error;
+      }
+    },
+    [],
+  );
 
-	return useMemo(() => ({ measureApiCall }), [measureApiCall]);
+  return useMemo(() => ({ measureApiCall }), [measureApiCall]);
 };

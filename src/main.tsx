@@ -6,7 +6,9 @@ import "./index.css";
 
 // biome-ignore lint/style/noNonNullAssertion: Root element is guaranteed to exist in index.html
 createRoot(document.getElementById("root")!).render(
-  <HelmetProvider>
-    <App />
-  </HelmetProvider>,
+  <StrictMode>
+    <HelmetProvider>
+      <App />
+    </HelmetProvider>
+  </StrictMode>,
 );
