@@ -5,6 +5,7 @@ import { Sheet, SheetTrigger, SheetContent } from "./ui/sheet";
 import { useTheme } from "../contexts/ThemeContext";
 import { motion } from "framer-motion";
 import { useReducedMotion } from "../hooks/use-reduced-motion";
+import { useIsMobile } from "../hooks/use-mobile";
 import { portfolioData } from "../data/portfolio";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -15,6 +16,7 @@ const Header: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const shouldReduceMotion = useReducedMotion();
+  const isMobile = useIsMobile();
 
   // Close mobile menu when navigating
   useEffect(() => {
@@ -156,7 +158,7 @@ const Header: React.FC = () => {
                 </SheetTrigger>
                 <SheetContent
                   side="right"
-                  className="w-[85vw] sm:w-[380px] pt-12"
+                  className={`w-[85vw] sm:w-[380px] pt-12 ${isMobile ? "duration-0" : ""}`}
                 >
                   <nav className="flex flex-col gap-2 mt-8">
                     {navigationItems.map((item) => (
