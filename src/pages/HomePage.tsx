@@ -1,10 +1,4 @@
 import { motion } from "framer-motion";
-import React from "react";
-import { Link } from "react-router-dom";
-import avatarImage from "../assets/ava.jpg";
-import cvFile from "../assets/Nguyen_Xuan_Kha_Fullstack_CV.pdf";
-import { portfolioData } from "../data/portfolio";
-import type { PortfolioData } from "../types/portfolio"; // Precise typing
 import {
   ArrowRight,
   Briefcase,
@@ -15,23 +9,28 @@ import {
   MapPin,
   Star,
 } from "lucide-react";
-import SEO from "../components/SEO";
-import { Button } from "../components/ui/button";
-import { Badge } from "../components/ui/badge";
-import { Card } from "../components/ui/card";
-import SpotlightCard from "../components/react-bits/SpotlightCard"; // New ReactBits component
+import { Link } from "react-router-dom";
+import avatarImage from "../assets/ava.jpg";
+import cvFile from "../assets/Nguyen_Xuan_Kha_Fullstack_CV.pdf";
 import DecryptedText from "../components/react-bits/DecryptedText"; // New ReactBits component
+import SpotlightCard from "../components/react-bits/SpotlightCard"; // New ReactBits component
+import SEO from "../components/SEO";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import { Card } from "../components/ui/card";
+import { portfolioData } from "../data/portfolio";
+import { useIsMobile } from "../hooks/use-mobile";
+import { useReducedMotion } from "../hooks/use-reduced-motion";
+import { calculateExperienceYears } from "../lib/experience";
 import {
   fadeUpItem,
   hoverLift,
   staggerContainer,
   TRANSITION,
 } from "../lib/motion";
-import { calculateExperienceYears } from "../lib/experience";
-import { useIsMobile } from "../hooks/use-mobile";
-import { useReducedMotion } from "../hooks/use-reduced-motion";
+import type { PortfolioData } from "../types/portfolio"; // Precise typing
 
-const HomePage: React.FC = () => {
+const HomePage = () => {
   // Strict typing for data access
   const { personalInfo, projects, workExperience } =
     portfolioData as PortfolioData;

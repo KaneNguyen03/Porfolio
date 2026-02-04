@@ -1,106 +1,124 @@
-import React, { useState } from "react";
+import emailjs from "@emailjs/browser";
 import { motion } from "framer-motion";
 import {
-  Mail,
-  Phone,
-  MapPin,
   Github,
   Linkedin,
+  Mail,
+  MapPin,
+  Phone,
   Send,
   UserCircle,
 } from "lucide-react";
-import emailjs from "@emailjs/browser";
-import { portfolioData } from "../data/portfolio";
-import { useThemeClasses } from "../hooks/useThemeClasses";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import SEO from "../components/SEO";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Textarea } from "../components/ui/textarea";
+import { portfolioData } from "../data/portfolio";
+import { useReducedMotion } from "../hooks/use-reduced-motion";
+import { useThemeClasses } from "../hooks/useThemeClasses";
 import {
   fadeUpItem,
   hoverLift,
   staggerContainer,
   TRANSITION,
 } from "../lib/motion";
-import { useReducedMotion } from "../hooks/use-reduced-motion";
 
-const ContactPage: React.FC = () => {
+interface FormState {
+  status: "idle" | "success" | "error";
+  message?: string;
+}
+
+const submitContactForm = async (
+  _prevState: FormState,
+  formData: FormData,
+): Promise<FormState> => {
+  const name = formData.get("name") as string;
+  const email = formData.get("email") as string;
+  const subject = formData.get("subject") as string;
+  const message = formData.get("message") as string;
+
+  try {
+    // Get EmailJS credentials from environment variables
+    const serviceId = import.meta.env.VITE_SERVICE_ID;
+    const templateId = import.meta.env.VITE_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_PUBLIC_KEY;
+
+    // Check if all credentials are available
+    if (
+      !serviceId ||
+      !templateId ||
+      !publicKey ||
+      templateId === "YOUR_TEMPLATE_ID" ||
+      publicKey === "YOUR_PUBLIC_KEY"
+    ) {
+      console.log("EmailJS not configured, using mailto fallback");
+      // Fallback to mailto
+      const mailtoLink = `mailto:${portfolioData.personalInfo.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+        `Hi ${portfolioData.personalInfo.name},\n\n${message}\n\nBest regards,\n${name}\n${email}`,
+      )}`;
+      window.open(mailtoLink);
+      return {
+        status: "success",
+        message: "Email client opened successfully!",
+      };
+    }
+
+    const templateParams = {
+      from_name: name,
+      from_email: email,
+      subject,
+      message,
+      to_email: portfolioData.personalInfo.email,
+      sent_date: new Date().toISOString(),
+    };
+
+    await emailjs.send(serviceId, templateId, templateParams, publicKey);
+
+    return { status: "success", message: "Message sent successfully!" };
+  } catch (error) {
+    console.error("Failed to send email:", error);
+    return {
+      status: "error",
+      message: "Failed to send message. Please try again.",
+    };
+  }
+};
+
+const SubmitButton = () => {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button type="submit" disabled={pending} className="w-full h-12 rounded-xl">
+      {pending ? (
+        <>
+          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
+          <span>Sending Message...</span>
+        </>
+      ) : (
+        <>
+          <Send size={20} />
+          <span>Send Message</span>
+        </>
+      )}
+    </Button>
+  );
+};
+
+const ContactPage = () => {
   const { personalInfo, references } = portfolioData;
   const shouldReduceMotion = useReducedMotion();
   useThemeClasses(); // Ensure component re-renders on theme change
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
+
+  // React 19: Use useActionState for form state management instead of multiple useState
+  const [formState, formAction] = useActionState(submitContactForm, {
+    status: "idle" as const,
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<
-    "idle" | "success" | "error"
-  >("idle");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus("idle");
-
-    try {
-      // Get EmailJS credentials from environment variables
-      const serviceId = import.meta.env.VITE_SERVICE_ID;
-      const templateId = import.meta.env.VITE_TEMPLATE_ID;
-      const publicKey = import.meta.env.VITE_PUBLIC_KEY;
-
-      // Check if all credentials are available
-      if (
-        !serviceId ||
-        !templateId ||
-        !publicKey ||
-        templateId === "YOUR_TEMPLATE_ID" ||
-        publicKey === "YOUR_PUBLIC_KEY"
-      ) {
-        console.log("EmailJS not configured, using mailto fallback");
-        // Fallback to mailto
-        const mailtoLink = `mailto:${personalInfo.email}?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(
-          `Hi ${personalInfo.name},\n\n${formData.message}\n\nBest regards,\n${formData.name}\n${formData.email}`,
-        )}`;
-        window.open(mailtoLink);
-        setSubmitStatus("success");
-        setFormData({ name: "", email: "", subject: "", message: "" });
-        return;
-      }
-
-      const templateParams = {
-        from_name: formData.name,
-        from_email: formData.email,
-        subject: formData.subject,
-        message: formData.message,
-        to_email: personalInfo.email,
-        sent_date: new Date().toISOString(),
-      };
-
-      await emailjs.send(serviceId, templateId, templateParams, publicKey);
-
-      setSubmitStatus("success");
-      setFormData({ name: "", email: "", subject: "", message: "" });
-    } catch (error) {
-      console.error("Failed to send email:", error);
-      setSubmitStatus("error");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
+  // ES2025: Object.groupBy not yet available, keeping array for now
   const contactMethods = [
     {
       icon: Mail,
@@ -436,8 +454,8 @@ const ContactPage: React.FC = () => {
                       </div>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      {submitStatus === "success" && (
+                    <form action={formAction} className="space-y-6">
+                      {formState.status === "success" && (
                         <motion.div
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -451,10 +469,13 @@ const ContactPage: React.FC = () => {
                           <div className="flex items-center space-x-2">
                             <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
                               <svg
+                                role="img"
+                                aria-label="Success"
                                 className="w-3 h-3 text-white"
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                               >
+                                <title>Success</title>
                                 <path
                                   fillRule="evenodd"
                                   d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -463,14 +484,14 @@ const ContactPage: React.FC = () => {
                               </svg>
                             </div>
                             <span className="font-medium">
-                              Message sent successfully! I'll get back to you
-                              soon.
+                              {formState.message ||
+                                "Message sent successfully! I'll get back to you soon."}
                             </span>
                           </div>
                         </motion.div>
                       )}
 
-                      {submitStatus === "error" && (
+                      {formState.status === "error" && (
                         <motion.div
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -484,10 +505,13 @@ const ContactPage: React.FC = () => {
                           <div className="flex items-center space-x-2">
                             <div className="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
                               <svg
+                                role="img"
+                                aria-label="Error"
                                 className="w-3 h-3 text-white"
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                               >
+                                <title>Error</title>
                                 <path
                                   fillRule="evenodd"
                                   d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -496,8 +520,8 @@ const ContactPage: React.FC = () => {
                               </svg>
                             </div>
                             <span className="font-medium">
-                              Failed to send message. Please try again or
-                              contact me directly.
+                              {formState.message ||
+                                "Failed to send message. Please try again or contact me directly."}
                             </span>
                           </div>
                         </motion.div>
@@ -512,8 +536,6 @@ const ContactPage: React.FC = () => {
                             type="text"
                             id="name"
                             name="name"
-                            value={formData.name}
-                            onChange={handleInputChange}
                             required
                             className="h-12 rounded-xl px-4"
                             placeholder="John Doe"
@@ -528,8 +550,6 @@ const ContactPage: React.FC = () => {
                             type="email"
                             id="email"
                             name="email"
-                            value={formData.email}
-                            onChange={handleInputChange}
                             required
                             className="h-12 rounded-xl px-4"
                             placeholder="john@example.com"
@@ -545,8 +565,6 @@ const ContactPage: React.FC = () => {
                           type="text"
                           id="subject"
                           name="subject"
-                          value={formData.subject}
-                          onChange={handleInputChange}
                           required
                           className="h-12 rounded-xl px-4"
                           placeholder="Project Collaboration Opportunity"
@@ -560,8 +578,6 @@ const ContactPage: React.FC = () => {
                         <Textarea
                           id="message"
                           name="message"
-                          value={formData.message}
-                          onChange={handleInputChange}
                           required
                           rows={6}
                           className="rounded-xl px-4 py-3 resize-none"
@@ -569,23 +585,7 @@ const ContactPage: React.FC = () => {
                         />
                       </div>
 
-                      <Button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="w-full h-12 rounded-xl"
-                      >
-                        {isSubmitting ? (
-                          <>
-                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
-                            <span>Sending Message...</span>
-                          </>
-                        ) : (
-                          <>
-                            <Send size={20} />
-                            <span>Send Message</span>
-                          </>
-                        )}
-                      </Button>
+                      <SubmitButton />
 
                       <p className="text-sm text-slate-600 dark:text-slate-300 text-center">
                         I typically respond within 24 hours. For urgent matters,

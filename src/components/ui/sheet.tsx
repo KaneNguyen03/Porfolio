@@ -1,8 +1,8 @@
-import * as React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
-import { cn } from "../../lib/utils";
+import * as React from "react";
 import { createPortal } from "react-dom";
+import { cn } from "../../lib/utils";
 
 const SheetContext = React.createContext<{
   open: boolean;
@@ -57,6 +57,7 @@ export const SheetTrigger = ({
 
   return (
     <button
+      type="button"
       className={cn("bg-transparent", className)}
       onClick={() => context.setOpen(true)}
     >

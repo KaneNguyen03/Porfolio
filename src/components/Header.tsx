@@ -1,14 +1,14 @@
-import React, { useState, useLayoutEffect, memo } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, Sun, Moon, ArrowUpRight } from "lucide-react";
-import { Sheet, SheetTrigger, SheetContent } from "./ui/sheet";
-import { useTheme } from "../contexts/ThemeContext";
 import { motion } from "framer-motion";
-import { useReducedMotion } from "../hooks/use-reduced-motion";
+import { ArrowUpRight, Menu, Moon, Sun } from "lucide-react";
+import { memo, useCallback, useLayoutEffect, useMemo, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useTheme } from "../contexts/ThemeContext";
 import { portfolioData } from "../data/portfolio";
-import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
+import { useReducedMotion } from "../hooks/use-reduced-motion";
 import { TRANSITION } from "../lib/motion";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 
 // Navigation items configuration
 const NAVIGATION_ITEMS = [
@@ -22,119 +22,137 @@ const NAVIGATION_ITEMS = [
 // Custom hook for mobile menu state
 const useMobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
 
   // Auto-close menu on navigation
   useLayoutEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsOpen(false);
-  }, [location.pathname]);
+  }, []);
 
-  return { isOpen, setIsOpen };
+  return useMemo(() => ({ isOpen, setIsOpen }), [isOpen]);
 };
 
 // Navigation Link Component
-const NavLink: React.FC<{
+interface NavLinkProps {
   item: { name: string; path: string };
   isActive: boolean;
   shouldReduceMotion: boolean;
   onClick?: () => void;
-}> = ({ item, isActive, shouldReduceMotion, onClick }) => {
-  return (
-    <motion.div
-      whileHover={shouldReduceMotion ? undefined : { y: -1 }}
-      whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
-      transition={TRANSITION.fast}
-    >
-      <Link
-        to={item.path}
-        onClick={onClick}
-        className={`relative inline-flex items-center px-3 py-2 text-sm font-semibold rounded-full transition-colors duration-200 ${
-          isActive
-            ? "text-sky-700 dark:text-sky-300"
-            : "text-slate-600 dark:text-slate-200 hover:text-sky-700 dark:hover:text-sky-300"
-        }`}
+}
+
+const NavLink = memo(
+  ({ item, isActive, shouldReduceMotion, onClick }: NavLinkProps) => {
+    console.log(`NavLink render: ${item.name}`); // Audit re-renders
+    return (
+      <motion.div
+        whileHover={shouldReduceMotion ? undefined : { y: -1 }}
+        whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
+        transition={TRANSITION.fast}
       >
-        {isActive && (
-          <motion.span
-            layoutId="activeTab"
-            className="absolute inset-0 rounded-full bg-sky-100/80 dark:bg-sky-900/50 shadow-sm shadow-sky-900/20"
-            transition={TRANSITION.base}
-          />
-        )}
-        <span className="relative z-10">{item.name}</span>
-      </Link>
-    </motion.div>
-  );
-};
+        <Link
+          to={item.path}
+          onClick={onClick}
+          className={`relative inline-flex items-center px-3 py-2 text-sm font-semibold rounded-full transition-colors duration-200 ${
+            isActive
+              ? "text-sky-700 dark:text-sky-300"
+              : "text-slate-600 dark:text-slate-200 hover:text-sky-700 dark:hover:text-sky-300"
+          }`}
+        >
+          {isActive && (
+            <motion.span
+              layoutId="activeTab"
+              className="absolute inset-0 rounded-full bg-sky-100/80 dark:bg-sky-900/50 shadow-sm shadow-sky-900/20"
+              transition={TRANSITION.base}
+            />
+          )}
+          <span className="relative z-10">{item.name}</span>
+        </Link>
+      </motion.div>
+    );
+  },
+);
+NavLink.displayName = "NavLink";
 
 // Mobile Menu Component
-const MobileMenu: React.FC<{
+interface MobileMenuProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   navigationItems: typeof NAVIGATION_ITEMS;
   isActivePath: (path: string) => boolean;
   shouldReduceMotion: boolean;
-}> = ({
-  isOpen,
-  setIsOpen,
-  navigationItems,
-  isActivePath,
-  shouldReduceMotion,
-}) => {
-  return (
-    <div className="md:hidden">
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="w-10 h-10 -mr-2"
-            aria-label="Open mobile menu"
-          >
-            <Menu size={24} />
-          </Button>
-        </SheetTrigger>
-        <SheetContent
-          side="right"
-          className={`w-[85vw] sm:w-[380px] pt-12 ${shouldReduceMotion ? "" : "duration-0"}`}
-        >
-          <nav className="flex flex-col gap-2 mt-8">
-            {navigationItems.map((item) => (
-              <NavLink
-                key={item.name}
-                item={item}
-                isActive={isActivePath(item.path)}
-                shouldReduceMotion={shouldReduceMotion}
-                onClick={() => setIsOpen(false)}
-              />
-            ))}
-            <div className="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800">
-              <Button
-                asChild
-                className="w-full rounded-xl h-12 text-lg shadow-lg shadow-sky-500/20"
-              >
-                <Link to="/contact" onClick={() => setIsOpen(false)}>
-                  Let's work together
-                  <ArrowUpRight className="ml-2" size={20} />
-                </Link>
-              </Button>
-            </div>
-          </nav>
-        </SheetContent>
-      </Sheet>
-    </div>
-  );
-};
+}
 
-const Header: React.FC = () => {
+const MobileMenu = memo(
+  ({
+    isOpen,
+    setIsOpen,
+    navigationItems,
+    isActivePath,
+    shouldReduceMotion,
+  }: MobileMenuProps) => {
+    console.log("MobileMenu render"); // Audit re-renders
+    return (
+      <div className="md:hidden">
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <SheetTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="w-10 h-10 -mr-2"
+              aria-label="Open mobile menu"
+            >
+              <Menu size={24} />
+            </Button>
+          </SheetTrigger>
+          <SheetContent
+            side="right"
+            className={`w-[85vw] sm:w-[380px] pt-12 ${shouldReduceMotion ? "" : "duration-0"}`}
+          >
+            <nav className="flex flex-col gap-2 mt-8">
+              {navigationItems.map((item) => (
+                <NavLink
+                  key={item.name}
+                  item={item}
+                  isActive={isActivePath(item.path)}
+                  shouldReduceMotion={shouldReduceMotion}
+                  onClick={() => setIsOpen(false)}
+                />
+              ))}
+              <div className="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800">
+                <Button
+                  asChild
+                  className="w-full rounded-xl h-12 text-lg shadow-lg shadow-sky-500/20"
+                >
+                  <Link to="/contact" onClick={() => setIsOpen(false)}>
+                    Let's work together
+                    <ArrowUpRight className="ml-2" size={20} />
+                  </Link>
+                </Button>
+              </div>
+            </nav>
+          </SheetContent>
+        </Sheet>
+      </div>
+    );
+  },
+);
+MobileMenu.displayName = "MobileMenu";
+
+const Header = () => {
   const { theme, toggleTheme } = useTheme();
   const shouldReduceMotion = useReducedMotion();
   const { isOpen, setIsOpen } = useMobileMenu();
   const location = useLocation();
 
-  const isActivePath = (path: string) => location.pathname === path;
+  const isActivePath = useCallback(
+    (path: string) => location.pathname === path,
+    [location.pathname],
+  );
   const { personalInfo } = portfolioData;
+
+  const navigationItems = useMemo(() => NAVIGATION_ITEMS, []);
+
+  console.log("Header render"); // Audit re-renders
 
   return (
     <motion.header
@@ -230,7 +248,7 @@ const Header: React.FC = () => {
             <MobileMenu
               isOpen={isOpen}
               setIsOpen={setIsOpen}
-              navigationItems={NAVIGATION_ITEMS}
+              navigationItems={navigationItems}
               isActivePath={isActivePath}
               shouldReduceMotion={shouldReduceMotion}
             />

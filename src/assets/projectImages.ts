@@ -1,14 +1,15 @@
 // Project Images - Using actual project screenshots
-import claritasImg from './claritas.png';
-import proofnImg from './proofn.png';
-import auzunoImg from './azuno.png';
-import pokeImg from './poke.png';
-import bmcmsImg from './bmcms.png';
-import fptAcademyImg from './fams.jpg';
-import everytalkImg from './everytalk.png'; 
-import uobongImg from './uobong.png';   
-import beinoivceImg from './ipa.png';
-import ipaCompanies from './beinvoice.png';
+
+import auzunoImg from "./azuno.png";
+import ipaCompanies from "./beinvoice.png";
+import bmcmsImg from "./bmcms.png";
+import claritasImg from "./claritas.png";
+import everytalkImg from "./everytalk.png";
+import fptAcademyImg from "./fams.jpg";
+import beinoivceImg from "./ipa.png";
+import pokeImg from "./poke.png";
+import proofnImg from "./proofn.png";
+import uobongImg from "./uobong.png";
 
 // Export the imported images
 export const claritasImage = claritasImg;
@@ -25,7 +26,6 @@ export const fptAcademyImage = fptAcademyImg;
 // Place files under: public/projects/ipa-login.png and public/projects/ipa-companies.png
 export const ipaLoginImage: string = beinoivceImg;
 export const ipaCompaniesImage: string = ipaCompanies;
-
 
 // To use your actual project images:
 // 1. Save your project screenshots as .jpg files in src/assets/projects/

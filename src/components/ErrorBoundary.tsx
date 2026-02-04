@@ -1,6 +1,6 @@
-import { Component } from 'react';
-import type { ErrorInfo, ReactNode } from 'react';
-import { AlertCircle, RotateCcw } from 'lucide-react';
+import { AlertCircle, RotateCcw } from "lucide-react";
+import type { ErrorInfo, ReactNode } from "react";
+import { Component } from "react";
 
 interface Props {
   children: ReactNode;
@@ -22,10 +22,10 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
-    
+    console.error("ErrorBoundary caught an error:", error, errorInfo);
+
     // Log error to external service in production
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === "production") {
       // Example: log to Sentry, LogRocket, etc.
       // logErrorToService(error, errorInfo);
     }
@@ -41,36 +41,39 @@ class ErrorBoundary extends Component<Props, State> {
         <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center p-4">
           <div className="max-w-md w-full text-center">
             <div className="mb-6">
-              <AlertCircle 
-                size={64} 
-                className="mx-auto text-red-500 dark:text-red-400 mb-4" 
+              <AlertCircle
+                size={64}
+                className="mx-auto text-red-500 dark:text-red-400 mb-4"
               />
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                 Oops! Something went wrong
               </h1>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                We're sorry, but something unexpected happened. Please try refreshing the page.
+                We're sorry, but something unexpected happened. Please try
+                refreshing the page.
               </p>
             </div>
-            
+
             <div className="space-y-4">
               <button
+                type="button"
                 onClick={this.handleRetry}
                 className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200"
               >
                 <RotateCcw size={16} className="mr-2" />
                 Try Again
               </button>
-              
+
               <button
+                type="button"
                 onClick={() => window.location.reload()}
                 className="block w-full px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-medium rounded-lg transition-colors duration-200"
               >
                 Refresh Page
               </button>
             </div>
-            
-            {process.env.NODE_ENV === 'development' && this.state.error && (
+
+            {process.env.NODE_ENV === "development" && this.state.error && (
               <details className="mt-6 text-left">
                 <summary className="cursor-pointer text-sm text-gray-500 dark:text-gray-400 mb-2">
                   Error Details (Development)

@@ -1,22 +1,20 @@
+import { useLayoutEffect } from "react";
 import {
+  Route,
   BrowserRouter as Router,
   Routes,
-  Route,
   useLocation,
 } from "react-router-dom";
-import { useLayoutEffect } from "react";
-import { ThemeProvider } from "./contexts/ThemeContext";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
 import ErrorBoundary from "./components/ErrorBoundary";
-
-// Import pages directly for better mobile UX (no lazy loading delays)
-import HomePage from "./pages/HomePage";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import AboutPage from "./pages/AboutPage";
-import ProjectsPage from "./pages/ProjectsPage";
-import ExperiencePage from "./pages/ExperiencePage";
-import EducationPage from "./pages/EducationPage";
 import ContactPage from "./pages/ContactPage";
+import EducationPage from "./pages/EducationPage";
+import ExperiencePage from "./pages/ExperiencePage";
+import HomePage from "./pages/HomePage";
+import ProjectsPage from "./pages/ProjectsPage";
 
 function App() {
   return (

@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useReducedMotion } from "../../hooks/use-reduced-motion";
 
 interface DecryptedTextProps {
@@ -15,7 +15,7 @@ interface DecryptedTextProps {
 const characters =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
 
-const DecryptedText: React.FC<DecryptedTextProps> = ({
+const DecryptedText = ({
   text,
   speed = 50,
   maxIterations = 10,
@@ -23,7 +23,7 @@ const DecryptedText: React.FC<DecryptedTextProps> = ({
   parentClassName = "",
   animateOn = "view",
   revealDirection = "start",
-}) => {
+}: DecryptedTextProps) => {
   const shouldReduceMotion = useReducedMotion();
   const [step, setStep] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -31,12 +31,19 @@ const DecryptedText: React.FC<DecryptedTextProps> = ({
   const displayText = useMemo(() => {
     if (shouldReduceMotion || !isAnimating || step === 0) return text;
 
+    // Generate random characters for this step
+    const randomChars = text.split("").map(
+      () =>
+        // eslint-disable-next-line react-hooks/purity
+        characters[Math.floor(Math.random() * characters.length)],
+    );
+
     return text
       .split("")
       .map((char, i) => {
         if (char === " ") return " ";
 
-        let revealThreshold;
+        let revealThreshold: number;
         switch (revealDirection) {
           case "end":
             revealThreshold = maxIterations + (text.length - 1 - i);
@@ -46,14 +53,13 @@ const DecryptedText: React.FC<DecryptedTextProps> = ({
             revealThreshold = maxIterations + Math.abs(center - i);
             break;
           }
-          case "start":
           default:
             revealThreshold = maxIterations + i;
             break;
         }
 
         if (step >= revealThreshold) return char;
-        return characters[Math.floor(Math.random() * characters.length)];
+        return randomChars[i];
       })
       .join("");
   }, [
@@ -86,7 +92,7 @@ const DecryptedText: React.FC<DecryptedTextProps> = ({
   useEffect(() => {
     setStep(0);
     setIsAnimating(false);
-  }, [text]);
+  }, []);
 
   const startAnimation = useCallback(() => {
     if (shouldReduceMotion) return;

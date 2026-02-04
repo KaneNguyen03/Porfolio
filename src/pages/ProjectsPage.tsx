@@ -1,11 +1,13 @@
-import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Calendar, User, Code, ExternalLink, Github, Play } from "lucide-react";
-import { portfolioData } from "../data/portfolio";
+import { Calendar, Code, ExternalLink, Github, Play, User } from "lucide-react";
+import { useState } from "react";
 import SEO from "../components/SEO";
+import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
-import { Badge } from "../components/ui/badge";
+import { portfolioData } from "../data/portfolio";
+import { useReducedMotion } from "../hooks/use-reduced-motion";
+import { calculateExperienceYears } from "../lib/experience";
 import {
   fadeUpItem,
   hoverLift,
@@ -13,8 +15,6 @@ import {
   staggerContainer,
   TRANSITION,
 } from "../lib/motion";
-import { calculateExperienceYears } from "../lib/experience";
-import { useReducedMotion } from "../hooks/use-reduced-motion";
 
 // Normalize technology labels to avoid duplicates (e.g., React.js vs React)
 const normalizeTech = (tech: string): string => {
@@ -78,17 +78,10 @@ const YouTubeEmbed = ({ url, title }: { url: string; title: string }) => {
   }
 
   return (
-    <div
+    <button
+      type="button"
       className="relative w-full h-full cursor-pointer group bg-black rounded-2xl overflow-hidden"
       onClick={() => setIsPlaying(true)}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          setIsPlaying(true);
-        }
-      }}
     >
       <img
         src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
@@ -108,11 +101,11 @@ const YouTubeEmbed = ({ url, title }: { url: string; title: string }) => {
           </div>
         </div>
       </div>
-    </div>
+    </button>
   );
 };
 
-const ProjectsPage: React.FC = () => {
+const ProjectsPage = () => {
   const { projects, workExperience } = portfolioData;
   const shouldReduceMotion = useReducedMotion();
   const [selectedFilter, setSelectedFilter] = useState("All");
@@ -351,8 +344,7 @@ const ProjectsPage: React.FC = () => {
                   <CardContent className="relative z-10 flex flex-col h-full p-5 sm:p-6">
                     {/* Project Header */}
                     <div className="relative aspect-video w-full rounded-2xl overflow-hidden mb-6 shrink-0 shadow-lg group-hover:shadow-xl transition-shadow duration-300 bg-slate-100 dark:bg-slate-800">
-                      {project.liveDemo &&
-                      project.liveDemo.includes("youtube.com") ? (
+                      {project.liveDemo?.includes("youtube.com") ? (
                         // YouTube embedded video with lazy load
                         <div className="relative w-full h-full">
                           <YouTubeEmbed
@@ -381,14 +373,13 @@ const ProjectsPage: React.FC = () => {
                     </div>
 
                     {/* Project Title - Now outside video area for YouTube projects */}
-                    {project.liveDemo &&
-                      project.liveDemo.includes("youtube.com") && (
-                        <div className="mb-4">
-                          <h3 className="text-xl md:text-2xl font-bold text-slate-950 dark:text-white leading-tight">
-                            {project.name}
-                          </h3>
-                        </div>
-                      )}
+                    {project.liveDemo?.includes("youtube.com") && (
+                      <div className="mb-4">
+                        <h3 className="text-xl md:text-2xl font-bold text-slate-950 dark:text-white leading-tight">
+                          {project.name}
+                        </h3>
+                      </div>
+                    )}
 
                     {/* Project Details - Using grow to expand */}
                     <div className="flex flex-col grow space-y-4">

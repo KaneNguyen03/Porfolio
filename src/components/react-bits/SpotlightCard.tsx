@@ -1,21 +1,22 @@
-import React, {
+import {
+  type MouseEvent,
+  type ReactNode,
+  useLayoutEffect,
   useRef,
   useState,
-  useLayoutEffect,
-  type MouseEvent,
 } from "react";
 
 interface SpotlightCardProps {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
   spotlightColor?: string;
 }
 
-const SpotlightCard: React.FC<SpotlightCardProps> = ({
+const SpotlightCard = ({
   children,
   className = "",
   spotlightColor = "rgba(var(--foreground), 0.15)", // Fallback to foreground color with opacity
-}) => {
+}: SpotlightCardProps) => {
   const divRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [opacity, setOpacity] = useState(0);
@@ -42,8 +43,10 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
   };
 
   return (
+    // biome-ignore lint/a11y/noStaticElementInteractions: This div responds to mouse movements for spotlight effect
     <div
       ref={divRef}
+      role="presentation"
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
