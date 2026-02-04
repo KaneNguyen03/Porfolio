@@ -4,8 +4,6 @@ import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
 import { useIsMobile } from "../hooks/use-mobile";
-import { useReducedMotion } from "../hooks/use-reduced-motion";
-import { TRANSITION } from "../lib/motion";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 
@@ -20,7 +18,6 @@ const NAVIGATION_ITEMS = [
 export default function Header() {
   const { theme, toggleTheme } = useTheme();
   const isMobile = useIsMobile();
-  const shouldReduceMotion = useReducedMotion();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   console.log("Header render (Static Shell)");
