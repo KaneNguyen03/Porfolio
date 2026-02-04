@@ -9,20 +9,22 @@ const buttonVariants = cva(
 	{
 		variants: {
 			variant: {
-				default: "bg-sky-600 text-white hover:bg-sky-700",
+				default: "bg-sky-600 text-white hover:bg-sky-700 active:scale-[0.98]",
+				destructive:
+					"bg-red-500 text-white hover:bg-red-600 dark:bg-red-900 dark:text-red-100 dark:hover:bg-red-800 active:scale-[0.98]",
 				secondary:
-					"bg-slate-100 text-slate-900 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700",
+					"bg-slate-100 text-slate-900 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700 active:scale-[0.98]",
 				outline:
-					"border border-slate-200 bg-white text-slate-900 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-900",
+					"border border-slate-200 bg-white text-slate-900 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-900 active:scale-[0.98]",
 				ghost:
-					"text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800",
+					"text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800 active:bg-slate-200 dark:active:bg-slate-700",
 				link: "text-sky-700 underline-offset-4 hover:underline dark:text-sky-300",
 			},
 			size: {
 				default: "h-10 px-4 py-2",
 				sm: "h-9 px-3",
 				lg: "h-11 px-6",
-				icon: "h-10 w-10",
+				icon: "h-10 w-10 p-0",
 			},
 		},
 		defaultVariants: {
