@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 
 export function useReducedMotion() {
   const [shouldReduceMotion, setShouldReduceMotion] = useState(() => {
@@ -6,17 +6,26 @@ export function useReducedMotion() {
     return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   });
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const handleChange = () => {
-      setShouldReduceMotion(mediaQuery.matches);
-    };
+  const mediaQueryRef = useRef<MediaQueryList | null>(null);
 
-    mediaQuery.addEventListener("change", handleChange);
-    return () => {
-      mediaQuery.removeEventListener("change", handleChange);
-    };
+  const handleChange = useCallback(() => {
+    if (mediaQueryRef.current) {
+      setShouldReduceMotion(mediaQueryRef.current.matches);
+    }
   }, []);
 
-  return shouldReduceMotion;
+  useEffect(() => {
+    mediaQueryRef.current = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    );
+    mediaQueryRef.current.addEventListener("change", handleChange);
+    setShouldReduceMotion(mediaQueryRef.current.matches);
+    return () => {
+      if (mediaQueryRef.current) {
+        mediaQueryRef.current.removeEventListener("change", handleChange);
+      }
+    };
+  }, [handleChange]);
+
+  return useMemo(() => shouldReduceMotion, [shouldReduceMotion]);
 }

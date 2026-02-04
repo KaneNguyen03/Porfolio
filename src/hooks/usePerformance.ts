@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useMemo } from "react";
 
 interface PerformanceMetrics {
   loadTime: number;
@@ -12,54 +12,63 @@ interface PerformanceMetrics {
 export const usePerformance = () => {
   const [metrics, setMetrics] = useState<PerformanceMetrics | null>(null);
 
-  useEffect(() => {
-    const measurePerformance = () => {
-      type LayoutShiftEntry = PerformanceEntry & { value?: number };
-      type TimedEntry = PerformanceEntry & { startTime: number };
+  const measure = useCallback(() => {
+    type LayoutShiftEntry = PerformanceEntry & { value?: number };
+    type TimedEntry = PerformanceEntry & { startTime: number };
 
-      // Wait for page to fully load
-      if (document.readyState === 'complete') {
-        const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-        const paint = performance.getEntriesByType('paint');
-        const fcp = paint.find(entry => entry.name === 'first-contentful-paint');
-        const lcp = performance.getEntriesByType('largest-contentful-paint')[0] as TimedEntry | undefined;
-        const cls = performance.getEntriesByType('layout-shift')[0] as LayoutShiftEntry | undefined;
+    const navigation = performance.getEntriesByType(
+      "navigation",
+    )[0] as PerformanceNavigationTiming;
+    const paint = performance.getEntriesByType("paint");
+    const fcp = paint.find((entry) => entry.name === "first-contentful-paint");
+    const lcp = performance.getEntriesByType("largest-contentful-paint")[0] as
+      | TimedEntry
+      | undefined;
+    const cls = performance.getEntriesByType("layout-shift")[0] as
+      | LayoutShiftEntry
+      | undefined;
 
-        const performanceMetrics: PerformanceMetrics = {
-          loadTime: navigation.loadEventEnd - navigation.loadEventStart,
-          domContentLoaded: navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart,
-          firstContentfulPaint: fcp ? fcp.startTime : 0,
-          largestContentfulPaint: lcp ? lcp.startTime : 0,
-          cumulativeLayoutShift: cls?.value ?? 0,
-          firstInputDelay: 0 // Would need to be measured with event listeners
-        };
-
-        setMetrics(performanceMetrics);
-
-        // Log performance metrics
-        console.log('Performance Metrics:', performanceMetrics);
-
-        // Send to analytics in production
-        if (process.env.NODE_ENV === 'production') {
-          // Example: send to Google Analytics, custom analytics, etc.
-          // gtag('event', 'performance', performanceMetrics);
-        }
-      } else {
-        // If page not fully loaded, wait for load event
-        window.addEventListener('load', measurePerformance, { once: true });
-      }
+    const performanceMetrics: PerformanceMetrics = {
+      loadTime: navigation.loadEventEnd - navigation.loadEventStart,
+      domContentLoaded:
+        navigation.domContentLoadedEventEnd -
+        navigation.domContentLoadedEventStart,
+      firstContentfulPaint: fcp ? fcp.startTime : 0,
+      largestContentfulPaint: lcp ? lcp.startTime : 0,
+      cumulativeLayoutShift: cls?.value ?? 0,
+      firstInputDelay: 0, // Would need to be measured with event listeners
     };
 
-    // Start measuring when component mounts
-    measurePerformance();
+    setMetrics(performanceMetrics);
 
-    // Cleanup
-    return () => {
-      window.removeEventListener('load', measurePerformance);
-    };
+    // Log performance metrics
+    console.log("Performance Metrics:", performanceMetrics);
+
+    // Send to analytics in production
+    if (process.env.NODE_ENV === "production") {
+      // Example: send to Google Analytics, custom analytics, etc.
+      // gtag('event', 'performance', performanceMetrics);
+    }
   }, []);
 
-  return metrics;
+  const loadHandler = useCallback(() => {
+    measure();
+  }, [measure]);
+
+  useEffect(() => {
+    // Start measuring when component mounts
+    if (document.readyState === "complete") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      measure();
+    } else {
+      window.addEventListener("load", loadHandler, { once: true });
+      return () => {
+        window.removeEventListener("load", loadHandler);
+      };
+    }
+  }, [measure, loadHandler]);
+
+  return useMemo(() => metrics, [metrics]);
 };
 
 // Hook for measuring component render performance
@@ -74,42 +83,50 @@ export const useRenderPerformance = (componentName: string) => {
       console.log(`${componentName} render time: ${renderTime.toFixed(2)}ms`);
 
       // Log slow renders
-      if (renderTime > 16) { // 60fps threshold
-        console.warn(`${componentName} took ${renderTime.toFixed(2)}ms to render (slow)`);
+      if (renderTime > 16) {
+        // 60fps threshold
+        console.warn(
+          `${componentName} took ${renderTime.toFixed(2)}ms to render (slow)`,
+        );
       }
     };
-  });
+  }, [componentName]);
 };
 
 // Hook for measuring API call performance
 export const useApiPerformance = () => {
-  const measureApiCall = async <T>(
-    apiCall: () => Promise<T>,
-    endpoint: string
-  ): Promise<T> => {
-    const startTime = performance.now();
-    
-    try {
-      const result = await apiCall();
-      const endTime = performance.now();
-      const duration = endTime - startTime;
+  const measureApiCall = useCallback(
+    async <T>(apiCall: () => Promise<T>, endpoint: string): Promise<T> => {
+      const startTime = performance.now();
 
-      console.log(`API call to ${endpoint} took ${duration.toFixed(2)}ms`);
+      try {
+        const result = await apiCall();
+        const endTime = performance.now();
+        const duration = endTime - startTime;
 
-      // Log slow API calls
-      if (duration > 1000) {
-        console.warn(`Slow API call to ${endpoint}: ${duration.toFixed(2)}ms`);
+        console.log(`API call to ${endpoint} took ${duration.toFixed(2)}ms`);
+
+        // Log slow API calls
+        if (duration > 1000) {
+          console.warn(
+            `Slow API call to ${endpoint}: ${duration.toFixed(2)}ms`,
+          );
+        }
+
+        return result;
+      } catch (error) {
+        const endTime = performance.now();
+        const duration = endTime - startTime;
+
+        console.error(
+          `API call to ${endpoint} failed after ${duration.toFixed(2)}ms:`,
+          error,
+        );
+        throw error;
       }
+    },
+    [],
+  );
 
-      return result;
-    } catch (error) {
-      const endTime = performance.now();
-      const duration = endTime - startTime;
-      
-      console.error(`API call to ${endpoint} failed after ${duration.toFixed(2)}ms:`, error);
-      throw error;
-    }
-  };
-
-  return { measureApiCall };
+  return useMemo(() => ({ measureApiCall }), [measureApiCall]);
 };
