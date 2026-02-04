@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, Menu, Moon, Sun } from "lucide-react";
-import { memo, useCallback, useLayoutEffect, useMemo, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
 import { portfolioData } from "../data/portfolio";
+import { useIsMobile } from "../hooks/use-mobile";
 import { useReducedMotion } from "../hooks/use-reduced-motion";
 import { TRANSITION } from "../lib/motion";
 import { Badge } from "./ui/badge";
@@ -19,30 +20,26 @@ const NAVIGATION_ITEMS = [
   { name: "Contact", path: "/contact" },
 ];
 
-// Custom hook for mobile menu state
-const useMobileMenu = () => {
+// Custom hook for internal mobile menu state
+const useMobileMenuInternal = () => {
   const [isOpen, setIsOpen] = useState(false);
-
-  // Auto-close menu on navigation
-  useLayoutEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setIsOpen(false);
-  }, []);
-
-  return useMemo(() => ({ isOpen, setIsOpen }), [isOpen]);
+  const closeMenu = useCallback(() => setIsOpen(false), []);
+  return { isOpen, setIsOpen, closeMenu };
 };
 
 // Navigation Link Component
 interface NavLinkProps {
   item: { name: string; path: string };
-  isActive: boolean;
   shouldReduceMotion: boolean;
+  context: "desktop" | "mobile";
   onClick?: () => void;
 }
 
 const NavLink = memo(
-  ({ item, isActive, shouldReduceMotion, onClick }: NavLinkProps) => {
-    console.log(`NavLink render: ${item.name}`); // Audit re-renders
+  ({ item, shouldReduceMotion, context, onClick }: NavLinkProps) => {
+    const { pathname } = useLocation();
+    const isActive = pathname === item.path;
+
     return (
       <motion.div
         whileHover={shouldReduceMotion ? undefined : { y: -1 }}
@@ -60,7 +57,7 @@ const NavLink = memo(
         >
           {isActive && (
             <motion.span
-              layoutId="activeTab"
+              layoutId={`activeTab-${context}`}
               className="absolute inset-0 rounded-full bg-sky-100/80 dark:bg-sky-900/50 shadow-sm shadow-sky-900/20"
               transition={TRANSITION.base}
             />
@@ -75,22 +72,14 @@ NavLink.displayName = "NavLink";
 
 // Mobile Menu Component
 interface MobileMenuProps {
-  isOpen: boolean;
-  setIsOpen: (open: boolean) => void;
   navigationItems: typeof NAVIGATION_ITEMS;
-  isActivePath: (path: string) => boolean;
   shouldReduceMotion: boolean;
 }
 
 const MobileMenu = memo(
-  ({
-    isOpen,
-    setIsOpen,
-    navigationItems,
-    isActivePath,
-    shouldReduceMotion,
-  }: MobileMenuProps) => {
-    console.log("MobileMenu render"); // Audit re-renders
+  ({ navigationItems, shouldReduceMotion }: MobileMenuProps) => {
+    const { isOpen, setIsOpen, closeMenu } = useMobileMenuInternal();
+
     return (
       <div className="md:hidden">
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -113,9 +102,9 @@ const MobileMenu = memo(
                 <NavLink
                   key={item.name}
                   item={item}
-                  isActive={isActivePath(item.path)}
                   shouldReduceMotion={shouldReduceMotion}
-                  onClick={() => setIsOpen(false)}
+                  context="mobile"
+                  onClick={closeMenu}
                 />
               ))}
               <div className="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800">
@@ -123,7 +112,7 @@ const MobileMenu = memo(
                   asChild
                   className="w-full rounded-xl h-12 text-lg shadow-lg shadow-sky-500/20"
                 >
-                  <Link to="/contact" onClick={() => setIsOpen(false)}>
+                  <Link to="/contact" onClick={closeMenu}>
                     Let's work together
                     <ArrowUpRight className="ml-2" size={20} />
                   </Link>
@@ -138,21 +127,12 @@ const MobileMenu = memo(
 );
 MobileMenu.displayName = "MobileMenu";
 
-const Header = () => {
+const Header = memo(() => {
   const { theme, toggleTheme } = useTheme();
+  const isMobile = useIsMobile();
   const shouldReduceMotion = useReducedMotion();
-  const { isOpen, setIsOpen } = useMobileMenu();
-  const location = useLocation();
 
-  const isActivePath = useCallback(
-    (path: string) => location.pathname === path,
-    [location.pathname],
-  );
   const { personalInfo } = portfolioData;
-
-  const navigationItems = useMemo(() => NAVIGATION_ITEMS, []);
-
-  console.log("Header render"); // Audit re-renders
 
   return (
     <motion.header
@@ -222,16 +202,18 @@ const Header = () => {
           </motion.div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-2">
-            {NAVIGATION_ITEMS.map((item) => (
-              <NavLink
-                key={item.name}
-                item={item}
-                isActive={isActivePath(item.path)}
-                shouldReduceMotion={shouldReduceMotion}
-              />
-            ))}
-          </nav>
+          {!isMobile && (
+            <nav className="hidden md:flex items-center space-x-2">
+              {NAVIGATION_ITEMS.map((item) => (
+                <NavLink
+                  key={item.name}
+                  item={item}
+                  shouldReduceMotion={shouldReduceMotion}
+                  context="desktop"
+                />
+              ))}
+            </nav>
+          )}
 
           {/* Actions & Mobile Menu */}
           <div className="flex items-center space-x-2 sm:space-x-4">
@@ -245,18 +227,17 @@ const Header = () => {
               {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
             </Button>
 
-            <MobileMenu
-              isOpen={isOpen}
-              setIsOpen={setIsOpen}
-              navigationItems={navigationItems}
-              isActivePath={isActivePath}
-              shouldReduceMotion={shouldReduceMotion}
-            />
+            {isMobile && (
+              <MobileMenu
+                navigationItems={NAVIGATION_ITEMS}
+                shouldReduceMotion={shouldReduceMotion}
+              />
+            )}
           </div>
         </div>
       </div>
     </motion.header>
   );
-};
+});
 
-export default memo(Header);
+export default Header;

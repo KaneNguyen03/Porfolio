@@ -1,4 +1,4 @@
-import { useLayoutEffect } from "react";
+import { memo, useLayoutEffect } from "react";
 import {
   Route,
   BrowserRouter as Router,
@@ -16,11 +16,20 @@ import ExperiencePage from "./pages/ExperiencePage";
 import HomePage from "./pages/HomePage";
 import ProjectsPage from "./pages/ProjectsPage";
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
+
 function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider>
         <Router>
+          <ScrollToTop />
           <AppLayout />
         </Router>
       </ThemeProvider>
@@ -28,21 +37,14 @@ function App() {
   );
 }
 
-function AppLayout() {
-  const location = useLocation();
-
-  // Eliminate layout shift/flicker by ensuring scroll resets before paint.
-  useLayoutEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location.pathname]);
-
+const AppLayout = memo(() => {
   return (
     <div className="brand-backdrop min-h-screen flex flex-col bg-transparent transition-colors duration-300">
       <Header />
       <main className="flex-1 flex flex-col">
         <div className="flex flex-col flex-1">
-          <div key={location.pathname} className="flex-1">
-            <Routes location={location}>
+          <div className="flex-1">
+            <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/projects" element={<ProjectsPage />} />
@@ -57,6 +59,6 @@ function AppLayout() {
       </main>
     </div>
   );
-}
+});
 
 export default App;

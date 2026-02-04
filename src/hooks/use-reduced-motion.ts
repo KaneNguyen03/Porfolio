@@ -1,31 +1,23 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 export function useReducedMotion() {
-	const [shouldReduceMotion, setShouldReduceMotion] = useState(() => {
-		if (typeof window === "undefined") return false;
-		return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-	});
+  const [shouldReduceMotion, setShouldReduceMotion] = useState(() =>
+    typeof window !== "undefined"
+      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      : false,
+  );
 
-	const mediaQueryRef = useRef<MediaQueryList | null>(null);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
 
-	const handleChange = useCallback(() => {
-		if (mediaQueryRef.current) {
-			setShouldReduceMotion(mediaQueryRef.current.matches);
-		}
-	}, []);
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const handleChange = (e: MediaQueryListEvent) => {
+      setShouldReduceMotion(e.matches);
+    };
 
-	useEffect(() => {
-		mediaQueryRef.current = window.matchMedia(
-			"(prefers-reduced-motion: reduce)",
-		);
-		mediaQueryRef.current.addEventListener("change", handleChange);
-		setShouldReduceMotion(mediaQueryRef.current.matches);
-		return () => {
-			if (mediaQueryRef.current) {
-				mediaQueryRef.current.removeEventListener("change", handleChange);
-			}
-		};
-	}, [handleChange]);
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
 
-	return useMemo(() => shouldReduceMotion, [shouldReduceMotion]);
+  return shouldReduceMotion;
 }
