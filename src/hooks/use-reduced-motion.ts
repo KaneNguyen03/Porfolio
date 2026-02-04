@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { useState, useLayoutEffect, useCallback, useMemo, useRef } from "react";
 
 export function useReducedMotion() {
   const [shouldReduceMotion, setShouldReduceMotion] = useState(() => {
@@ -14,7 +14,7 @@ export function useReducedMotion() {
     }
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     mediaQueryRef.current = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     );

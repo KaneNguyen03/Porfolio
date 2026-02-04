@@ -1,4 +1,9 @@
-import React, { useRef, useState, useEffect, type MouseEvent } from "react";
+import React, {
+  useRef,
+  useState,
+  useLayoutEffect,
+  type MouseEvent,
+} from "react";
 
 interface SpotlightCardProps {
   children: React.ReactNode;
@@ -16,7 +21,8 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
   const [opacity, setOpacity] = useState(0);
   const [isHoverable, setIsHoverable] = useState(true); // Default to true to avoid hydration mismatch, fix in effect
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsHoverable(window.matchMedia("(hover: hover)").matches);
   }, []);
 

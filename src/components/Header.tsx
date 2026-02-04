@@ -1,38 +1,139 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useLayoutEffect, memo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, Sun, Moon, ArrowUpRight } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent } from "./ui/sheet";
 import { useTheme } from "../contexts/ThemeContext";
 import { motion } from "framer-motion";
 import { useReducedMotion } from "../hooks/use-reduced-motion";
-import { useIsMobile } from "../hooks/use-mobile";
 import { portfolioData } from "../data/portfolio";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { TRANSITION } from "../lib/motion";
 
-const Header: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const { theme, toggleTheme } = useTheme();
-  const location = useLocation();
-  const shouldReduceMotion = useReducedMotion();
-  const isMobile = useIsMobile();
+// Navigation items configuration
+const NAVIGATION_ITEMS = [
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
+  { name: "Projects", path: "/projects" },
+  { name: "Experience", path: "/experience" },
+  { name: "Contact", path: "/contact" },
+];
 
-  // Close mobile menu when navigating
-  useEffect(() => {
+// Custom hook for mobile menu state
+const useMobileMenu = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  // Auto-close menu on navigation
+  useLayoutEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsOpen(false);
   }, [location.pathname]);
 
-  const navigationItems = [
-    { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
-    { name: "Projects", path: "/projects" },
-    { name: "Experience", path: "/experience" },
-    { name: "Contact", path: "/contact" },
-  ];
+  return { isOpen, setIsOpen };
+};
+
+// Navigation Link Component
+const NavLink: React.FC<{
+  item: { name: string; path: string };
+  isActive: boolean;
+  shouldReduceMotion: boolean;
+  onClick?: () => void;
+}> = ({ item, isActive, shouldReduceMotion, onClick }) => {
+  return (
+    <motion.div
+      whileHover={shouldReduceMotion ? undefined : { y: -1 }}
+      whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
+      transition={TRANSITION.fast}
+    >
+      <Link
+        to={item.path}
+        onClick={onClick}
+        className={`relative inline-flex items-center px-3 py-2 text-sm font-semibold rounded-full transition-colors duration-200 ${
+          isActive
+            ? "text-sky-700 dark:text-sky-300"
+            : "text-slate-600 dark:text-slate-200 hover:text-sky-700 dark:hover:text-sky-300"
+        }`}
+      >
+        {isActive && (
+          <motion.span
+            layoutId="activeTab"
+            className="absolute inset-0 rounded-full bg-sky-100/80 dark:bg-sky-900/50 shadow-sm shadow-sky-900/20"
+            transition={TRANSITION.base}
+          />
+        )}
+        <span className="relative z-10">{item.name}</span>
+      </Link>
+    </motion.div>
+  );
+};
+
+// Mobile Menu Component
+const MobileMenu: React.FC<{
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
+  navigationItems: typeof NAVIGATION_ITEMS;
+  isActivePath: (path: string) => boolean;
+  shouldReduceMotion: boolean;
+}> = ({
+  isOpen,
+  setIsOpen,
+  navigationItems,
+  isActivePath,
+  shouldReduceMotion,
+}) => {
+  return (
+    <div className="md:hidden">
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <SheetTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="w-10 h-10 -mr-2"
+            aria-label="Open mobile menu"
+          >
+            <Menu size={24} />
+          </Button>
+        </SheetTrigger>
+        <SheetContent
+          side="right"
+          className={`w-[85vw] sm:w-[380px] pt-12 ${shouldReduceMotion ? "" : "duration-0"}`}
+        >
+          <nav className="flex flex-col gap-2 mt-8">
+            {navigationItems.map((item) => (
+              <NavLink
+                key={item.name}
+                item={item}
+                isActive={isActivePath(item.path)}
+                shouldReduceMotion={shouldReduceMotion}
+                onClick={() => setIsOpen(false)}
+              />
+            ))}
+            <div className="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800">
+              <Button
+                asChild
+                className="w-full rounded-xl h-12 text-lg shadow-lg shadow-sky-500/20"
+              >
+                <Link to="/contact" onClick={() => setIsOpen(false)}>
+                  Let's work together
+                  <ArrowUpRight className="ml-2" size={20} />
+                </Link>
+              </Button>
+            </div>
+          </nav>
+        </SheetContent>
+      </Sheet>
+    </div>
+  );
+};
+
+const Header: React.FC = () => {
+  const { theme, toggleTheme } = useTheme();
+  const shouldReduceMotion = useReducedMotion();
+  const { isOpen, setIsOpen } = useMobileMenu();
+  const location = useLocation();
 
   const isActivePath = (path: string) => location.pathname === path;
-
   const { personalInfo } = portfolioData;
 
   return (
@@ -104,31 +205,13 @@ const Header: React.FC = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-2">
-            {navigationItems.map((item) => (
-              <motion.div
+            {NAVIGATION_ITEMS.map((item) => (
+              <NavLink
                 key={item.name}
-                whileHover={shouldReduceMotion ? undefined : { y: -1 }}
-                whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
-                transition={TRANSITION.fast}
-              >
-                <Link
-                  to={item.path}
-                  className={`relative inline-flex items-center px-3 py-2 text-sm font-semibold rounded-full transition-colors duration-200 ${
-                    isActivePath(item.path)
-                      ? "text-sky-700 dark:text-sky-300"
-                      : "text-slate-600 dark:text-slate-200 hover:text-sky-700 dark:hover:text-sky-300"
-                  }`}
-                >
-                  {isActivePath(item.path) && (
-                    <motion.span
-                      layoutId="activeTab"
-                      className="absolute inset-0 rounded-full bg-sky-100/80 dark:bg-sky-900/50 shadow-sm shadow-sky-900/20"
-                      transition={TRANSITION.base}
-                    />
-                  )}
-                  <span className="relative z-10">{item.name}</span>
-                </Link>
-              </motion.div>
+                item={item}
+                isActive={isActivePath(item.path)}
+                shouldReduceMotion={shouldReduceMotion}
+              />
             ))}
           </nav>
 
@@ -144,52 +227,13 @@ const Header: React.FC = () => {
               {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
             </Button>
 
-            {/* Mobile Sheet */}
-            <div className="md:hidden">
-              <Sheet open={isOpen} onOpenChange={setIsOpen}>
-                <SheetTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="w-10 h-10 -mr-2"
-                  >
-                    <Menu size={24} />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent
-                  side="right"
-                  className={`w-[85vw] sm:w-[380px] pt-12 ${isMobile ? "duration-0" : ""}`}
-                >
-                  <nav className="flex flex-col gap-2 mt-8">
-                    {navigationItems.map((item) => (
-                      <Link
-                        key={item.name}
-                        to={item.path}
-                        onClick={() => setIsOpen(false)}
-                        className={`flex items-center px-4 py-4 text-lg font-medium rounded-xl transition-all active:scale-[0.98] ${
-                          isActivePath(item.path)
-                            ? "bg-sky-50 dark:bg-sky-900/20 text-sky-700 dark:text-sky-300"
-                            : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
-                        }`}
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
-                    <div className="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800">
-                      <Button
-                        asChild
-                        className="w-full rounded-xl h-12 text-lg shadow-lg shadow-sky-500/20"
-                      >
-                        <Link to="/contact" onClick={() => setIsOpen(false)}>
-                          Let's work together
-                          <ArrowUpRight className="ml-2" size={20} />
-                        </Link>
-                      </Button>
-                    </div>
-                  </nav>
-                </SheetContent>
-              </Sheet>
-            </div>
+            <MobileMenu
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              navigationItems={NAVIGATION_ITEMS}
+              isActivePath={isActivePath}
+              shouldReduceMotion={shouldReduceMotion}
+            />
           </div>
         </div>
       </div>
@@ -197,4 +241,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default memo(Header);

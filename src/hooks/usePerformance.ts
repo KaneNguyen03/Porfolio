@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useLayoutEffect, useState, useCallback, useMemo } from "react";
 
 interface PerformanceMetrics {
   loadTime: number;
@@ -58,7 +58,7 @@ export const usePerformance = () => {
     measure();
   }, [measure]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // Start measuring when component mounts
     if (document.readyState === "complete") {
       // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -76,7 +76,7 @@ export const usePerformance = () => {
 
 // Hook for measuring component render performance
 export const useRenderPerformance = (componentName: string) => {
-  useEffect(() => {
+  useLayoutEffect(() => {
     const startTime = performance.now();
 
     return () => {

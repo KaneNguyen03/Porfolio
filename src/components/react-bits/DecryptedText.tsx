@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useLayoutEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 
 interface DecryptedTextProps {
@@ -30,7 +30,7 @@ const DecryptedText: React.FC<DecryptedTextProps> = ({
   );
   const intervalRef = useRef<number | null>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     let interval: number;
     let currentIteration = 0;
 
@@ -74,7 +74,7 @@ const DecryptedText: React.FC<DecryptedTextProps> = ({
   // to closely match the "High-end" feel.
   // Let's rewrite the effect slightly to be more robust.
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // Reset when text changes
     setDisplayText(text);
     setRevealedIndices(new Set());
