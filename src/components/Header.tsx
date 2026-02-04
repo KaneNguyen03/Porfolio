@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, Sun, Moon, ArrowUpRight } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent } from "./ui/sheet";
@@ -15,6 +15,11 @@ const Header: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const shouldReduceMotion = useReducedMotion();
+
+  // Close mobile menu when navigating
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
 
   const navigationItems = [
     { name: "Home", path: "/" },

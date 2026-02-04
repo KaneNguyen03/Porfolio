@@ -13,6 +13,7 @@ import LoadingSpinner from "./components/LoadingSpinner";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { pageVariants, TRANSITION } from "./lib/motion";
 import { useReducedMotion } from "./hooks/use-reduced-motion";
+import { useIsMobile } from "./hooks/use-mobile";
 
 // Lazy load pages for better performance
 // Note: React 19 and modern bundlers handle prefetching strategies better.
@@ -39,7 +40,11 @@ function App() {
 function AppLayout() {
   const location = useLocation();
   const shouldReduceMotion = useReducedMotion();
+  const isMobile = useIsMobile();
   const variants = pageVariants();
+
+  // Disable page transitions on mobile for better UX
+  const shouldAnimate = !isMobile && !shouldReduceMotion;
 
   // Eliminate layout shift/flicker by ensuring scroll resets before paint.
   useLayoutEffect(() => {
@@ -55,13 +60,11 @@ function AppLayout() {
             <motion.div
               key={location.pathname}
               className="flex-1"
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              variants={variants}
-              transition={
-                shouldReduceMotion ? { duration: 0 } : TRANSITION.base
-              }
+              initial={shouldAnimate ? "initial" : undefined}
+              animate={shouldAnimate ? "animate" : undefined}
+              exit={shouldAnimate ? "exit" : undefined}
+              variants={shouldAnimate ? variants : undefined}
+              transition={shouldAnimate ? TRANSITION.base : { duration: 0 }}
             >
               <Suspense
                 fallback={

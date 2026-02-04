@@ -13,6 +13,9 @@ export const usePerformance = () => {
   const [metrics, setMetrics] = useState<PerformanceMetrics | null>(null);
 
   const measure = useCallback(() => {
+    // Skip performance measurement on mobile to reduce overhead
+    if (window.innerWidth < 768) return;
+
     type LayoutShiftEntry = PerformanceEntry & { value?: number };
     type TimedEntry = PerformanceEntry & { startTime: number };
 
