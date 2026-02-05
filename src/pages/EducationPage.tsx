@@ -1,24 +1,23 @@
 "use client";
 
 import {
-  Award,
-  BookOpen,
-  Calendar,
-  ExternalLink,
-  GraduationCap,
+    Award,
+    BookOpen,
+    Calendar,
+    ExternalLink,
+    GraduationCap,
 } from "lucide-react";
-import { memo, useLayoutEffect } from "react";
+import { memo } from "react";
 import SEO from "../components/SEO";
 import { Badge } from "../components/ui/badge";
 import { Card, CardContent } from "../components/ui/card";
 import { portfolioData } from "../data/portfolio";
 
 const EducationPage = () => {
+  console.log("🎨 [Render] EducationPage");
   const { education, certifications } = portfolioData;
 
-  useLayoutEffect(() => {
-    // Client-side UI sync
-  }, []);
+
 
   return (
     <div className="bg-slate-50 dark:bg-gray-950 py-16 sm:py-24 min-h-screen">

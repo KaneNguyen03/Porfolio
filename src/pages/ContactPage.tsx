@@ -47,6 +47,7 @@ const SubmitButton = () => {
 };
 
 const ContactPage = () => {
+  console.log("🎨 [Render] ContactPage");
   const { personalInfo, references } = portfolioData;
   const [formState, formAction] = useActionState(submitContactForm, { status: "idle", message: "" });
 

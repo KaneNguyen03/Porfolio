@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Calendar, ExternalLink, Github, Play } from "lucide-react";
-import { memo, useLayoutEffect, useState } from "react";
+import { memo, useState } from "react";
 import SEO from "../components/SEO";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
@@ -55,12 +55,11 @@ const YouTubeEmbed = ({ url, title, poster }: { url: string; title: string, post
 };
 
 const ProjectsPage = () => {
+  console.log("🎨 [Render] ProjectsPage");
   const { projects } = portfolioData;
   const [filter, setFilter] = useState("All");
 
-  useLayoutEffect(() => {
-    // UI Sync
-  }, []);
+
 
   const categories = ["All", ...Array.from(new Set(projects.flatMap(p => p.technologies))).slice(0, 6)];
   

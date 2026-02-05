@@ -78,7 +78,7 @@ export const SheetContent = ({
   if (!context) throw new Error("SheetContent must be used within Sheet");
 
   const content = (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {context.open && (
         <>
           {/* Backdrop */}
@@ -86,26 +86,33 @@ export const SheetContent = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
+            transition={{ duration: 0.2 }}
             onClick={() => context.setOpen(false)}
-            className="fixed inset-0 z-[99] bg-black/50"
+            className="fixed inset-0 z-[99] bg-slate-950/40 backdrop-blur-[2px]"
+            style={{ willChange: "opacity" }}
           />
 
           {/* Content */}
           <motion.div
-            initial={{ x: side === "right" ? "100%" : side === "left" ? "-100%" : 0, y: side === "bottom" ? "100%" : side === "top" ? "-100%" : 0 }}
-            animate={{ x: 0, y: 0 }}
-            exit={{ x: side === "right" ? "100%" : side === "left" ? "-100%" : 0, y: side === "bottom" ? "100%" : side === "top" ? "-100%" : 0 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
+            initial={{ x: side === "right" ? "100%" : side === "left" ? "-100%" : 0 }}
+            animate={{ x: 0 }}
+            exit={{ x: side === "right" ? "100%" : side === "left" ? "-100%" : 0 }}
+            transition={{
+              type: "spring",
+              damping: 25,
+              stiffness: 200,
+              mass: 0.8
+            }}
             className={cn(
-              "fixed z-[100] bg-white dark:bg-slate-950 shadow-xl",
-              side === "right" && "inset-y-0 right-0 h-full w-[80%] max-w-sm border-l dark:border-slate-800",
-              side === "left" && "inset-y-0 left-0 h-full w-[80%] max-w-sm border-r dark:border-slate-800",
+              "fixed z-[100] bg-white dark:bg-slate-950 shadow-2xl outline-none",
+              side === "right" && "inset-y-0 right-0 h-full w-[280px] sm:w-[350px] border-l border-slate-200 dark:border-slate-800",
+              side === "left" && "inset-y-0 left-0 h-full w-[280px] sm:w-[350px] border-r border-slate-200 dark:border-slate-800",
               className,
             )}
+            style={{ willChange: "transform" }}
           >
             <button
-              className="absolute right-4 top-4 p-2 text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"
+              className="absolute right-4 top-4 p-2 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               onClick={() => context.setOpen(false)}
             >
               <X size={20} />

@@ -1,8 +1,6 @@
-"use client";
-
 import { motion } from "framer-motion";
 import { ArrowRight, Download, MapPin } from "lucide-react";
-import { memo, useLayoutEffect } from "react";
+import { memo } from "react";
 import { Link } from "react-router-dom";
 import cvFile from "../assets/Nguyen_Xuan_Kha_Fullstack_CV.pdf";
 import avatarImage from "../assets/ava.jpg";
@@ -16,15 +14,11 @@ import { TRANSITION } from "../lib/motion";
 import type { PortfolioData } from "../types/portfolio";
 
 const HomePage = () => {
+  console.log("🎨 [Render] HomePage");
   const { personalInfo, projects, workExperience } = portfolioData as PortfolioData;
 
   const experienceYears = calculateExperienceYears(workExperience);
   const projectCount = projects?.length ?? 0;
-
-  // React 19 Standard: Page level UI synchronization
-  useLayoutEffect(() => {
-    // Component mounted/synced
-  }, []);
 
   const highlights = [
     {

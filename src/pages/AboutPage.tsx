@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Cloud, Code, Database, GitBranch, Server, Trophy } from "lucide-react";
-import { memo, useLayoutEffect } from "react";
+import { memo } from "react";
 import avatarImage from "../assets/ava.jpg";
 import SEO from "../components/SEO";
 import { Badge } from "../components/ui/badge";
@@ -12,6 +12,7 @@ import { calculateExperienceYears } from "../lib/experience";
 import { TRANSITION } from "../lib/motion";
 
 const AboutPage = () => {
+  console.log("🎨 [Render] AboutPage");
   const { personalInfo, skills, awards, workExperience } = portfolioData;
 
   const experienceYears = calculateExperienceYears(workExperience);
@@ -28,9 +29,7 @@ const AboutPage = () => {
       .filter(Boolean),
   ).size;
 
-  useLayoutEffect(() => {
-    // Client-side UI sync
-  }, []);
+
 
   const skillCategories = [
     { icon: Code, title: "Languages", skills: skills.programmingLanguages },

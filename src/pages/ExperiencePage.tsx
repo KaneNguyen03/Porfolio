@@ -2,18 +2,17 @@
 
 import { motion } from "framer-motion";
 import { Briefcase, Building, Calendar, CheckCircle } from "lucide-react";
-import { memo, useLayoutEffect } from "react";
+import { memo } from "react";
 import SEO from "../components/SEO";
 import { Card, CardContent } from "../components/ui/card";
 import { portfolioData } from "../data/portfolio";
 import { TRANSITION } from "../lib/motion";
 
 const ExperiencePage = () => {
+  console.log("🎨 [Render] ExperiencePage");
   const { workExperience } = portfolioData;
 
-  useLayoutEffect(() => {
-    // Client-side UI sync
-  }, []);
+
 
   return (
     <div className="bg-slate-50 dark:bg-gray-950 py-16 sm:py-24 min-h-screen">
