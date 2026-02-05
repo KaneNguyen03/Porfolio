@@ -25,10 +25,10 @@ const Header = () => {
     }`;
 
   const mobileNavClass = ({ isActive }: { isActive: boolean }) =>
-    `flex items-center w-full px-6 py-4 text-base font-bold rounded-2xl transition-colors ${
+    `flex items-center px-4 py-3 text-lg font-medium transition-colors rounded-lg ${
       isActive
-        ? "text-sky-700 dark:text-sky-300 bg-sky-100/80 dark:bg-sky-900/50"
-        : "text-slate-600 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+        ? "bg-slate-100 dark:bg-slate-800 text-sky-600 dark:text-sky-400"
+        : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900"
     }`;
 
   return (
@@ -69,34 +69,23 @@ const Header = () => {
           <div className="md:hidden">
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-full"
-                >
+                <Button variant="ghost" size="icon" className="rounded-full">
                   <Menu size={24} />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="p-0">
-                <div className="flex flex-col h-full">
-                  <div className="p-6 border-b border-slate-100 dark:border-slate-900">
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                      Navigation
-                    </p>
-                  </div>
-                  <nav className="flex-1 px-4 py-6 flex flex-col gap-1">
-                    {NAVIGATION_ITEMS.map((item) => (
-                      <NavLink
-                        key={item.name}
-                        to={item.path}
-                        className={mobileNavClass}
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        {item.name}
-                      </NavLink>
-                    ))}
-                  </nav>
-                </div>
+              <SheetContent side="right" className="p-6">
+                <nav className="flex flex-col gap-2 mt-8">
+                  {NAVIGATION_ITEMS.map((item) => (
+                    <NavLink
+                      key={item.name}
+                      to={item.path}
+                      className={mobileNavClass}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.name}
+                    </NavLink>
+                  ))}
+                </nav>
               </SheetContent>
             </Sheet>
           </div>
