@@ -9,6 +9,7 @@ import fptAcademyImg from "./fams.jpg";
 import beinoivceImg from "./ipa.png";
 import pokeImg from "./poke.png";
 import proofnImg from "./proofn.png";
+import tropicalPhimImg from "./tropical-phim.png";
 import uobongImg from "./uobong.png";
 
 // Export the imported images
@@ -16,6 +17,7 @@ export const claritasImage = claritasImg;
 export const proofnImage = proofnImg;
 export const auzunoImage = auzunoImg;
 export const uobongImage = uobongImg;
+export const tropicalPhimImage = tropicalPhimImg;
 // For projects that don't have images yet, using fallback images
 export const everytalkImage = everytalkImg; // Using fallback until everytalk.png is added
 export const buildingMaintenanceImage = bmcmsImg;

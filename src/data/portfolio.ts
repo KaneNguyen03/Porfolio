@@ -8,6 +8,7 @@ import {
 	ipaLoginImage,
 	pokeLifeImage,
 	proofnImage,
+	tropicalPhimImage,
 	uobongImage,
 } from "../assets/projectImages";
 
@@ -89,6 +90,35 @@ export const portfolioData: PortfolioData = {
 		},
 	],
 	projects: [
+		{
+			name: "TropicalPhim - Movie Streaming Application",
+			period: "2025",
+			role: "Full-stack Developer",
+			technologies: [
+				"Next.js",
+				"TypeScript",
+				"React",
+				"Tailwind CSS",
+				"shadcn/ui",
+				"ReactBits",
+				"Responsive Design",
+			],
+			responsibilities: [
+				"Built comprehensive movie and TV series browsing interface with extensive catalog support.",
+				"Implemented advanced search and filtering functionality for movies and TV content.",
+				"Developed detailed movie information pages with tabs for overview, cast, and additional metadata.",
+				"Created episode management system with organized episode listings and playback tracking.",
+				"Integrated custom video player for seamless streaming experience.",
+				"Implemented responsive design with mobile-friendly navigation and layouts.",
+				"Designed hero slider component for featured content showcase on homepage.",
+				"Added continue watching feature to resume playback from saved positions.",
+				"Implemented social sharing functionality for movies and series.",
+				"Optimized performance with Next.js and integrated Ophim API for content delivery.",
+			],
+			liveDemo: "https://www.tropicalphim.com/",
+			github: "https://github.com/KaneNguyen03/TropicalPhim",
+			image: tropicalPhimImage,
+		},
 		{
 			name: "B-eInvoice – AP Automation for Enterprises",
 			period: "Nov 2025 - Present",
