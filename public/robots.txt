@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+
+# NOTE: The Sitemap line is generated at build time when VITE_SITE_URL/SITE_URL is set
+# (or on Vercel via VERCEL_URL).

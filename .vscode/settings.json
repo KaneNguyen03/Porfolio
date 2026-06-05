@@ -1,0 +1,36 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    // Tự động dọn dẹp và sắp xếp Import (Cực kỳ nên có)
+    "source.organizeImports": "explicit",
+    // Chạy ESLint để fix lỗi logic/syntax
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // Chỉ định Formatter mặc định (Ví dụ dùng Biome hoặc Prettier)
+  "editor.defaultFormatter": "biomejs.biome", 
+
+  "eslint.useFlatConfig": true,
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+
+  // Quan trọng: Để Auto Import hoạt động thông minh hơn
+  "javascript.suggest.autoImports": true,
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+
+  // Tailwind tối ưu cho React 19
+  "tailwindCSS.lint.suggestCanonicalClasses": "ignore",
+
+  // Cân nhắc tắt Auto Save Delay nếu bạn thấy code bị "nhảy" liên tục
+  "files.autoSave": "afterDelay", // Hoặc "onFocusChange" sẽ ổn định hơn "afterDelay"
+
+  // Tối ưu UI cho Header/Sidebar giật lag
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": "active"
+}
