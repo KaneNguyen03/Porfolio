@@ -13,6 +13,17 @@
 }
 
 @layer base {
+	/* Smooth theme transition on the body */
+	html {
+		transition: color-scheme 0.3s ease;
+	}
+
+	body {
+		font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+		@apply bg-slate-50 text-slate-950 dark:bg-slate-950 dark:text-slate-50;
+		transition: background-color 0.3s ease, color 0.3s ease;
+	}
+
 	/* Targeted transitions instead of wildcard '*' to improve performance */
 	button, a, input, textarea, select {
 		transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
@@ -31,9 +42,14 @@
 		color-scheme: light;
 	}
 
-	body {
-		font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
-		@apply bg-slate-50 text-slate-950 dark:bg-slate-950 dark:text-slate-50;
+	/* Smooth card hover effect */
+	.card-hover-effect {
+		transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.card-hover-effect:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 20px 60px rgba(99, 102, 241, 0.15);
 	}
 }
 
