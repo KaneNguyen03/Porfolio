@@ -16,7 +16,7 @@ const ExperiencePage = () => {
 
   return (
     <div className="bg-slate-50 dark:bg-gray-950 py-16 sm:py-24 min-h-screen">
-      <SEO title="Experience" description="Professional work history and contributions." />
+      <SEO title="Experience" description="Professional experience of Kha (Kane) Nguyen — Software Engineer at Bizzi, Cigro, FSoft, and Axpara. Node.js, React, AWS, and AP automation." />
       
       <div className="container-width max-w-4xl mx-auto px-4">
         <header className="mb-16 text-center">

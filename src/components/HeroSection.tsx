@@ -35,7 +35,7 @@ function TypewriterText() {
       return;
     }
     if (isDeleting && text === "") {
-      setIsDeleting(false);
+      setIsDeleting(false); // eslint-disable-line react-hooks/set-state-in-effect
       setRoleIndex((prev) => (prev + 1) % roles.length);
       return;
     }

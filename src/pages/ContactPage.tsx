@@ -31,7 +31,7 @@ const submitContactForm = async (_prevState: any, formData: FormData) => {
 
     await emailjs.send(serviceId, templateId, { from_name: name, from_email: email, subject, message }, publicKey);
     return { status: "success", message: "Message sent!" };
-  } catch (error) {
+  } catch {
     return { status: "error", message: "Failed to send." };
   }
 };
@@ -57,7 +57,7 @@ const ContactPage = () => {
 
   return (
     <div className="bg-slate-50 dark:bg-gray-950 py-16 sm:py-24 min-h-screen">
-      <SEO title="Contact" description="Get in touch for professional opportunities." />
+      <SEO title="Contact" description="Contact Kha (Kane) Nguyen for software engineering opportunities, collaboration, or freelance projects in Ho Chi Minh City and remote." />
       
       <div className="container-width max-w-5xl mx-auto px-4">
         <header className="mb-16 text-center">

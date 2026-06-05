@@ -9,7 +9,7 @@ import TechStack from "../components/TechStack";
 const HomePage = () => {
   return (
     <>
-      <SEO title="Home" description="Fullstack Software Engineer portfolio featuring projects, experience, and technical insights." />
+      <SEO title="Home" description="Kha (Kane) Nguyen — Fullstack Software Engineer in Ho Chi Minh City. Explore projects, tech stack, blog posts, and professional experience." />
       <HeroSection />
 
       <ScrollReveal direction="up" distance={20}>

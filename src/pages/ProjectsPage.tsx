@@ -69,7 +69,7 @@ const ProjectsPage = () => {
 
   return (
     <div className="bg-slate-50 dark:bg-gray-950 py-16 sm:py-24 min-h-screen">
-      <SEO title="Projects" description="Showcase of my fullstack and backend projects." />
+      <SEO title="Projects" description="Portfolio of fullstack and backend projects by Kha (Kane) Nguyen — including e-invoicing, real-time messaging, food management, building crack monitoring, and more." />
       
       <div className="container-width max-w-6xl mx-auto px-4">
         <header className="mb-12 text-center">

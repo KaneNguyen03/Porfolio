@@ -21,7 +21,7 @@ const EducationPage = () => {
 
   return (
     <div className="bg-slate-50 dark:bg-gray-950 py-16 sm:py-24 min-h-screen">
-      <SEO title="Education" description="My academic background and certifications." />
+      <SEO title="Education" description="Academic background and professional certifications of Kha (Kane) Nguyen — B.S. Software Engineering at FPT University, Coursera certs in UX, PM, and ethics." />
       
       <div className="container-width max-w-4xl mx-auto px-4">
         <header className="mb-16 text-center">
