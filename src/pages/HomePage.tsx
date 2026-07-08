@@ -1,9 +1,10 @@
 import { memo } from "react";
 import BlogSection from "../components/BlogSection";
 import HeroSection from "../components/HeroSection";
+import HomeImpactStats from "../components/HomeImpactStats";
+import HomeProjectTeaser from "../components/HomeProjectTeaser";
 import ScrollReveal from "../components/ScrollReveal";
 import SEO from "../components/SEO";
-import ShowcaseSection from "../components/ShowcaseSection";
 import TechStack from "../components/TechStack";
 
 const HomePage = () => {
@@ -13,7 +14,11 @@ const HomePage = () => {
       <HeroSection />
 
       <ScrollReveal direction="up" distance={20}>
-        <ShowcaseSection />
+        <HomeImpactStats />
+      </ScrollReveal>
+
+      <ScrollReveal direction="up" distance={20}>
+        <HomeProjectTeaser />
       </ScrollReveal>
 
       <TechStack />

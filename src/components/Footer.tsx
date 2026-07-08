@@ -2,14 +2,21 @@ import { motion } from "framer-motion";
 import { Github, Heart, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import { portfolioData } from "../data/portfolio";
+import { usePortfolioData } from "../data/portfolio";
+import { useTranslation } from "../i18n/useTranslation";
 import { fadeUpItem, staggerContainer } from "../lib/motion";
+import { NAV_ITEMS } from "../lib/navigation";
 import { Button } from "./ui/button";
 
 const Footer = () => {
-	const { personalInfo } = portfolioData;
+	const { personalInfo } = usePortfolioData();
+	const { t } = useTranslation();
 	const container = staggerContainer(0.06, 0.04);
 	const item = fadeUpItem(10);
+
+	// Quick links reuse the shared NAV_ITEMS (path decoupled from the translated
+	// label) minus Home, which the footer logo already covers.
+	const quickLinks = NAV_ITEMS.filter((navItem) => navItem.path !== "/");
 
 	const socialLinks = [
 		{
@@ -49,7 +56,7 @@ const Footer = () => {
 					{/* Contact Info */}
 					<motion.div variants={item} className="lg:col-span-2">
 						<h3 className="text-xl font-bold mb-6 text-center md:text-left">
-							Get In Touch
+							{t.footer.getInTouch}
 						</h3>
 						<div className="space-y-4">
 							<div className="flex items-center justify-start space-x-3">
@@ -88,33 +95,31 @@ const Footer = () => {
 					{/* Quick Links */}
 					<motion.div variants={item} className="text-center md:text-left">
 						<h3 className="text-center md:text-left text-lg font-semibold mb-6">
-							Quick Links
+							{t.footer.quickLinks}
 						</h3>
 						<div className="grid grid-cols-2 gap-x-4 gap-y-4 md:flex md:justify-start md:flex-col">
-							{["About", "Projects", "Experience", "Education", "Contact"].map(
-								(link, index, array) => (
-									<Link
-										key={link}
-										to={`/${link.toLowerCase()}`}
-										className={`block text-gray-300 hover:text-white transition-colors duration-200 text-sm hover:transform hover:translate-x-1 ${
-											index === array.length - 1 && array.length % 2 !== 0
-												? "col-span-2 text-center"
-												: ""
-										} md:col-span-1 md:text-left`}
-										onClick={() =>
-											window.scrollTo({ top: 0, behavior: "smooth" })
-										}
-									>
-										{link}
-									</Link>
-								),
-							)}
+							{quickLinks.map((navItem, index, array) => (
+								<Link
+									key={navItem.path}
+									to={navItem.path}
+									className={`block text-gray-300 hover:text-white transition-colors duration-200 text-sm hover:transform hover:translate-x-1 ${
+										index === array.length - 1 && array.length % 2 !== 0
+											? "col-span-2 text-center"
+											: ""
+									} md:col-span-1 md:text-left`}
+									onClick={() =>
+										window.scrollTo({ top: 0, behavior: "smooth" })
+									}
+								>
+									{t.nav[navItem.key]}
+								</Link>
+							))}
 						</div>
 					</motion.div>
 
 					{/* Social Links */}
 					<motion.div variants={item} className="text-center md:text-left">
-						<h3 className="text-lg font-semibold mb-6">Connect</h3>
+						<h3 className="text-lg font-semibold mb-6">{t.footer.connect}</h3>
 						<div className="flex justify-center md:justify-start space-x-4">
 							{socialLinks.map((social) => {
 								const IconComponent = social.icon;
@@ -168,14 +173,14 @@ const Footer = () => {
 					<div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
 						<p className="text-gray-400 flex items-center justify-center space-x-2 text-sm">
 							<span>
-								&copy; {new Date().getFullYear()} {personalInfo.name}. All
-								rights reserved.
+								&copy; {new Date().getFullYear()} {personalInfo.name}.{" "}
+								{t.footer.allRightsReserved}
 							</span>
 						</p>
 						<p className="text-gray-400 flex items-center justify-center space-x-1 text-sm">
-							<span>Made with</span>
+							<span>{t.footer.madeWith}</span>
 							<Heart size={16} className="text-red-500 animate-pulse" />
-							<span>and React</span>
+							<span>{t.footer.and}</span>
 						</p>
 					</div>
 				</div>

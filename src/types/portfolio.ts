@@ -14,6 +14,7 @@ export interface Education {
 	degree: string;
 	institution: string;
 	gpa?: string;
+	honors?: string;
 }
 
 export interface WorkExperience {
@@ -21,6 +22,8 @@ export interface WorkExperience {
 	period: string;
 	position: string;
 	responsibilities: string[];
+	clients?: string[];
+	highlights?: string[];
 }
 
 export interface Project {
@@ -64,6 +67,7 @@ export interface PortfolioData {
 		databases: string[];
 		devops: string[];
 		vcs: string[];
+		architecture: string[];
 	};
 	certifications: Certification[];
 	awards: Award[];

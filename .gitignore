@@ -31,3 +31,8 @@ dist-ssr
 
 # Legacy ESLint config (we use eslint.config.js / flat config)
 .eslintrc.*
+
+# Local AI-agent tooling configs (not part of the app)
+.claude/
+.opencode/
+.agent_context/

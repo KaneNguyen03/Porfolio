@@ -20,6 +20,10 @@ export default defineConfig({
           router: ["react-router-dom"],
           animation: ["framer-motion"],
           icons: ["lucide-react"],
+          // mermaid is only needed on /blog/:slug pages — kept in its own
+          // lazily-loaded chunk, dynamically imported from MermaidDiagram.tsx,
+          // so it never affects initial load of any other route.
+          diagrams: ["mermaid"],
         },
         // Tối ưu asset names
         assetFileNames: "assets/[name]-[hash][extname]",

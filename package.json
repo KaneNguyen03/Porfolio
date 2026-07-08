@@ -24,6 +24,7 @@
     "emailjs": "^5.0.0",
     "framer-motion": "^12.31.0",
     "lucide-react": "^0.563.0",
+    "mermaid": "^11.16.0",
     "postcss": "^8.5.6",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",

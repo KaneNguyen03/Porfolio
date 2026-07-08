@@ -8,8 +8,11 @@ import {
 import ErrorBoundary from "./components/ErrorBoundary";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
+import { LanguageProvider } from "./contexts/LanguageContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import AboutPage from "./pages/AboutPage";
+import BlogPage from "./pages/BlogPage";
+import BlogPostPage from "./pages/BlogPostPage";
 import ContactPage from "./pages/ContactPage";
 import EducationPage from "./pages/EducationPage";
 import ExperiencePage from "./pages/ExperiencePage";
@@ -28,10 +31,12 @@ function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider>
-        <Router>
-          <ScrollToTop />
-          <AppLayout />
-        </Router>
+        <LanguageProvider>
+          <Router>
+            <ScrollToTop />
+            <AppLayout />
+          </Router>
+        </LanguageProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );
@@ -50,6 +55,8 @@ const AppLayout = memo(() => {
               <Route path="/projects" element={<ProjectsPage />} />
               <Route path="/experience" element={<ExperiencePage />} />
               <Route path="/education" element={<EducationPage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:slug" element={<BlogPostPage />} />
               <Route path="/contact" element={<ContactPage />} />
             </Routes>
           </div>
