@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
-import { portfolioData } from "../data/portfolio";
+import { usePortfolioData } from "../data/portfolio";
+import { useTranslation } from "../i18n/useTranslation";
 
 export type SEOProps = {
 	title?: string;
@@ -54,9 +55,10 @@ const makeTitle = (
 	return `${pageTitle} | ${suffix}`;
 };
 
-const makeDescription = (pageDescription: string | undefined): string => {
-	const fallback =
-		"Software Engineer portfolio featuring projects, experience, education, and contact information.";
+const makeDescription = (
+	pageDescription: string | undefined,
+	fallback: string,
+): string => {
 	if (!pageDescription || pageDescription.trim().length === 0) return fallback;
 	return pageDescription;
 };
@@ -68,7 +70,8 @@ const SEO = ({
 	noIndex,
 }: SEOProps) => {
 	const location = useLocation();
-	const { personalInfo } = portfolioData;
+	const { personalInfo } = usePortfolioData();
+	const { t } = useTranslation();
 	const githubHandle = getGithubHandle(personalInfo.github);
 
 	const siteUrl = getSiteUrl();
@@ -78,7 +81,7 @@ const SEO = ({
 	const absoluteImageUrl = siteUrl ? joinUrl(siteUrl, imagePath) : undefined;
 
 	const fullTitle = makeTitle(title, personalInfo.name, githubHandle);
-	const fullDescription = makeDescription(description);
+	const fullDescription = makeDescription(description, t.seo.defaultDescription);
 
 	const keywords = [
 		personalInfo.name,

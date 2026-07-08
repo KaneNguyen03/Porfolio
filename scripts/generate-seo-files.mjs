@@ -14,7 +14,27 @@ const getSiteUrl = () => {
   return null;
 };
 
-const routes = ['/', '/about', '/projects', '/experience', '/education', '/contact'];
+// Blog slugs are duplicated here since this plain Node script can't import
+// the TSX-adjacent src/data/blog.en.ts data module. Keep in sync with the
+// `slug` fields in src/data/blog.en.ts.
+const blogSlugs = [
+  'event-driven-aws-sqs-lambda',
+  'typescript-utility-types',
+  'rag-pipelines-langchain',
+  'nestjs-grpc-microservices',
+  'react-performance-optimization',
+];
+
+const routes = [
+  '/',
+  '/about',
+  '/projects',
+  '/experience',
+  '/education',
+  '/blog',
+  ...blogSlugs.map((slug) => `/blog/${slug}`),
+  '/contact',
+];
 
 const today = () => new Date().toISOString().slice(0, 10);
 

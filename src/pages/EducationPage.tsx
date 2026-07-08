@@ -11,11 +11,13 @@ import { memo } from "react";
 import SEO from "../components/SEO";
 import { Badge } from "../components/ui/badge";
 import { Card, CardContent } from "../components/ui/card";
-import { portfolioData } from "../data/portfolio";
+import { usePortfolioData } from "../data/portfolio";
+import { useTranslation } from "../i18n/useTranslation";
 
 const EducationPage = () => {
   console.log("🎨 [Render] EducationPage");
-  const { education, certifications } = portfolioData;
+  const { education, certifications } = usePortfolioData();
+  const { t } = useTranslation();
 
 
 
@@ -25,13 +27,13 @@ const EducationPage = () => {
       
       <div className="container-width max-w-4xl mx-auto px-4">
         <header className="mb-16 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold dark:text-white mb-4">Education</h1>
-          <p className="text-lg text-slate-600 dark:text-slate-400">Continuous learning and professional growth.</p>
+          <h1 className="text-4xl md:text-5xl font-bold dark:text-white mb-4">{t.education.title}</h1>
+          <p className="text-lg text-slate-600 dark:text-slate-400">{t.education.subtitle}</p>
         </header>
 
         <div className="space-y-8 mb-16">
           <h2 className="text-2xl font-bold dark:text-white flex items-center gap-2">
-            <GraduationCap className="text-blue-600" /> Academic
+            <GraduationCap className="text-blue-600" /> {t.education.academicHeading}
           </h2>
           {education.map((edu, i) => (
             <Card key={i} className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
@@ -43,9 +45,14 @@ const EducationPage = () => {
                   </div>
                   <Badge variant="secondary" className="self-start sm:self-center h-fit bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">{edu.period}</Badge>
                 </div>
-                {edu.gpa && (
+                {(edu.gpa || edu.honors) && (
                   <div className="flex flex-wrap gap-2 mb-2">
-                    <Badge variant="emerald" className="font-normal capitalize">GPA: {edu.gpa}</Badge>
+                    {edu.gpa && (
+                      <Badge variant="emerald" className="font-normal capitalize">GPA: {edu.gpa}</Badge>
+                    )}
+                    {edu.honors && (
+                      <Badge variant="sky" className="font-normal">{edu.honors}</Badge>
+                    )}
                   </div>
                 )}
               </CardContent>
@@ -55,7 +62,7 @@ const EducationPage = () => {
 
         <div className="space-y-8">
           <h2 className="text-2xl font-bold dark:text-white flex items-center gap-2">
-            <Award className="text-yellow-600" /> Certifications
+            <Award className="text-yellow-600" /> {t.education.certificationsHeading}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {certifications.map((cert, i) => (

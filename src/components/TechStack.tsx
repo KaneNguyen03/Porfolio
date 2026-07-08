@@ -2,10 +2,11 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { memo, useState } from "react";
+import { useTranslation } from "../i18n/useTranslation";
 import { TRANSITION, fadeUpItem, staggerContainer } from "../lib/motion";
 
 interface TechCluster {
-  label: string;
+  labelKey: "frontend" | "backend" | "infrastructure" | "architecture";
   icon: string;
   technologies: string[];
   color: string;
@@ -13,33 +14,34 @@ interface TechCluster {
 
 const techClusters: TechCluster[] = [
   {
-    label: "Frontend",
+    labelKey: "frontend",
     icon: "⚡",
     technologies: ["React.js", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
     color: "from-blue-500 to-cyan-400",
   },
   {
-    label: "Backend",
+    labelKey: "backend",
     icon: "⚙️",
     technologies: ["Node.js", "NestJS", "Fastify", "Express", "ASP.NET Core", "REST", "gRPC"],
     color: "from-emerald-500 to-teal-400",
   },
   {
-    label: "Infrastructure",
+    labelKey: "infrastructure",
     icon: "☁️",
     technologies: ["AWS", "EC2", "RDS", "SQS", "S3", "Lambda", "Docker", "RabbitMQ", "Redis"],
     color: "from-orange-500 to-yellow-400",
   },
   {
-    label: "AI & RAG",
-    icon: "🧠",
-    technologies: ["LangChain", "Ultralytics", "OpenAI", "Vector Search", "RAG Pipelines"],
+    labelKey: "architecture",
+    icon: "🏗️",
+    technologies: ["CQRS", "Saga Pattern", "Clean Architecture", "SOLID", "DDD"],
     color: "from-purple-500 to-pink-400",
   },
 ];
 
 const TechStack = memo(() => {
   const [activeCluster, setActiveCluster] = useState<string | null>(null);
+  const { t } = useTranslation();
   const container = staggerContainer(0.04, 0);
 
   return (
@@ -53,10 +55,10 @@ const TechStack = memo(() => {
           className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-4xl font-bold dark:text-white mb-3">
-            Tech Stack
+            {t.home.techStackTitle}
           </h2>
           <p className="text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
-            Click a cluster to focus — technologies I work with daily
+            {t.home.techStackSubtitle}
           </p>
         </motion.div>
 
@@ -68,14 +70,15 @@ const TechStack = memo(() => {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
         >
           {techClusters.map((cluster) => {
-            const isActive = activeCluster === cluster.label;
+            const label = t.home.techStackClusters[cluster.labelKey];
+            const isActive = activeCluster === label;
             const isDimmed = activeCluster !== null && !isActive;
 
             return (
               <motion.button
-                key={cluster.label}
+                key={cluster.labelKey}
                 variants={fadeUpItem(15)}
-                onClick={() => setActiveCluster(isActive ? null : cluster.label)}
+                onClick={() => setActiveCluster(isActive ? null : label)}
                 className={`relative overflow-hidden rounded-2xl p-6 text-left transition-all duration-300 border ${
                   isActive
                     ? "border-transparent ring-2 ring-indigo-500 shadow-xl shadow-indigo-500/20 scale-[1.02]"
@@ -89,7 +92,7 @@ const TechStack = memo(() => {
 
                 <div className="relative z-10">
                   <span className="text-2xl mb-3 block">{cluster.icon}</span>
-                  <h3 className="text-lg font-bold dark:text-white mb-3">{cluster.label}</h3>
+                  <h3 className="text-lg font-bold dark:text-white mb-3">{label}</h3>
 
                   <AnimatePresence>
                     {(!activeCluster || isActive) && (
@@ -123,7 +126,7 @@ const TechStack = memo(() => {
             animate={{ opacity: 1 }}
             className="text-center text-xs text-slate-400 mt-6"
           >
-            Click active cluster again to reset
+            {t.home.techStackReset}
           </motion.p>
         )}
       </div>
