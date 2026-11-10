@@ -1,31 +1,26 @@
 import { memo } from "react";
 import BlogSection from "../components/BlogSection";
 import HeroSection from "../components/HeroSection";
+import HomeCredentials from "../components/HomeCredentials";
+import HomeCtaBand from "../components/HomeCtaBand";
 import HomeImpactStats from "../components/HomeImpactStats";
 import HomeProjectTeaser from "../components/HomeProjectTeaser";
-import ScrollReveal from "../components/ScrollReveal";
 import SEO from "../components/SEO";
 import TechStack from "../components/TechStack";
+import { useTranslation } from "../i18n/useTranslation";
 
 const HomePage = () => {
+  const { t } = useTranslation();
   return (
     <>
-      <SEO title="Home" description="Kha (Kane) Nguyen — Fullstack Software Engineer in Ho Chi Minh City. Explore projects, tech stack, blog posts, and professional experience." />
+      <SEO title={t.seo.pages.home.title} description={t.seo.pages.home.description} />
       <HeroSection />
-
-      <ScrollReveal direction="up" distance={20}>
-        <HomeImpactStats />
-      </ScrollReveal>
-
-      <ScrollReveal direction="up" distance={20}>
-        <HomeProjectTeaser />
-      </ScrollReveal>
-
+      <HomeImpactStats />
+      <HomeProjectTeaser />
       <TechStack />
-
-      <ScrollReveal direction="up" distance={20}>
-        <BlogSection />
-      </ScrollReveal>
+      <HomeCredentials />
+      <BlogSection />
+      <HomeCtaBand />
     </>
   );
 };

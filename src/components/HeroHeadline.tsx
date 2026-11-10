@@ -5,7 +5,6 @@ import { memo, useEffect, useState } from "react";
 import { EASING } from "../lib/motion";
 
 const ROLE_INTERVAL = 2800;
-const TICK_INTERVAL = 90;
 
 interface HeroHeadlineProps {
   name: string;
@@ -15,7 +14,6 @@ interface HeroHeadlineProps {
 const HeroHeadline = memo(({ name, roles }: HeroHeadlineProps) => {
   const reduceMotion = useReducedMotion();
   const [roleIndex, setRoleIndex] = useState(0);
-  const [tick, setTick] = useState(0);
 
   useEffect(() => {
     if (reduceMotion) return;
@@ -26,21 +24,12 @@ const HeroHeadline = memo(({ name, roles }: HeroHeadlineProps) => {
     return () => window.clearInterval(id);
   }, [reduceMotion, roles.length]);
 
-  useEffect(() => {
-    if (reduceMotion) return;
-    const id = window.setInterval(() => setTick((t) => (t + 1) % 1000), TICK_INTERVAL);
-    return () => window.clearInterval(id);
-  }, [reduceMotion]);
-
   const words = name.split(" ");
   const currentRole = roles[roleIndex % roles.length];
 
   return (
     <div>
-      <h1
-        className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-slate-900 dark:text-white mb-4 tracking-tight"
-        aria-label={name}
-      >
+      <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-slate-900 dark:text-white mb-4 tracking-tight">
         {reduceMotion ? (
           name
         ) : (
@@ -84,7 +73,7 @@ const HeroHeadline = memo(({ name, roles }: HeroHeadlineProps) => {
         )}
       </h1>
 
-      <div className="text-xl md:text-2xl font-semibold mb-2 h-9 relative">
+      <div className="text-xl md:text-2xl font-semibold mb-6 h-9 relative">
         <AnimatePresence mode="wait" initial={false}>
           <motion.span
             key={currentRole}
@@ -99,32 +88,6 @@ const HeroHeadline = memo(({ name, roles }: HeroHeadlineProps) => {
         </AnimatePresence>
       </div>
 
-      <div
-        className="text-[11px] md:text-xs font-mono text-slate-500 dark:text-slate-500 mb-6 flex items-center gap-2 justify-center lg:justify-start select-none"
-        aria-hidden="true"
-      >
-        <span className="text-emerald-500">$</span>
-        <span className="text-slate-600 dark:text-slate-400">~/portfolio</span>
-        <span className="text-slate-400 dark:text-slate-600">›</span>
-        <span className="text-indigo-500 dark:text-indigo-400">
-          tick_{String(tick).padStart(3, "0")}
-        </span>
-        <span className="text-slate-400 dark:text-slate-600">·</span>
-        <motion.span
-          className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500"
-          animate={
-            reduceMotion
-              ? undefined
-              : { opacity: [1, 0.35, 1], scale: [1, 1.25, 1] }
-          }
-          transition={{
-            duration: 1.4,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-          }}
-        />
-        <span className="text-slate-600 dark:text-slate-400">online</span>
-      </div>
     </div>
   );
 });

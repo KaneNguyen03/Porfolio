@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useTranslation } from "../i18n/useTranslation";
 import type { Project } from "../types/portfolio";
@@ -79,6 +79,19 @@ const systemDiagrams: Record<"en" | "vi", Record<string, DiagramShape>> = {
 
 export default function ArchitectureModal({ project, onClose }: ArchitectureModalProps) {
   const { t, language } = useTranslation();
+  const panelRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
+
+  // Move focus into the dialog on open and restore it to the trigger on close.
+  useEffect(() => {
+    if (!project) return;
+    triggerRef.current = document.activeElement as HTMLElement | null;
+    const id = window.setTimeout(() => panelRef.current?.focus(), 50);
+    return () => {
+      window.clearTimeout(id);
+      triggerRef.current?.focus();
+    };
+  }, [project]);
   useEffect(() => {
     if (!project) return;
     const handleKey = (e: KeyboardEvent) => {
@@ -122,16 +135,23 @@ export default function ArchitectureModal({ project, onClose }: ArchitectureModa
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-slate-200 dark:border-slate-800"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="arch-modal-title"
+              tabIndex={-1}
+              ref={panelRef}
+              className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-slate-200 dark:border-slate-800 outline-none"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-800">
                 <div>
-                  <h3 className="text-xl font-bold dark:text-white">{project.name}</h3>
+                  <h2 id="arch-modal-title" className="text-xl font-bold dark:text-white">{project.name}</h2>
                   <p className="text-sm text-slate-500 dark:text-slate-400">{project.role}</p>
                 </div>
                 <button
+                  type="button"
                   onClick={onClose}
+                  aria-label={t.common.close}
                   className="p-2 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                 >
                   <X size={20} />

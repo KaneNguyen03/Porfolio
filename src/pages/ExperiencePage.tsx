@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Briefcase, Building, Calendar, CheckCircle, Sparkles } from "lucide-react";
 import { memo } from "react";
+import PageHeader from "../components/PageHeader";
 import SEO from "../components/SEO";
 import { Badge } from "../components/ui/badge";
 import { Card, CardContent } from "../components/ui/card";
@@ -12,7 +13,6 @@ import { calculateExperienceYears } from "../lib/experience";
 import { fadeUpItem, staggerContainer } from "../lib/motion";
 
 const ExperiencePage = () => {
-  console.log("🎨 [Render] ExperiencePage");
   const { workExperience } = usePortfolioData();
   const { t } = useTranslation();
 
@@ -21,19 +21,15 @@ const ExperiencePage = () => {
   const clientCount = new Set(workExperience.flatMap((e) => e.clients ?? [])).size;
 
   return (
-    <div className="bg-slate-50 dark:bg-gray-950 py-16 sm:py-24 min-h-screen">
-      <SEO title="Experience" description="Professional experience of Kha (Kane) Nguyen — Software Engineer at Bizzi, Cigro, FSoft, and Axpara. Node.js, React, AWS, and AP automation." />
+    <div className="py-16 sm:py-24 min-h-screen">
+      <SEO title={t.seo.pages.experience.title} description={t.seo.pages.experience.description} />
 
       <div className="container-width max-w-4xl mx-auto px-4">
-        <header className="mb-16 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">{t.experience.title}</h1>
-          <p className="text-lg text-slate-600 dark:text-slate-400">
-            {t.experience.subtitle}
-          </p>
-          <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mt-2">
+        <PageHeader eyebrow={t.experience.eyebrow} title={t.experience.title} subtitle={t.experience.subtitle}>
+          <p className="mt-4 inline-flex items-center rounded-full border border-slate-200/80 bg-white/70 px-4 py-1.5 text-sm font-medium text-slate-600 backdrop-blur dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-300">
             {t.experience.yearsCompaniesClients(years, companyCount, clientCount)}
           </p>
-        </header>
+        </PageHeader>
 
         <motion.div
           variants={staggerContainer(0.08, 0)}
@@ -51,7 +47,7 @@ const ExperiencePage = () => {
             <motion.div key={i} variants={fadeUpItem(15)} className="relative">
               <span
                 aria-hidden="true"
-                className="absolute -left-8 sm:-left-10 top-8 w-3.5 h-3.5 rounded-full bg-gradient-to-br from-indigo-500 to-sky-500 ring-4 ring-slate-50 dark:ring-gray-950 shadow-[0_0_12px_rgba(99,102,241,0.6)]"
+                className="absolute -left-8 sm:-left-10 top-8 w-3.5 h-3.5 rounded-full bg-gradient-to-br from-indigo-500 to-sky-500 ring-4 ring-slate-50 dark:ring-slate-950 shadow-[0_0_12px_rgba(99,102,241,0.6)]"
               />
 
               <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 overflow-hidden">
@@ -63,7 +59,7 @@ const ExperiencePage = () => {
                           <Briefcase className="w-6 h-6 text-white" />
                         </div>
                         <div>
-                          <h3 className="text-xl font-bold dark:text-white">{exp.position}</h3>
+                          <h2 className="text-xl font-bold dark:text-white">{exp.position}</h2>
                           <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
                             <Building size={16} />
                             <span>{exp.company}</span>
@@ -78,7 +74,7 @@ const ExperiencePage = () => {
 
                     {exp.clients && exp.clients.length > 0 && (
                       <div className="flex flex-wrap items-center gap-1.5 mb-4">
-                        <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mr-1">{t.experience.clientsLabel}</span>
+                        <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mr-1">{t.experience.clientsLabel}</span>
                         {exp.clients.map((client) => (
                           <Badge key={client} variant="sky" className="font-normal normal-case">{client}</Badge>
                         ))}

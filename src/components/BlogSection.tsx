@@ -36,8 +36,11 @@ const BlogSection = memo(() => {
           transition={TRANSITION.base}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold dark:text-white mb-3">
-            {t.home.technicalLabTitle}
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-indigo-600 dark:text-indigo-300 mb-3">
+            {t.nav.blog}
+          </p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-3">
+            <span className="gradient-text-animated">{t.home.technicalLabTitle}</span>
           </h2>
           <p className="text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
             {t.home.technicalLabSubtitle}
@@ -103,7 +106,7 @@ const BlogSection = memo(() => {
                           <Badge
                             key={tag}
                             variant="sky"
-                            className="text-[9px] font-bold px-1.5 py-0.5"
+                            className="text-[11px] font-bold px-1.5 py-0.5"
                           >
                             #{tag}
                           </Badge>
@@ -116,7 +119,7 @@ const BlogSection = memo(() => {
                       </h3>
 
                       {/* Date */}
-                      <div className="flex items-center gap-1.5 text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-3">
+                      <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">
                         <Calendar size={11} />
                         <span>{post.date}</span>
                       </div>

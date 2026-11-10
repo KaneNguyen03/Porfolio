@@ -6,6 +6,8 @@ export interface PersonalInfo {
 	location: string;
 	github: string;
 	linkedin: string;
+	/** Short hero line (1–2 sentences). `objective` stays the long About/SEO copy. */
+	tagline: string;
 	objective: string;
 }
 
@@ -15,6 +17,8 @@ export interface Education {
 	institution: string;
 	gpa?: string;
 	honors?: string;
+	/** Still studying — rendered with an "in progress" marker. */
+	inProgress?: boolean;
 }
 
 export interface WorkExperience {
@@ -37,10 +41,25 @@ export interface Project {
 	image?: string;
 }
 
+export type CertificationType = "certification" | "specialization" | "professional" | "course";
+
 export interface Certification {
+	/** Official certificate title (kept in English — it is what the credential says). */
 	name: string;
+	/** Localized one-line description of what the credential covers. */
+	summary: string;
+	/** Issuing university / organization. */
+	issuer: string;
+	/** Short monogram used for the issuer avatar (e.g. "UM"). */
+	issuerShort: string;
+	/** Platform that hosts the credential (e.g. "Coursera"). */
+	platform: string;
+	type: CertificationType;
 	date: string;
 	url: string;
+	skills: string[];
+	/** Headline credential — gets the glowing "featured" treatment. */
+	featured?: boolean;
 }
 
 export interface Award {

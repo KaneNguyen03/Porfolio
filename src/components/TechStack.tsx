@@ -1,13 +1,14 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { Cloud, Code2, Layers, Server, type LucideIcon } from "lucide-react";
 import { memo, useState } from "react";
 import { useTranslation } from "../i18n/useTranslation";
 import { TRANSITION, fadeUpItem, staggerContainer } from "../lib/motion";
 
 interface TechCluster {
   labelKey: "frontend" | "backend" | "infrastructure" | "architecture";
-  icon: string;
+  icon: LucideIcon;
   technologies: string[];
   color: string;
 }
@@ -15,25 +16,25 @@ interface TechCluster {
 const techClusters: TechCluster[] = [
   {
     labelKey: "frontend",
-    icon: "⚡",
+    icon: Code2,
     technologies: ["React.js", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
     color: "from-blue-500 to-cyan-400",
   },
   {
     labelKey: "backend",
-    icon: "⚙️",
+    icon: Server,
     technologies: ["Node.js", "NestJS", "Fastify", "Express", "ASP.NET Core", "REST", "gRPC"],
     color: "from-emerald-500 to-teal-400",
   },
   {
     labelKey: "infrastructure",
-    icon: "☁️",
+    icon: Cloud,
     technologies: ["AWS", "EC2", "RDS", "SQS", "S3", "Lambda", "Docker", "RabbitMQ", "Redis"],
     color: "from-orange-500 to-yellow-400",
   },
   {
     labelKey: "architecture",
-    icon: "🏗️",
+    icon: Layers,
     technologies: ["CQRS", "Saga Pattern", "Clean Architecture", "SOLID", "DDD"],
     color: "from-purple-500 to-pink-400",
   },
@@ -54,8 +55,11 @@ const TechStack = memo(() => {
           transition={TRANSITION.base}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold dark:text-white mb-3">
-            {t.home.techStackTitle}
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-indigo-600 dark:text-indigo-300 mb-3">
+            {t.about.statStack}
+          </p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-3">
+            <span className="gradient-text-animated">{t.home.techStackTitle}</span>
           </h2>
           <p className="text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
             {t.home.techStackSubtitle}
@@ -91,7 +95,9 @@ const TechStack = memo(() => {
                 <div className={`absolute inset-0 bg-gradient-to-br ${cluster.color} opacity-[0.03] dark:opacity-[0.06]`} />
 
                 <div className="relative z-10">
-                  <span className="text-2xl mb-3 block">{cluster.icon}</span>
+                  <span className={`mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${cluster.color} text-white shadow-md shadow-slate-900/10`}>
+                    <cluster.icon size={18} />
+                  </span>
                   <h3 className="text-lg font-bold dark:text-white mb-3">{label}</h3>
 
                   <AnimatePresence>
@@ -106,7 +112,7 @@ const TechStack = memo(() => {
                         {cluster.technologies.map((tech) => (
                           <span
                             key={tech}
-                            className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
+                            className="px-2 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
                           >
                             {tech}
                           </span>
@@ -124,7 +130,7 @@ const TechStack = memo(() => {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-center text-xs text-slate-400 mt-6"
+            className="text-center text-xs text-slate-500 dark:text-slate-400 mt-6"
           >
             {t.home.techStackReset}
           </motion.p>

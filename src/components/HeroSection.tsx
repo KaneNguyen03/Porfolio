@@ -8,7 +8,7 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-import { ArrowRight, Download } from "lucide-react";
+import { ArrowRight, BadgeCheck, Download } from "lucide-react";
 import { memo, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import cvFile from "../assets/Nguyen_Xuan_Kha_Fullstack_CV.pdf";
@@ -113,7 +113,8 @@ function HeroAvatar({ src, alt }: HeroAvatarProps) {
 }
 
 const HeroSection = memo(() => {
-  const { personalInfo } = usePortfolioData();
+  const { personalInfo, certifications } = usePortfolioData();
+  const featuredCert = certifications.find((c) => c.featured);
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -160,9 +161,25 @@ const HeroSection = memo(() => {
               transition={{ ...TRANSITION.base, delay: 0.3 }}
               className="flex flex-wrap justify-center lg:justify-start gap-2 mb-6"
             >
-              <Badge className="rounded-full px-4 py-1.5 bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 border-blue-200 dark:border-blue-800">
+              <Badge className="rounded-full px-4 py-1.5 bg-emerald-50 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800 normal-case tracking-normal">
+                <span className="relative mr-2 flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75 motion-reduce:hidden" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                </span>
                 {t.heroSection.openToWork}
               </Badge>
+              {featuredCert && (
+                <a
+                  href={featuredCert.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${t.heroSection.awsBadge} (${t.common.opensInNewTab})`}
+                  className="group inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-4 py-1.5 text-xs font-semibold text-amber-800 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md hover:shadow-amber-500/20 dark:border-amber-800 dark:bg-amber-900/30 dark:text-amber-200"
+                >
+                  <BadgeCheck size={14} className="text-amber-600 dark:text-amber-300" />
+                  {t.heroSection.awsBadge}
+                </a>
+              )}
             </motion.div>
 
             <HeroHeadline name={personalInfo.name} roles={t.heroSection.roles} />
@@ -173,7 +190,7 @@ const HeroSection = memo(() => {
               transition={{ ...TRANSITION.base, delay: 0.8 }}
               className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-10 max-w-2xl mx-auto lg:mx-0"
             >
-              {personalInfo.objective}
+              {personalInfo.tagline}
             </motion.p>
 
             <motion.div

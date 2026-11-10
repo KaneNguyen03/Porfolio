@@ -7,12 +7,10 @@
     <!-- Primary Meta Tags -->
     <title>Kha (Kane) Nguyen (KaneNguyen03) - Software Engineer Portfolio</title>
     <meta name="title" content="Kha (Kane) Nguyen (KaneNguyen03) - Software Engineer Portfolio">
-    <meta name="description" content="Fullstack Software Engineer specializing in React, Node.js, TypeScript, and AWS. Based in Ho Chi Minh City, Vietnam. 2+ years shipping production applications.">
+    <meta name="description" content="Fullstack Software Engineer and AWS Certified Solutions Architect specializing in React, Node.js, TypeScript and fintech automation. Based in Ho Chi Minh City, Vietnam. 3 years shipping production systems.">
     <meta name="keywords" content="KaneNguyen03,software engineer,fullstack developer,react,node.js,typescript,aws,vietnam,portfolio,backend engineer,AP automation">
     <meta name="author" content="Kha (Kane) Nguyen">
     <meta name="robots" content="index, follow">
-    <meta name="language" content="English">
-    <meta name="revisit-after" content="7 days">
 
     <!-- Open Graph / Facebook (default for non-JS scrapers) -->
     <meta property="og:type" content="website">
@@ -20,6 +18,7 @@
     <meta property="og:title" content="Kha (Kane) Nguyen (KaneNguyen03) - Software Engineer Portfolio">
     <meta property="og:description" content="Fullstack Software Engineer specializing in React, Node.js, TypeScript, and AWS. Based in Ho Chi Minh City, Vietnam.">
     <meta property="og:image" content="/og-image.jpg">
+    <meta property="og:image:alt" content="Kha (Kane) Nguyen — Fullstack Software Engineer, AWS Certified Solutions Architect">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:locale" content="en_US">
@@ -37,15 +36,35 @@
     <link rel="manifest" href="/manifest.json">
     
     <!-- Theme -->
-    <meta name="theme-color" content="#2563eb">
+    <meta name="theme-color" content="#4f46e5">
+
+    <!-- Apply the saved/system theme before first paint to avoid a light flash -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("theme");
+          if (t !== "light" && t !== "dark") {
+            t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+          }
+          var el = document.documentElement;
+          el.classList.add(t);
+          el.style.colorScheme = t;
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Fonts: preconnect + link instead of a render-blocking CSS @import chain -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap">
   </head>
   <body>
     <div id="root">
       <!-- Loading fallback -->
       <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: system-ui, -apple-system, sans-serif;">
         <div style="text-align: center;">
-          <div style="width: 40px; height: 40px; border: 4px solid #f3f4f6; border-top: 4px solid #2563eb; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px;"></div>
-          <p style="color: #6b7280; font-size: 14px;">Loading...</p>
+          <div style="width: 40px; height: 40px; border: 4px solid rgba(148,163,184,0.25); border-top: 4px solid #4f46e5; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px;"></div>
+          <p style="color: #64748b; font-size: 14px;">Loading...</p>
         </div>
       </div>
       <style>

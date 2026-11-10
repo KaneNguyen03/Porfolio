@@ -13,17 +13,20 @@ import {
 } from "../assets/projectImages";
 
 import type { PortfolioData } from "../types/portfolio";
+import { certificationsEn } from "./certifications";
 import { skills } from "./skills";
 
 export const portfolioDataEn: PortfolioData = {
 	personalInfo: {
 		name: "Kha (Kane) Nguyen",
 		title: "Fullstack Engineer",
-		phone: "0915421830",
+		phone: "+84 915 421 830",
 		email: "nguyenxuankha5371@gmail.com",
 		location: "Ho Chi Minh City, Vietnam",
 		github: "https://github.com/KaneNguyen03",
 		linkedin: "https://www.linkedin.com/in/kha-nguyen-29732a209",
+		tagline:
+			"Fullstack engineer building fintech automation at Bizzi — 4M+ e-invoices a month, GraphQL microservices on Node.js, and AWS Certified Solutions Architect.",
 		objective:
 			"Fullstack Engineer specializing in enterprise fintech automation. Currently at Bizzi, maintaining and scaling an IPA platform that processes 4M+ e-invoices/month for Vietnam's top FMCG enterprises — Masan Consumer, Wincommerce, GS25, and KingFoodMart. 3 years of production experience shipping microservices, GraphQL APIs, and data-intensive pipelines across teams in Vietnam, Singapore, and Korea. Honors graduate of FPT University.",
 	},
@@ -32,6 +35,7 @@ export const portfolioDataEn: PortfolioData = {
 			period: "Apr 2026 - Nov 2027 (Expected)",
 			degree: "Master of Science in Engineering (MSE)",
 			institution: "FSB",
+			inProgress: true,
 		},
 		{
 			period: "Sep 2020 - Jun 2024",
@@ -217,7 +221,7 @@ export const portfolioDataEn: PortfolioData = {
 		{
 			name: "Building Maintenance and Crack Monitoring System",
 			period: "Dec 2024 - Apr 2025",
-			role: "Leader",
+			role: "Team Lead & Fullstack — NestJS microservices, gRPC auth, YOLOv11 crack detection on AWS Lambda, Docker on EC2.",
 			technologies: [
 				"TypeScript",
 				"NestJS",
@@ -246,7 +250,7 @@ export const portfolioDataEn: PortfolioData = {
 		{
 			name: "Poke Life Food Management",
 			period: "Aug 2024 - Nov 2024",
-			role: "Leader",
+			role: "Team Lead & Fullstack — NestJS + Prisma backend, React admin dashboards, WebSocket chat and payment workflows.",
 			technologies: [
 				"TypeScript",
 				"NestJS",
@@ -324,7 +328,7 @@ export const portfolioDataEn: PortfolioData = {
 		{
 			name: "Proofn",
 			period: "Jan 2023 - Feb 2023",
-			role: "Leader",
+			role: "Team Lead & Frontend — Next.js site with Sanity CMS content and QR-code deep links.",
 			technologies: ["JavaScript", "Next.js", "Sanity"],
 			responsibilities: [
 				"Built dynamic content display integrated with Sanity CMS.",
@@ -351,38 +355,7 @@ export const portfolioDataEn: PortfolioData = {
 		},
 	],
 	skills,
-	certifications: [
-		{
-			name: "User Experience Research and Design",
-			date: "Sep 2024",
-			url: "https://coursera.org/share/6d0c6bd149e94707df0407a5efbb75d5",
-		},
-		{
-			name: "Project Management Principles and Practices",
-			date: "May 2024",
-			url: "https://coursera.org/share/0569f6dd8e5edcee9d4ee627e411866e",
-		},
-		{
-			name: "CertNexus Certified Ethical Emerging Technologist",
-			date: "Sep 2023",
-			url: "https://coursera.org/share/be98f1d62eb107c4f865ad339d4757aa",
-		},
-		{
-			name: "Software Development Lifecycle",
-			date: "Jun 2023",
-			url: "https://coursera.org/share/2bcebdac591eeb044059ce7e7334477d",
-		},
-		{
-			name: "Web Design for Everybody",
-			date: "Feb 2023",
-			url: "https://coursera.org/share/5134b435a3c299a729ae377175ae38b8",
-		},
-		{
-			name: "Computer Communications",
-			date: "Sep 2022",
-			url: "https://coursera.org/share/a5791332f1ba375c300b68485b0fbc49",
-		},
-	],
+	certifications: certificationsEn,
 	awards: [
 		{
 			name: "Honorable Student",

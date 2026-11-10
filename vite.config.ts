@@ -15,15 +15,16 @@ export default defineConfig({
     // Tối ưu bundle size và performance
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ["react", "react-dom"],
-          router: ["react-router-dom"],
-          animation: ["framer-motion"],
-          icons: ["lucide-react"],
-          // mermaid is only needed on /blog/:slug pages — kept in its own
-          // lazily-loaded chunk, dynamically imported from MermaidDiagram.tsx,
-          // so it never affects initial load of any other route.
-          diagrams: ["mermaid"],
+        // Function form: object-form manualChunks hoists shared helpers into
+        // the named chunk and makes the entry statically import it, which
+        // defeated the dynamic import("mermaid") in MermaidDiagram.tsx.
+        manualChunks(id) {
+          if (!id.includes("node_modules")) return undefined;
+          if (id.includes("/react-router")) return "router";
+          if (id.includes("/framer-motion") || id.includes("/motion-dom") || id.includes("/motion-utils")) return "animation";
+          if (id.includes("/lucide-react")) return "icons";
+          if (id.includes("/react/") || id.includes("/react-dom/") || id.includes("/scheduler/")) return "vendor";
+          return undefined;
         },
         // Tối ưu asset names
         assetFileNames: "assets/[name]-[hash][extname]",

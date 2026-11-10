@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -34,6 +33,19 @@
 		scrollbar-gutter: stable;
 	}
 
+	@media (prefers-reduced-motion: reduce) {
+		html {
+			scroll-behavior: auto;
+		}
+	}
+
+	/* Visible keyboard focus for raw links/buttons that don't use the Button component */
+	:focus-visible {
+		outline: 2px solid #0ea5e9;
+		outline-offset: 2px;
+		border-radius: 6px;
+	}
+
 	html.dark {
 		color-scheme: dark;
 	}
@@ -42,15 +54,6 @@
 		color-scheme: light;
 	}
 
-	/* Smooth card hover effect */
-	.card-hover-effect {
-		transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-	}
-
-	.card-hover-effect:hover {
-		transform: translateY(-4px);
-		box-shadow: 0 20px 60px rgba(99, 102, 241, 0.15);
-	}
 }
 
 @layer components {
@@ -60,28 +63,6 @@
 
 	.container-width {
 		@apply container mx-auto px-4 sm:px-6 lg:px-8;
-	}
-
-	.btn-primary {
-		@apply bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200;
-	}
-
-	.btn-secondary {
-		@apply bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200;
-	}
-
-	.card {
-		@apply bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-gray-700 transition-colors duration-200;
-	}
-
-	.pill {
-		@apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700;
-	}
-
-	.glass-panel {
-		background: var(--brand-card);
-		box-shadow: 0 20px 70px rgba(15, 23, 42, 0.08);
-		@apply backdrop-blur-xl dark:bg-slate-900/80;
 	}
 
 	.brand-backdrop {
@@ -112,15 +93,15 @@
 }
 
 ::-webkit-scrollbar-track {
-	@apply bg-gray-100 dark:bg-gray-800;
+	@apply bg-slate-100 dark:bg-slate-900;
 }
 
 ::-webkit-scrollbar-thumb {
-	@apply bg-gray-400 dark:bg-gray-600 rounded-md;
+	@apply bg-slate-300 dark:bg-slate-700 rounded-md;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	@apply bg-gray-500 dark:bg-gray-500;
+	@apply bg-slate-400 dark:bg-slate-600;
 }
 
 /* Hero — animated background layers */
@@ -219,12 +200,167 @@ html.dark .hero-conic-mesh {
 	}
 }
 
+/* ---- Bling: animated gradient text ---- */
+.gradient-text-animated {
+	background: linear-gradient(90deg, #4f46e5 0%, #0ea5e9 30%, #a855f7 60%, #4f46e5 100%);
+	background-size: 300% 100%;
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+	animation: gradient-shift 7s linear infinite;
+}
+
+html.dark .gradient-text-animated {
+	background-image: linear-gradient(90deg, #818cf8 0%, #38bdf8 30%, #c084fc 60%, #818cf8 100%);
+}
+
+@keyframes gradient-shift {
+	to {
+		background-position: 300% 0;
+	}
+}
+
+/* ---- Bling: shine sweep across a card on hover ---- */
+.shine-card {
+	position: relative;
+	overflow: hidden;
+}
+
+.shine-card::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	background: linear-gradient(
+		115deg,
+		rgba(255, 255, 255, 0) 30%,
+		rgba(255, 255, 255, 0.55) 50%,
+		rgba(255, 255, 255, 0) 70%
+	);
+	transform: translateX(-120%) skewX(-12deg);
+	opacity: 0;
+	transition: opacity 0.2s ease;
+	mix-blend-mode: soft-light;
+}
+
+html.dark .shine-card::after {
+	background: linear-gradient(
+		115deg,
+		rgba(255, 255, 255, 0) 30%,
+		rgba(255, 255, 255, 0.22) 50%,
+		rgba(255, 255, 255, 0) 70%
+	);
+	mix-blend-mode: screen;
+}
+
+.shine-card:hover::after {
+	opacity: 1;
+	animation: shine-sweep 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes shine-sweep {
+	to {
+		transform: translateX(120%) skewX(-12deg);
+	}
+}
+
+/* ---- Bling: rotating conic glow border for featured cards ---- */
+.glow-border {
+	position: relative;
+}
+
+.glow-border::before {
+	content: "";
+	position: absolute;
+	inset: -2px;
+	border-radius: inherit;
+	padding: 2px;
+	background: conic-gradient(
+		from var(--glow-angle, 0deg),
+		#f59e0b,
+		#f97316,
+		#6366f1,
+		#0ea5e9,
+		#f59e0b
+	);
+	-webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+	mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+	-webkit-mask-composite: xor;
+	mask-composite: exclude;
+	pointer-events: none;
+	animation: glow-spin 6s linear infinite;
+	opacity: 0.9;
+}
+
+@property --glow-angle {
+	syntax: "<angle>";
+	inherits: false;
+	initial-value: 0deg;
+}
+
+@keyframes glow-spin {
+	to {
+		--glow-angle: 360deg;
+	}
+}
+
+.featured-halo {
+	box-shadow: 0 20px 60px rgba(245, 158, 11, 0.14);
+}
+
+/* Pulse lives on a pseudo layer (opacity/transform only) so the blurred
+   card itself is never repainted every frame. */
+.featured-halo::after {
+	content: "";
+	position: absolute;
+	inset: -6px;
+	border-radius: inherit;
+	pointer-events: none;
+	background: radial-gradient(60% 60% at 50% 50%, rgba(245, 158, 11, 0.22), rgba(245, 158, 11, 0));
+	filter: blur(14px);
+	opacity: 0.6;
+	animation: featured-pulse 3.2s ease-in-out infinite;
+	z-index: -1;
+}
+
+@keyframes featured-pulse {
+	0%,
+	100% {
+		opacity: 0.45;
+		transform: scale(0.98);
+	}
+	50% {
+		opacity: 1;
+		transform: scale(1.02);
+	}
+}
+
+/* ---- Bling: slow floating for decorative elements ---- */
+.float-slow {
+	animation: float-slow 6s ease-in-out infinite;
+}
+
+@keyframes float-slow {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-8px);
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.hero-conic-mesh,
-	.hero-avatar-shimmer {
+	.hero-avatar-shimmer,
+	.gradient-text-animated,
+	.glow-border::before,
+	.featured-halo::after,
+	.float-slow {
 		animation: none;
 	}
-	.cta-ripple-glow {
+	.cta-ripple-glow,
+	.shine-card::after {
 		display: none;
 	}
 }

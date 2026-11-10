@@ -38,8 +38,11 @@ const HomeProjectTeaser = memo(() => {
           transition={TRANSITION.base}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold dark:text-white mb-3">
-            {t.home.selectedWork}
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-indigo-600 dark:text-indigo-300 mb-3">
+            {t.nav.projects}
+          </p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-3">
+            <span className="gradient-text-animated">{t.home.selectedWork}</span>
           </h2>
           <p className="text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
             {t.home.selectedWorkSubtitle}
@@ -75,7 +78,7 @@ const HomeProjectTeaser = memo(() => {
                         {project.technologies.slice(0, 3).map((t) => (
                           <Badge
                             key={t}
-                            className="text-[8px] font-bold px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-none"
+                            className="text-[11px] font-bold px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-none"
                           >
                             {t}
                           </Badge>
