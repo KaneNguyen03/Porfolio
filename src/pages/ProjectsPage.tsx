@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Calendar, ExternalLink, Github, Network, Play } from "lucide-react";
 import { memo, useState } from "react";
 import ArchitectureModal from "../components/ArchitectureModal";
+import PageHeader from "../components/PageHeader";
 import SEO from "../components/SEO";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
@@ -23,7 +24,7 @@ function getBentoSpanClass(i: number, isAllView: boolean): string {
   return `md:col-span-1 ${BENTO_REST_PATTERN[(i - 1) % BENTO_REST_PATTERN.length]}`;
 }
 
-const YouTubeEmbed = ({ url, title, poster }: { url: string; title: string, poster?: string }) => {
+const YouTubeEmbed = ({ url, title, poster, playLabel }: { url: string; title: string; poster?: string; playLabel: string }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   let videoId = "";
   try {
@@ -35,7 +36,7 @@ const YouTubeEmbed = ({ url, title, poster }: { url: string; title: string, post
   
   if (!videoId) {
     return poster ? (
-      <img src={poster} alt={title} className="w-full aspect-video rounded-xl object-cover" />
+      <img src={poster} alt={title} loading="lazy" decoding="async" className="w-full aspect-video rounded-xl object-cover" />
     ) : null;
   }
 
@@ -52,10 +53,17 @@ const YouTubeEmbed = ({ url, title, poster }: { url: string; title: string, post
   }
 
   return (
-    <div className="relative w-full aspect-video bg-black rounded-xl overflow-hidden cursor-pointer group" onClick={() => setIsPlaying(true)}>
+    <button
+      type="button"
+      onClick={() => setIsPlaying(true)}
+      aria-label={playLabel}
+      className="relative w-full aspect-video bg-black rounded-xl overflow-hidden cursor-pointer group focus-visible:ring-2 focus-visible:ring-sky-500"
+    >
       <img
         src={poster || `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
-        alt={title}
+        alt=""
+        loading="lazy"
+        decoding="async"
         className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
       />
       <div className="absolute inset-0 flex items-center justify-center">
@@ -63,12 +71,13 @@ const YouTubeEmbed = ({ url, title, poster }: { url: string; title: string, post
           <Play className="text-white fill-current ml-1" size={20} />
         </div>
       </div>
-    </div>
+    </button>
   );
 };
 
+const PROJECT_FILTERS = ["All", "React", "Next.js", "NestJS", "Node.js", "AWS", "GraphQL", "PostgreSQL"];
+
 const ProjectsPage = () => {
-  console.log("🎨 [Render] ProjectsPage");
   const { projects } = usePortfolioData();
   const { t } = useTranslation();
   const [filter, setFilter] = useState("All");
@@ -76,24 +85,22 @@ const ProjectsPage = () => {
 
   const isAllView = filter === "All";
 
-  const categories = ["All", ...Array.from(new Set(projects.flatMap(p => p.technologies))).slice(0, 6)];
+  // Curated: the first-6-by-insertion-order approach surfaced "Angular, RBAC,
+  // REST" before the stack a recruiter actually scans for. Substring match so
+  // "AWS" also catches "AWS SQS" / "AWS Lambda".
+  const categories = PROJECT_FILTERS;
 
   const filtered = filter === "All"
     ? projects
-    : projects.filter(p => p.technologies.includes(filter));
+    : projects.filter(p => p.technologies.some(tech => tech.toLowerCase().includes(filter.toLowerCase())));
 
   return (
-    <div className="bg-slate-50 dark:bg-gray-950 py-16 sm:py-24 min-h-screen">
-      <SEO title="Projects" description="Portfolio of fullstack and backend projects by Kha (Kane) Nguyen — including e-invoicing, real-time messaging, food management, building crack monitoring, and more." />
+    <div className="py-16 sm:py-24 min-h-screen">
+      <SEO title={t.seo.pages.projects.title} description={t.seo.pages.projects.description} />
       <ArchitectureModal project={archProject} onClose={() => setArchProject(null)} />
 
       <div className="container-width max-w-6xl mx-auto px-4">
-        <header className="mb-12 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold dark:text-white mb-4">{t.projects.title}</h1>
-          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-            {t.projects.subtitle}
-          </p>
-        </header>
+        <PageHeader eyebrow={t.projects.eyebrow} title={t.projects.title} subtitle={t.projects.subtitle} className="mb-12" />
 
         <div className="flex flex-wrap justify-center gap-2 mb-12">
           {categories.map(c => (
@@ -131,12 +138,14 @@ const ProjectsPage = () => {
               >
                 <div className={`p-4 bg-slate-50 dark:bg-slate-950/50 ${isFeatured ? "md:p-6" : ""}`}>
                   {project.liveDemo ? (
-                    <YouTubeEmbed url={project.liveDemo} title={project.name} poster={project.image} />
+                    <YouTubeEmbed url={project.liveDemo} title={project.name} poster={project.image} playLabel={t.common.playVideo(project.name)} />
                   ) : (
                     project.image ? (
-                      <img src={project.image} alt={project.name} className={`w-full rounded-xl object-cover ${isWide ? "aspect-[21/9]" : "aspect-video"}`} />
+                      <img src={project.image} alt={project.name} loading="lazy" decoding="async" className={`w-full rounded-xl object-cover ${isWide ? "aspect-[21/9]" : "aspect-video"}`} />
                     ) : (
-                      <div className="aspect-video bg-slate-200 dark:bg-slate-800 rounded-xl flex items-center justify-center text-slate-400">{t.common.noDemo}</div>
+                      <div className="aspect-video rounded-xl bg-gradient-to-br from-indigo-500/15 via-sky-500/10 to-purple-500/15 flex items-center justify-center">
+                        <Network className="text-indigo-500/70" size={36} />
+                      </div>
                     )
                   )}
                 </div>
@@ -144,27 +153,27 @@ const ProjectsPage = () => {
                   <div className="flex items-center justify-between mb-0 gap-3">
                     <div className="flex items-center gap-2">
                       {isFeatured && (
-                        <Badge className="text-[9px] font-bold uppercase bg-gradient-to-r from-indigo-600 to-sky-500 text-white border-none">
+                        <Badge className="text-[11px] font-bold uppercase bg-gradient-to-r from-indigo-600 to-sky-500 text-white border-none">
                           {t.common.featured}
                         </Badge>
                       )}
-                      <h3 className={`font-bold dark:text-white ${isFeatured ? "text-2xl" : "text-xl"}`}>{project.name}</h3>
+                      <h2 className={`font-bold dark:text-white ${isFeatured ? "text-2xl" : "text-xl"}`}>{project.name}</h2>
                     </div>
                     <div className="flex gap-2 shrink-0">
                       {project.github && (
-                        <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
+                        <a href={project.github} target="_blank" rel="noopener noreferrer" aria-label={`${project.name} – GitHub (${t.common.opensInNewTab})`} className="inline-flex h-10 w-10 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-white transition-colors">
                           <Github size={20} />
                         </a>
                       )}
                       {project.liveDemo && (
-                        <a href={project.liveDemo} target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">
+                        <a href={project.liveDemo} target="_blank" rel="noopener noreferrer" aria-label={`${project.name} – ${t.common.liveDemo} (${t.common.opensInNewTab})`} className="inline-flex h-10 w-10 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-white transition-colors">
                           <ExternalLink size={20} />
                         </a>
                       )}
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 mb-4 uppercase tracking-[0.2em]">
+                  <div className="flex items-center gap-2 text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-4 uppercase tracking-[0.2em]">
                     <Calendar size={12} />
                     <span>{project.period}</span>
                   </div>
@@ -176,7 +185,7 @@ const ProjectsPage = () => {
                   <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-800">
                     <div className="flex flex-wrap gap-1.5 mb-3">
                       {project.technologies.map(tech => (
-                        <Badge key={tech} className="text-[10px] font-bold uppercase bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-none">
+                        <Badge key={tech} className="text-[11px] font-bold uppercase bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-none">
                           {tech}
                         </Badge>
                       ))}

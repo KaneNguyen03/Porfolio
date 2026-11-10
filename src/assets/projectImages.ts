@@ -1,15 +1,15 @@
 // Project Images - Using actual project screenshots
 
-import auzunoImg from "./azuno.png";
-import ipaCompanies from "./beinvoice.png";
-import bmcmsImg from "./bmcms.png";
-import claritasImg from "./claritas.png";
+import auzunoImg from "./azuno.webp";
+import ipaCompanies from "./beinvoice.webp";
+import bmcmsImg from "./bmcms.webp";
+import claritasImg from "./Claritas.webp";
 import everytalkImg from "./everytalk.png";
 import fptAcademyImg from "./fams.jpg";
-import beinoivceImg from "./ipa.png";
-import pokeImg from "./poke.png";
-import proofnImg from "./proofn.png";
-import tropicalPhimImg from "./tropical-phim.png";
+import beinoivceImg from "./ipa.webp";
+import pokeImg from "./poke.webp";
+import proofnImg from "./proofn.webp";
+import tropicalPhimImg from "./tropical-phim.webp";
 import uobongImg from "./uobong.png";
 
 // Export the imported images

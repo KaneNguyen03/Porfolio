@@ -38,7 +38,7 @@ const ComponentDotList = ({ components }: { components: ArchitectureComponent[] 
 const NotFoundState = () => {
   const { t } = useTranslation();
   return (
-    <div className="bg-slate-50 dark:bg-gray-950 py-16 sm:py-24 min-h-screen flex items-center">
+    <div className="py-16 sm:py-24 min-h-screen flex items-center">
       <SEO title={t.blog.postNotFound} description={t.blog.postNotFoundBody} noIndex />
       <div className="container-width max-w-2xl mx-auto px-4 text-center">
         <h1 className="text-3xl font-bold dark:text-white mb-4">{t.blog.postNotFound}</h1>
@@ -62,7 +62,7 @@ const BlogPostPage = () => {
   if (!post) return <NotFoundState />;
 
   return (
-    <div className="bg-slate-50 dark:bg-gray-950 py-16 sm:py-24 min-h-screen">
+    <div className="py-16 sm:py-24 min-h-screen">
       <SEO title={post.title} description={post.excerpt} />
 
       <motion.div
@@ -91,7 +91,7 @@ const BlogPostPage = () => {
           <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3">
             {post.title}
           </h1>
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
             <Calendar size={12} />
             <span>{post.date}</span>
           </div>

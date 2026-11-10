@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Calendar } from "lucide-react";
 import { memo, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import PageHeader from "../components/PageHeader";
 import SEO from "../components/SEO";
 import { Badge } from "../components/ui/badge";
 import { Card, CardContent } from "../components/ui/card";
@@ -28,16 +29,11 @@ const BlogPage = () => {
   const item = fadeUpItem(12);
 
   return (
-    <div className="bg-slate-50 dark:bg-gray-950 py-16 sm:py-24 min-h-screen">
-      <SEO title={t.home.technicalLabTitle} description={t.home.technicalLabSubtitle} />
+    <div className="py-16 sm:py-24 min-h-screen">
+      <SEO title={t.seo.pages.blog.title} description={t.seo.pages.blog.description} />
 
       <div className="container-width max-w-6xl mx-auto px-4">
-        <header className="mb-12 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold dark:text-white mb-4">{t.home.technicalLabTitle}</h1>
-          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-            {t.home.technicalLabSubtitle}
-          </p>
-        </header>
+        <PageHeader eyebrow={t.nav.blog} title={t.home.technicalLabTitle} subtitle={t.home.technicalLabSubtitle} className="mb-12" />
 
         {/* Tag filters */}
         <div className="flex flex-wrap justify-center gap-2 mb-12">
@@ -91,7 +87,7 @@ const BlogPage = () => {
                           <Badge
                             key={tag}
                             variant="sky"
-                            className="text-[9px] font-bold px-1.5 py-0.5"
+                            className="text-[11px] font-bold px-1.5 py-0.5"
                           >
                             #{tag}
                           </Badge>
@@ -102,7 +98,7 @@ const BlogPage = () => {
                         {post.title}
                       </h3>
 
-                      <div className="flex items-center gap-1.5 text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-3">
+                      <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">
                         <Calendar size={11} />
                         <span>{post.date}</span>
                       </div>

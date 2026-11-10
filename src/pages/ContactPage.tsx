@@ -2,8 +2,9 @@
 
 import emailjs from "@emailjs/browser";
 import { Mail, MapPin, Phone, Send } from "lucide-react";
-import { memo, useActionState, useCallback, useLayoutEffect } from "react";
+import { memo, useActionState, useCallback } from "react";
 import { useFormStatus } from "react-dom";
+import PageHeader from "../components/PageHeader";
 import SEO from "../components/SEO";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
@@ -14,16 +15,18 @@ import { usePortfolioData } from "../data/portfolio";
 import { useTranslation } from "../i18n/useTranslation";
 import type { Strings } from "../i18n/strings";
 
+type FormState = { status: "idle" | "success" | "error"; message: string };
+
 const submitContactFormImpl = async (
-  _prevState: any,
+  _prevState: FormState,
   formData: FormData,
   t: Strings["contact"],
   recipientEmail: string,
 ) => {
-  const name = formData.get("name") as string;
-  const email = formData.get("email") as string;
-  const subject = formData.get("subject") as string;
-  const message = formData.get("message") as string;
+  const name = String(formData.get("name") ?? "");
+  const email = String(formData.get("email") ?? "");
+  const message = String(formData.get("message") ?? "");
+  const subject = String(formData.get("subject") ?? "").trim() || `Portfolio inquiry from ${name}`;
 
   try {
     const serviceId = import.meta.env.VITE_SERVICE_ID;
@@ -31,15 +34,15 @@ const submitContactFormImpl = async (
     const publicKey = import.meta.env.VITE_PUBLIC_KEY;
 
     if (!serviceId || !templateId || !publicKey) {
-      const mailtoLink = `mailto:${recipientEmail}?subject=${subject}&body=${message}`;
-      window.open(mailtoLink);
-      return { status: "success", message: t.successMailto };
+      const params = new URLSearchParams({ subject, body: `${message}\n\n— ${name} <${email}>` });
+      window.open(`mailto:${recipientEmail}?${params.toString()}`);
+      return { status: "success" as const, message: t.successMailto };
     }
 
     await emailjs.send(serviceId, templateId, { from_name: name, from_email: email, subject, message }, publicKey);
-    return { status: "success", message: t.successSent };
+    return { status: "success" as const, message: t.successSent };
   } catch {
-    return { status: "error", message: t.error };
+    return { status: "error" as const, message: t.error };
   }
 };
 
@@ -54,29 +57,21 @@ const SubmitButton = ({ t }: { t: Strings["contact"] }) => {
 };
 
 const ContactPage = () => {
-  console.log("🎨 [Render] ContactPage");
   const { personalInfo, references } = usePortfolioData();
   const { t } = useTranslation();
   const submitContactForm = useCallback(
-    (prevState: any, formData: FormData) =>
+    (prevState: FormState, formData: FormData) =>
       submitContactFormImpl(prevState, formData, t.contact, personalInfo.email),
     [t.contact, personalInfo.email],
   );
-  const [formState, formAction] = useActionState(submitContactForm, { status: "idle", message: "" });
-
-  useLayoutEffect(() => {
-    // UI Sync
-  }, []);
+  const [formState, formAction] = useActionState<FormState, FormData>(submitContactForm, { status: "idle", message: "" });
 
   return (
-    <div className="bg-slate-50 dark:bg-gray-950 py-16 sm:py-24 min-h-screen">
-      <SEO title="Contact" description="Contact Kha (Kane) Nguyen for software engineering opportunities, collaboration, or freelance projects in Ho Chi Minh City and remote." />
+    <div className="py-16 sm:py-24 min-h-screen">
+      <SEO title={t.seo.pages.contact.title} description={t.seo.pages.contact.description} />
       
       <div className="container-width max-w-5xl mx-auto px-4">
-        <header className="mb-16 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold dark:text-white mb-4">{t.contact.title}</h1>
-          <p className="text-lg text-slate-600 dark:text-slate-400">{t.contact.subtitle}</p>
-        </header>
+        <PageHeader eyebrow={t.contact.eyebrow} title={t.contact.title} subtitle={t.contact.subtitle} />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Form Side */}
@@ -89,6 +84,10 @@ const ContactPage = () => {
               <div className="space-y-2">
                 <Label htmlFor="email">{t.contact.formEmail}</Label>
                 <Input id="email" name="email" type="email" placeholder="email@example.com" required className="rounded-xl" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="subject">{t.common.subject}</Label>
+                <Input id="subject" name="subject" placeholder={t.common.subject} className="rounded-xl" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="message">{t.contact.formMessage}</Label>
@@ -111,7 +110,7 @@ const ContactPage = () => {
                   { icon: MapPin, label: t.contact.locationLabel, info: personalInfo.location }
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-4 p-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
-                    <item.icon className="text-blue-600" size={24} />
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-sky-500 text-white"><item.icon size={18} /></span>
                     <div>
                       <p className="text-xs font-bold text-slate-500 uppercase">{item.label}</p>
                       <p className="font-semibold dark:text-white">{item.info}</p>
@@ -132,9 +131,9 @@ const ContactPage = () => {
                           <p className="font-bold dark:text-white">{ref.name}</p>
                           <p className="text-xs text-slate-500 uppercase font-semibold">{ref.position}</p>
                         </div>
-                        <Mail size={16} className="text-slate-400" />
+                        <Mail size={16} className="text-slate-500 dark:text-slate-400" />
                       </div>
-                      <p className="text-sm text-blue-600 dark:text-blue-400 font-medium truncate">{ref.email}</p>
+                      <a href={`mailto:${ref.email}`} className="block text-sm text-indigo-600 dark:text-indigo-400 font-medium truncate hover:underline">{ref.email}</a>
                     </CardContent>
                   </Card>
                 ))}

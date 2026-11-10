@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { memo } from "react";
 import avatarImage from "../assets/ava.jpg";
+import PageHeader from "../components/PageHeader";
 import SEO from "../components/SEO";
 import { Badge } from "../components/ui/badge";
 import { Card, CardContent } from "../components/ui/card";
@@ -24,7 +25,6 @@ import { calculateExperienceYears } from "../lib/experience";
 import { TRANSITION, cardHover, fadeUpItem, staggerContainer } from "../lib/motion";
 
 const AboutPage = () => {
-  console.log("🎨 [Render] AboutPage");
   const { personalInfo, skills, awards, workExperience } = usePortfolioData();
   const { t } = useTranslation();
 
@@ -63,28 +63,26 @@ const AboutPage = () => {
   ];
 
   return (
-    <div className="bg-slate-50 dark:bg-gray-950 py-16 sm:py-24 min-h-screen">
-      <SEO title="About" description={personalInfo.objective} />
+    <div className="py-16 sm:py-24 min-h-screen">
+      <SEO title={t.seo.pages.about.title} description={t.seo.pages.about.description} />
       
       <div className="container-width max-w-5xl mx-auto px-4">
-        <div className="flex flex-col items-center text-center mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={TRANSITION.base}
-          >
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={TRANSITION.base}
+          className="flex justify-center"
+        >
+          <div className="relative mb-6">
+            <div aria-hidden="true" className="absolute -inset-1 rounded-full bg-gradient-to-r from-indigo-500 via-sky-500 to-purple-500 blur-lg opacity-40" />
             <img
               src={avatarImage}
               alt={personalInfo.name}
-              className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover shadow-xl border-4 border-white dark:border-slate-800 mb-6"
+              className="relative w-32 h-32 md:w-40 md:h-40 rounded-full object-cover shadow-xl border-4 border-white dark:border-slate-800"
             />
-          </motion.div>
-          
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">{t.about.title}</h1>
-          <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl">
-            {personalInfo.objective}
-          </p>
-        </div>
+          </div>
+        </motion.div>
+        <PageHeader eyebrow={t.about.eyebrow} title={t.about.title} subtitle={personalInfo.objective} />
 
         <motion.div
           variants={staggerContainer(0.06, 0.1)}

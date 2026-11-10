@@ -1,12 +1,11 @@
 import { motion } from "framer-motion";
-import { Github, Heart, Linkedin, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowUpRight, Github, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 import { usePortfolioData } from "../data/portfolio";
 import { useTranslation } from "../i18n/useTranslation";
 import { fadeUpItem, staggerContainer } from "../lib/motion";
 import { NAV_ITEMS } from "../lib/navigation";
-import { Button } from "./ui/button";
 
 const Footer = () => {
 	const { personalInfo } = usePortfolioData();
@@ -18,171 +17,109 @@ const Footer = () => {
 	// label) minus Home, which the footer logo already covers.
 	const quickLinks = NAV_ITEMS.filter((navItem) => navItem.path !== "/");
 
+	const contactRows = [
+		{ icon: Mail, label: t.contact.emailLabel, value: personalInfo.email, href: `mailto:${personalInfo.email}` },
+		{ icon: Phone, label: t.contact.phoneLabel, value: personalInfo.phone, href: `tel:${personalInfo.phone.replace(/\s+/g, "")}` },
+		{ icon: MapPin, label: t.contact.locationLabel, value: personalInfo.location },
+	];
+
 	const socialLinks = [
-		{
-			icon: Github,
-			url: personalInfo.github,
-			label: "GitHub",
-			color: "hover:bg-gray-700",
-			external: true,
-		},
-		{
-			icon: Linkedin,
-			url: personalInfo.linkedin,
-			label: "LinkedIn",
-			color: "hover:bg-blue-700",
-			external: true,
-		},
-		{
-			icon: Mail,
-			url: "/contact",
-			label: "Email",
-			color: "hover:bg-red-600",
-			external: false,
-		},
+		{ icon: Github, url: personalInfo.github, label: "GitHub" },
+		{ icon: Linkedin, url: personalInfo.linkedin, label: "LinkedIn" },
 	];
 
 	return (
-		<footer className="bg-gray-900 dark:bg-black text-white">
-			<div className="container-width py-12 px-6 md:px-0">
-				{" "}
+		<footer className="relative border-t border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl text-slate-700 dark:text-slate-300">
+			<div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-indigo-500/60 to-transparent" />
+			<div className="container-width py-14 px-4">
 				<motion.div
 					variants={container}
 					initial="hidden"
 					whileInView="visible"
 					viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
-					className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+					className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10"
 				>
-					{/* Contact Info */}
+					{/* Contact */}
 					<motion.div variants={item} className="lg:col-span-2">
-						<h3 className="text-xl font-bold mb-6 text-center md:text-left">
-							{t.footer.getInTouch}
-						</h3>
-						<div className="space-y-4">
-							<div className="flex items-center justify-start space-x-3">
-								<div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shrink-0">
-									<Mail size={18} className="text-white" />
-								</div>
-								<a
-									href={`mailto:${personalInfo.email}`}
-									className="text-gray-300 hover:text-white transition-colors duration-200 text-sm md:text-base break-all"
-								>
-									{personalInfo.email}
-								</a>
-							</div>
-							<div className="flex items-center justify-start space-x-3">
-								<div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center shrink-0">
-									<Phone size={18} className="text-white" />
-								</div>
-								<a
-									href={`tel:${personalInfo.phone}`}
-									className="text-gray-300 hover:text-white transition-colors duration-200 text-sm md:text-base"
-								>
-									{personalInfo.phone}
-								</a>
-							</div>
-							<div className="flex items-center justify-start space-x-3">
-								<div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center shrink-0">
-									<MapPin size={18} className="text-white" />
-								</div>
-								<span className="text-gray-300 text-sm md:text-base">
-									{personalInfo.location}
-								</span>
-							</div>
-						</div>
-					</motion.div>
-
-					{/* Quick Links */}
-					<motion.div variants={item} className="text-center md:text-left">
-						<h3 className="text-center md:text-left text-lg font-semibold mb-6">
-							{t.footer.quickLinks}
-						</h3>
-						<div className="grid grid-cols-2 gap-x-4 gap-y-4 md:flex md:justify-start md:flex-col">
-							{quickLinks.map((navItem, index, array) => (
-								<Link
-									key={navItem.path}
-									to={navItem.path}
-									className={`block text-gray-300 hover:text-white transition-colors duration-200 text-sm hover:transform hover:translate-x-1 ${
-										index === array.length - 1 && array.length % 2 !== 0
-											? "col-span-2 text-center"
-											: ""
-									} md:col-span-1 md:text-left`}
-									onClick={() =>
-										window.scrollTo({ top: 0, behavior: "smooth" })
-									}
-								>
-									{t.nav[navItem.key]}
-								</Link>
+						<h2 className="text-lg font-bold text-slate-900 dark:text-white mb-5">{t.footer.getInTouch}</h2>
+						<ul className="space-y-3">
+							{contactRows.map((row) => (
+								<li key={row.label} className="flex items-center gap-3">
+									<span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-sky-500 text-white shadow-md shadow-indigo-500/20">
+										<row.icon size={16} />
+									</span>
+									{row.href ? (
+										<a href={row.href} className="text-sm hover:text-indigo-600 dark:hover:text-indigo-300 transition-colors break-all">
+											{row.value}
+										</a>
+									) : (
+										<span className="text-sm">{row.value}</span>
+									)}
+								</li>
 							))}
-						</div>
+						</ul>
 					</motion.div>
 
-					{/* Social Links */}
-					<motion.div variants={item} className="text-center md:text-left">
-						<h3 className="text-lg font-semibold mb-6">{t.footer.connect}</h3>
-						<div className="flex justify-center md:justify-start space-x-4">
-							{socialLinks.map((social) => {
-								const IconComponent = social.icon;
+					{/* Quick links */}
+					<motion.nav variants={item} aria-label={t.footer.quickLinks}>
+						<h2 className="text-lg font-bold text-slate-900 dark:text-white mb-5">{t.footer.quickLinks}</h2>
+						<ul className="grid grid-cols-2 md:grid-cols-1 gap-x-4 gap-y-2.5">
+							{quickLinks.map((navItem) => (
+								<li key={navItem.path}>
+									<Link
+										to={navItem.path}
+										className="inline-flex items-center text-sm hover:text-indigo-600 dark:hover:text-indigo-300 transition-all hover:translate-x-0.5"
+									>
+										{t.nav[navItem.key]}
+									</Link>
+								</li>
+							))}
+						</ul>
+					</motion.nav>
 
-								if (social.external) {
-									return (
-										<Button
-											key={social.label}
-											asChild
-											variant="ghost"
-											size="icon"
-											className={`w-12 h-12 rounded-lg bg-gray-800 text-gray-300 hover:text-white ${social.color} transition-all duration-200 transform hover:scale-110 hover:-translate-y-1`}
-										>
-											<a
-												href={social.url}
-												target="_blank"
-												rel="noopener noreferrer"
-												aria-label={social.label}
-											>
-												<IconComponent size={20} />
-											</a>
-										</Button>
-									);
-								} else {
-									return (
-										<Button
-											key={social.label}
-											asChild
-											variant="ghost"
-											size="icon"
-											className={`w-12 h-12 rounded-lg bg-gray-800 text-gray-300 hover:text-white ${social.color} transition-all duration-200 transform hover:scale-110 hover:-translate-y-1`}
-										>
-											<Link
-												to={social.url}
-												aria-label={social.label}
-												onClick={() =>
-													window.scrollTo({ top: 0, behavior: "smooth" })
-												}
-											>
-												<IconComponent size={20} />
-											</Link>
-										</Button>
-									);
-								}
-							})}
+					{/* Social */}
+					<motion.div variants={item}>
+						<h2 className="text-lg font-bold text-slate-900 dark:text-white mb-5">{t.footer.connect}</h2>
+						<div className="flex gap-3">
+							{socialLinks.map((social) => (
+								<a
+									key={social.label}
+									href={social.url}
+									target="_blank"
+									rel="noopener noreferrer"
+									aria-label={`${social.label} (${t.common.opensInNewTab})`}
+									className="group inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/70 text-slate-600 dark:text-slate-300 transition-all hover:-translate-y-0.5 hover:border-indigo-300 hover:text-indigo-600 hover:shadow-lg hover:shadow-indigo-500/10 dark:hover:border-indigo-700 dark:hover:text-indigo-300"
+								>
+									<social.icon size={18} />
+								</a>
+							))}
+							<Link
+								to="/contact"
+								aria-label={t.nav.contact}
+								className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-sky-500 text-white shadow-md shadow-indigo-500/25 transition-all hover:-translate-y-0.5 hover:shadow-lg"
+							>
+								<Mail size={18} />
+							</Link>
 						</div>
+						<a
+							href={personalInfo.linkedin}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="mt-5 inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 dark:text-indigo-300 hover:underline"
+						>
+							LinkedIn <ArrowUpRight size={12} />
+							<span className="sr-only"> ({t.common.opensInNewTab})</span>
+						</a>
 					</motion.div>
 				</motion.div>
-				{/* Bottom Section */}
-				<div className="border-t border-gray-800 mt-8 pt-8">
-					<div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-						<p className="text-gray-400 flex items-center justify-center space-x-2 text-sm">
-							<span>
-								&copy; {new Date().getFullYear()} {personalInfo.name}.{" "}
-								{t.footer.allRightsReserved}
-							</span>
-						</p>
-						<p className="text-gray-400 flex items-center justify-center space-x-1 text-sm">
-							<span>{t.footer.madeWith}</span>
-							<Heart size={16} className="text-red-500 animate-pulse" />
-							<span>{t.footer.and}</span>
-						</p>
-					</div>
+
+				<div className="mt-10 pt-6 border-t border-slate-200/80 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
+					<p>
+						&copy; {new Date().getFullYear()} {personalInfo.name}. {t.footer.allRightsReserved}
+					</p>
+					<p>
+						{t.footer.madeWith} React · Tailwind · Framer Motion
+					</p>
 				</div>
 			</div>
 		</footer>
